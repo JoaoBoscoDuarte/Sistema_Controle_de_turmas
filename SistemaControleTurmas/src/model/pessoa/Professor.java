@@ -41,5 +41,4 @@ public class Professor extends Pessoa{
     public int hashCode() {
         return super.hashCode();
     }
-
 }
