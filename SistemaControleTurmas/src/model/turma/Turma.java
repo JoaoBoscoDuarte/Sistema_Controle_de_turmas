@@ -4,6 +4,7 @@ import model.pessoa.Aluno;
 import model.disciplina.Disciplina;
 import model.pessoa.Professor;
 
+import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -13,15 +14,25 @@ public class Turma {
 
     private Disciplina nomeDisciplina;
     private Professor nomeProfessor;
-    private Map unidadesNotasAlunos; ///????????????????????????????
+    private Map<Aluno, Map<Integer, Double>> unidadesNotasAlunos; ///????????????????????????????
     private int capacidadeMaximaAlunos;
     private int capacidadeMinimaAlunos;
     private int qtdUnidadesAvaliativas;
     private LocalDate dataCriacaoTurma;
     private List<Aluno> alunos;
-    private codigoTurma;
+    private String codigoTurma;
+    private static int contador = 0;
 
-    public Turma(Disciplina nomeDisciplina, Professor nomeProfessor, Map unidadesNotasAlunos, int capacidadeMaximaAlunos, int capacidadeMinimaAlunos, int qtdUnidadesAvaliativas) {
+    public Turma(Disciplina nomeDisciplina, Professor nomeProfessor, Map unidadesNotasAlunos, int capacidadeMaximaAlunos, int capacidadeMinimaAlunos, int qtdUnidadesAvaliativas) throws Exception {
+
+        if (capacidadeMaximaAlunos <= 0 || capacidadeMinimaAlunos <= 0) {
+            throw new Exception("A capacidade não pode ser menor ou igual a 0!");
+        }
+
+        if (qtdUnidadesAvaliativas < 2) {
+            throw new Exception("A quantidade de unidades avaliativas não pode ser menor que 2!");
+        }
+
         this.nomeDisciplina = nomeDisciplina;
         this.nomeProfessor = nomeProfessor;
         this.unidadesNotasAlunos = unidadesNotasAlunos;
@@ -29,6 +40,7 @@ public class Turma {
         this.capacidadeMinimaAlunos = capacidadeMinimaAlunos;
         this.qtdUnidadesAvaliativas = qtdUnidadesAvaliativas;
         this.dataCriacaoTurma = LocalDate.now();
+        this.codigoTurma = geraCodigoTurma();
     }
 
     public int getCapacidadeMaximaAlunos() {
@@ -45,6 +57,16 @@ public class Turma {
 
     public void setCapacidadeMinimaAlunos(int capacidadeMinimaAlunos) {
         this.capacidadeMinimaAlunos = capacidadeMinimaAlunos;
+    }
+
+    public String formataData() {
+        return dataCriacaoTurma.format(DateTimeFormatter.ofPattern("ddMMyyyy"));
+    }
+
+    public static String geraCodigoTurma() {
+        contador++;
+        String dataFormatada = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
+        return String.format("%s-%05d", dataFormatada, contador);
     }
 
     @Override
