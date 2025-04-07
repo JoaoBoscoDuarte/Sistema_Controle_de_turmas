@@ -1,7 +1,7 @@
 package model.enums;
 
 public enum TiposDeMedia {
-    ARITIMETICA,
+    SIMPLES,
     ULTIMA_VALE_MAIS,
     DESCARTA_MENOR;
 }
