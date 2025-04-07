@@ -11,7 +11,7 @@ public class Professor extends Pessoa{
     public Professor(String nome, String telefone, String email, List<ArrayList> turmasMinistradas) throws Exception {
         super(nome, telefone, email);
         this.turmasMinistradas = turmasMinistradas;
-        LocalDate.now();
+        this.data = LocalDate.now();
 
     }
 
