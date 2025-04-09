@@ -1,17 +1,22 @@
 package model.pessoa;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
-public class Pessoa implements PessoaIF {
+public abstract class Pessoa implements PessoaIF {
     private String nome;
     private String telefone;
     private String email;
     private boolean ativo = false;
+    private String matricula;
+    private LocalDate dataCriacao;
+    private static int contaMatricula = 1;
 
     public Pessoa(String nome, String telefone, String email) throws Exception {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
+        this.matricula = geradorDeMatricula();
         validaNome(nome);
         validaTelefone(telefone);
         validaEmail(email);
@@ -35,6 +40,12 @@ public class Pessoa implements PessoaIF {
         }
     }
 
+    private String geradorDeMatricula() {
+        int anoMatricula = LocalDate.now().getYear();
+        int numeroMatricula = contaMatricula++;
+        return anoMatricula + "" + contaMatricula;
+    }
+
     @Override
     public String getNome() {
         return nome;
@@ -46,7 +57,7 @@ public class Pessoa implements PessoaIF {
 
     @Override
     public String getTelefone() {
-        return "";
+        return telefone;
     }
 
     public void setTelefone(String telefone) {
@@ -55,7 +66,7 @@ public class Pessoa implements PessoaIF {
 
     @Override
     public String getEmail() {
-        return "";
+        return email;
     }
 
     public void setEmail(String email) {
@@ -70,6 +81,22 @@ public class Pessoa implements PessoaIF {
         this.ativo = ativo;
     }
 
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
     public void validar() {
         this.ativo = true;
     }
@@ -81,18 +108,21 @@ public class Pessoa implements PessoaIF {
                 ", telefone='" + telefone + '\'' +
                 ", email='" + email + '\'' +
                 ", ativo=" + ativo +
+                ", matricula='" + matricula + '\'' +
+                ", dataCriacao=" + dataCriacao +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pessoa pessoa = (Pessoa) o;
-        return ativo == pessoa.ativo && Objects.equals(nome, pessoa.nome) && Objects.equals(telefone, pessoa.telefone) && Objects.equals(email, pessoa.email);
+        return ativo == pessoa.ativo && Objects.equals(nome, pessoa.nome) && Objects.equals(telefone, pessoa.telefone) && Objects.equals(email, pessoa.email) && Objects.equals(matricula, pessoa.matricula) && Objects.equals(dataCriacao, pessoa.dataCriacao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, telefone, email, ativo);
+        return Objects.hash(nome, telefone, email, ativo, matricula, dataCriacao);
     }
 }
