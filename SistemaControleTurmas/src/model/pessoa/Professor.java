@@ -11,7 +11,14 @@ public class Professor extends Pessoa{
 
     public Professor(String nome, String telefone, String email, List<Turma> turmasMinistradas) throws Exception {
         super(nome, telefone, email);
+        verificaTurmas(turmasMinistradas);
         this.turmasMinistradas = turmasMinistradas;
+    }
+
+    private static void verificaTurmas(List<Turma> turmasMinistradas) throws Exception {
+        if(turmasMinistradas.isEmpty()){
+            throw new Exception("A lista de turmas não se encontrar vazia");
+        }
     }
 
     public List<Turma> getTurmasMinistradas() {
