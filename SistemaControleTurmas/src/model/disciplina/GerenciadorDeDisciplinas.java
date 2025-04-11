@@ -76,7 +76,7 @@ public class GerenciadorDeDisciplinas {
         if (!existeProfessor(professor)) {
             throw new ProfessorNaoEncontradoException("Professor não encontrado.");
         }
-        // Implementar a associação de professor!!!
+        // Implementar a associação de professor!!!!
     }
 
     public Disciplina procuraDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
