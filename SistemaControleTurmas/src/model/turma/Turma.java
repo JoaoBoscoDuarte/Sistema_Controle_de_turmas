@@ -1,27 +1,47 @@
 package model.turma;
 
 import model.disciplina.Disciplina;
+import model.pessoa.Aluno;
 import model.pessoa.Professor;
+import model.turma.media.TiposDeMedia;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Turma {
 
-    private Disciplina nomeDisciplina;
-    private Professor nomeProfessor;
+    private Disciplina disciplina;
+    private Professor professor;
     private int qtdUnidadesAvaliativas;
+
+    private List<Nota> notasAluno;
+
+    private TiposDeMedia tipoDeMedia;
     private LocalDate dataCriacaoTurma;
     private String codigoTurma;
     private static int contador = 0;
 
-    public Turma(Disciplina nomeDisciplina, Professor nomeProfessor, int qtdUnidadesAvaliativas) {
-        this.nomeDisciplina = nomeDisciplina;
-        this.nomeProfessor = nomeProfessor;
+    public Turma(Disciplina disciplina, Professor professor, int qtdUnidadesAvaliativas, TiposDeMedia tipoDeMedia) {
+        this.disciplina = disciplina;
+        this.professor = professor;
         this.qtdUnidadesAvaliativas = qtdUnidadesAvaliativas;
+        this.tipoDeMedia = tipoDeMedia;
+        this.notasAluno = new ArrayList<>();
         this.dataCriacaoTurma = LocalDate.now();
         this.codigoTurma = geraCodigoTurma();
+    }
+
+    public double calcularMedia(Aluno aluno) {
+        for (Nota nota : notasAluno) {
+            if (nota.getAluno().equals(aluno)) {
+                tipoDeMedia.calcularMedia(nota.getNotasDoAluno());
+            }
+        }
+
+        return 0;
     }
 
     public String verificarAprovacao(double media) {
@@ -51,19 +71,19 @@ public class Turma {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Turma turma = (Turma) o;
-        return qtdUnidadesAvaliativas == turma.qtdUnidadesAvaliativas && Objects.equals(nomeDisciplina, turma.nomeDisciplina) && Objects.equals(nomeProfessor, turma.nomeProfessor) && Objects.equals(dataCriacaoTurma, turma.dataCriacaoTurma) && Objects.equals(codigoTurma, turma.codigoTurma);
+        return qtdUnidadesAvaliativas == turma.qtdUnidadesAvaliativas && Objects.equals(disciplina, turma.disciplina) && Objects.equals(professor, turma.professor) && Objects.equals(dataCriacaoTurma, turma.dataCriacaoTurma) && Objects.equals(codigoTurma, turma.codigoTurma);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nomeDisciplina, nomeProfessor, qtdUnidadesAvaliativas, dataCriacaoTurma, codigoTurma);
+        return Objects.hash(disciplina, professor, qtdUnidadesAvaliativas, dataCriacaoTurma, codigoTurma);
     }
 
     @Override
     public String toString() {
         return "Turma{" +
-                "nomeDisciplina=" + nomeDisciplina +
-                ", nomeProfessor=" + nomeProfessor +
+                "nomeDisciplina=" + disciplina +
+                ", nomeProfessor=" + professor +
                 ", qtdUnidadesAvaliativas=" + qtdUnidadesAvaliativas +
                 ", dataCriacaoTurma=" + dataCriacaoTurma +
                 ", codigoTurma='" + codigoTurma + '\'' +
