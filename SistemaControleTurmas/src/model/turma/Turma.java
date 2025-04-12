@@ -1,62 +1,60 @@
 package model.turma;
 
-import model.pessoa.Aluno;
 import model.disciplina.Disciplina;
+import model.pessoa.Aluno;
 import model.pessoa.Professor;
+import model.turma.media.TiposDeMedia;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class Turma {
 
-    private Disciplina nomeDisciplina;
-    private Professor nomeProfessor;
-    private Map<Aluno, Map<Integer, Double>> unidadesNotasAlunos; ///????????????????????????????
-    private int capacidadeMaximaAlunos;
-    private int capacidadeMinimaAlunos;
+    private Disciplina disciplina;
+    private Professor professor;
     private int qtdUnidadesAvaliativas;
+
+    private List<Nota> notasAluno;
+
+    private TiposDeMedia tipoDeMedia;
     private LocalDate dataCriacaoTurma;
-    private List<Aluno> alunos;
     private String codigoTurma;
     private static int contador = 0;
 
-    public Turma(Disciplina nomeDisciplina, Professor nomeProfessor, Map unidadesNotasAlunos, int capacidadeMaximaAlunos, int capacidadeMinimaAlunos, int qtdUnidadesAvaliativas) throws Exception {
-
-        if (capacidadeMaximaAlunos <= 0 || capacidadeMinimaAlunos <= 0) {
-            throw new Exception("A capacidade não pode ser menor ou igual a 0!");
-        }
-
-        if (qtdUnidadesAvaliativas < 2) {
-            throw new Exception("A quantidade de unidades avaliativas não pode ser menor que 2!");
-        }
-
-        this.nomeDisciplina = nomeDisciplina;
-        this.nomeProfessor = nomeProfessor;
-        this.unidadesNotasAlunos = unidadesNotasAlunos;
-        this.capacidadeMaximaAlunos = capacidadeMaximaAlunos;
-        this.capacidadeMinimaAlunos = capacidadeMinimaAlunos;
+    public Turma(Disciplina disciplina, Professor professor, int qtdUnidadesAvaliativas, TiposDeMedia tipoDeMedia) {
+        this.disciplina = disciplina;
+        this.professor = professor;
         this.qtdUnidadesAvaliativas = qtdUnidadesAvaliativas;
+        this.tipoDeMedia = tipoDeMedia;
+        this.notasAluno = new ArrayList<>();
         this.dataCriacaoTurma = LocalDate.now();
         this.codigoTurma = geraCodigoTurma();
     }
 
-    public int getCapacidadeMaximaAlunos() {
-        return capacidadeMaximaAlunos;
+    public double calcularMedia(Aluno aluno) {
+        for (Nota nota : notasAluno) {
+            if (nota.getAluno().equals(aluno)) {
+                tipoDeMedia.calcularMedia(nota.getNotasDoAluno());
+            }
+        }
+
+        return 0;
     }
 
-    public void setCapacidadeMaximaAlunos(int capacidadeMaximaAlunos) {
-        this.capacidadeMaximaAlunos = capacidadeMaximaAlunos;
-    }
+    public String verificarAprovacao(double media) {
+        String exibir = "";
 
-    public int getCapacidadeMinimaAlunos() {
-        return capacidadeMinimaAlunos;
-    }
+        if (media < 7) {
+            exibir = "REPROVADO";
 
-    public void setCapacidadeMinimaAlunos(int capacidadeMinimaAlunos) {
-        this.capacidadeMinimaAlunos = capacidadeMinimaAlunos;
+        } else if (media >= 7) {
+            exibir = "APROVADO";
+        }
+
+        return exibir;
     }
 
     public String formataData() {
@@ -73,25 +71,22 @@ public class Turma {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Turma turma = (Turma) o;
-        return capacidadeMaximaAlunos == turma.capacidadeMaximaAlunos && capacidadeMinimaAlunos == turma.capacidadeMinimaAlunos && qtdUnidadesAvaliativas == turma.qtdUnidadesAvaliativas && Objects.equals(nomeDisciplina, turma.nomeDisciplina) && Objects.equals(nomeProfessor, turma.nomeProfessor) && Objects.equals(unidadesNotasAlunos, turma.unidadesNotasAlunos) && Objects.equals(dataCriacaoTurma, turma.dataCriacaoTurma) && Objects.equals(alunos, turma.alunos);
+        return qtdUnidadesAvaliativas == turma.qtdUnidadesAvaliativas && Objects.equals(disciplina, turma.disciplina) && Objects.equals(professor, turma.professor) && Objects.equals(dataCriacaoTurma, turma.dataCriacaoTurma) && Objects.equals(codigoTurma, turma.codigoTurma);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nomeDisciplina, nomeProfessor, unidadesNotasAlunos, capacidadeMaximaAlunos, capacidadeMinimaAlunos, qtdUnidadesAvaliativas, dataCriacaoTurma, alunos);
+        return Objects.hash(disciplina, professor, qtdUnidadesAvaliativas, dataCriacaoTurma, codigoTurma);
     }
 
     @Override
     public String toString() {
         return "Turma{" +
-                "Nome da Disciplina = " + nomeDisciplina +
-                ", Nome Professor = " + nomeProfessor +
-                ", Unidade de Notas dos alunos = " + unidadesNotasAlunos +
-                ", Capacidade Máxima de alunos = " + capacidadeMaximaAlunos +
-                ", Capacidade Mínima de alunos = " + capacidadeMinimaAlunos +
-                ", Quantidade de Unidades Avaliativas = " + qtdUnidadesAvaliativas +
-                ", Data de criação da turma = " + dataCriacaoTurma +
-                ", Alunos = " + alunos +
+                "nomeDisciplina=" + disciplina +
+                ", nomeProfessor=" + professor +
+                ", qtdUnidadesAvaliativas=" + qtdUnidadesAvaliativas +
+                ", dataCriacaoTurma=" + dataCriacaoTurma +
+                ", codigoTurma='" + codigoTurma + '\'' +
                 '}';
     }
 }
