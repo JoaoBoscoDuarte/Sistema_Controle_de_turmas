@@ -2,6 +2,7 @@ package model.turma;
 
 import model.disciplina.Disciplina;
 import model.pessoa.Aluno;
+import model.pessoa.Pessoa;
 import model.pessoa.Professor;
 import model.turma.media.TiposDeMediaIF;
 
@@ -40,7 +41,6 @@ public class Turma {
                 tipoDeMedia.calcularMedia(nota.getNotasDoAluno());
             }
         }
-
         return 0;
     }
 
