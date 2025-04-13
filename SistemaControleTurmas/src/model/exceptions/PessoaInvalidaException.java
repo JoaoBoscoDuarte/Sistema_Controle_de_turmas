@@ -2,7 +2,7 @@ package model.exceptions;
 
 public class PessoaInvalidaException extends Exception {
   public PessoaInvalidaException() {
-    super("Aluno não encontrado ou não ativo.");
+    super("Os dados informados não são válidos.");
   }
 
   public PessoaInvalidaException(String message) {
