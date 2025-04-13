@@ -10,13 +10,13 @@ public class GerenciamentoDeAlunos {
     private final List<Aluno> alunos = new ArrayList<>();
 
     public void adicionaAluno(Aluno aluno) {
-        aluno.validar();
+        aluno.invalidar();
         alunos.add(aluno);
     }
 
     public void adicionaAluno(String nome, String telefone, String email) throws Exception {
         Aluno aluno = new Aluno(nome, telefone, email);
-        aluno.validar();
+        aluno.invalidar();
         alunos.add(aluno);
     }
 

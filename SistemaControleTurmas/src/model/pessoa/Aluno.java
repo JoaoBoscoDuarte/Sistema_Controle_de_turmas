@@ -65,8 +65,8 @@ public class Aluno extends Pessoa {
     }
 
     @Override
-    public void validar() {
-        super.validar();
+    public void invalidar() {
+        super.invalidar();
     }
 
     @Override
