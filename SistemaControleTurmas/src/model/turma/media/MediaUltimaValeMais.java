@@ -3,11 +3,12 @@ package model.turma.media;
 import java.util.List;
 
 public class MediaUltimaValeMais implements TiposDeMediaIF {
+
     public double calcularMedia(List<Double> notas) {
-        double ultimaNota = notas.size() - 1;
+        double ultimaNota = notas.get(notas.size() - 1);
         double soma = 0;
 
-        for (int i = 0; i < notas.size(); i++) {
+        for (int i = 0; i < notas.size() - 1 ; i++) {
             soma += notas.get(i);
         }
 

@@ -28,7 +28,7 @@ public class GerenciamentoDeProfessores {
         return listaDeProfessores;
     }
 
-    public boolean verificaExistenciaDoProfessor(String nome) throws Exception{
+    public boolean existeProfessor(String nome) throws Exception{
         verificaNome(nome);
         for (Professor p : listaProfessores){
             if (p.getNome().contains(nome)){

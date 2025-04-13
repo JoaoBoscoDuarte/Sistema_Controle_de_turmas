@@ -1,4 +1,5 @@
 package model.pessoa;
+import model.exceptions.PessoaInvalidaException;
 import model.turma.Turma;
 
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class Professor extends Pessoa{
     }
 
     @Override
-    public void setNome(String nome) {
+    public void setNome(String nome) throws PessoaInvalidaException {
         super.setNome(nome);
     }
 
@@ -45,7 +46,7 @@ public class Professor extends Pessoa{
     }
 
     @Override
-    public void setTelefone(String telefone) {
+    public void setTelefone(String telefone) throws PessoaInvalidaException {
         super.setTelefone(telefone);
     }
 
@@ -55,7 +56,7 @@ public class Professor extends Pessoa{
     }
 
     @Override
-    public void setEmail(String email) {
+    public void setEmail(String email) throws PessoaInvalidaException {
         super.setEmail(email);
     }
 

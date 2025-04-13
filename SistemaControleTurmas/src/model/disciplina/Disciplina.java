@@ -10,7 +10,6 @@ public class Disciplina {
     private LocalDate dataDeCriacao;
     private static int contador = 1;
 
-
     public Disciplina(String nomeDisciplina, String codigo, int cargaHoraria) {
         this.nomeDisciplina = nomeDisciplina;
         this.codigo = gerarCodigoDisciplina();

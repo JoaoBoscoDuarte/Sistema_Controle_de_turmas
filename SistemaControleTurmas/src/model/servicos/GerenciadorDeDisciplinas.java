@@ -1,5 +1,6 @@
-package model.disciplina;
+package model.servicos;
 
+import model.disciplina.Disciplina;
 import model.pessoa.Professor;
 import java.util.ArrayList;
 import java.util.List;

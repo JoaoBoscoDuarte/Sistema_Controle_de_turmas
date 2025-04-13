@@ -5,7 +5,7 @@ import model.exceptions.PessoaInvalidaException;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public abstract class Pessoa implements PessoaIF {
+public abstract class Pessoa {
     private String nome;
     private String telefone;
     private String email;
@@ -48,7 +48,6 @@ public abstract class Pessoa implements PessoaIF {
         return LocalDate.now().getYear() + String.format("%04d" , contaMatricula++);
     }
 
-    @Override
     public String getNome() {
         return nome;
     }
@@ -58,7 +57,6 @@ public abstract class Pessoa implements PessoaIF {
         this.nome = nome;
     }
 
-    @Override
     public String getTelefone() {
         return telefone;
     }
@@ -68,7 +66,6 @@ public abstract class Pessoa implements PessoaIF {
         this.telefone = telefone;
     }
 
-    @Override
     public String getEmail() {
         return email;
     }

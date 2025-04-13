@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Turma {
@@ -20,6 +21,7 @@ public class Turma {
 
     private List<Nota> notasAluno;
     private List<String> matriculasAlunos;
+    private List<String> matriculasProfessores;
 
     private TiposDeMediaIF tipoDeMedia;
     private LocalDate dataCriacaoTurma;
@@ -33,8 +35,24 @@ public class Turma {
         this.tipoDeMedia = tipoDeMedia;
         this.notasAluno = new ArrayList<>();
         this.matriculasAlunos = new ArrayList<>();
+        this.matriculasProfessores = new ArrayList<>();
         this.dataCriacaoTurma = LocalDate.now();
         this.codigoTurma = geraCodigoTurma();
+    }
+
+    public void cadastrarNota(String matricula, int unidade, double nota) {
+        if (unidade < 2 || unidade > qtdUnidadesAvaliativas) {
+            throw new IllegalArgumentException("Unidade inválida");
+        }
+
+        for (Nota n : notasAluno) {
+            if (n.getAluno().getMatricula().equals(matricula)) {
+                n.adicionarNota(unidade, nota);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("Aluno não encontrado na turma");
     }
 
     public void adicionarAluno(String matricula) {
@@ -43,13 +61,26 @@ public class Turma {
         }
     }
 
+    public void adicionarProfessor(String matricula) {
+        if (!matriculasProfessores.contains(matricula)) {
+            matriculasProfessores.add(matricula);
+        }
+    }
+
     public double calcularMedia(Aluno aluno) {
         for (Nota nota : notasAluno) {
             if (nota.getAluno().equals(aluno)) {
-                tipoDeMedia.calcularMedia(nota.getNotasDoAluno());
+                // Obtém todas as notas do aluno (de todas as unidades)
+                Map<Integer, Double> notasPorUnidade = nota.getNotasPorUnidade();
+
+                // Converte os valores do mapa para uma lista de doubles
+                List<Double> todasNotas = new ArrayList<>(notasPorUnidade.values());
+
+                // Delega o cálculo para a estratégia de média
+                return tipoDeMedia.calcularMedia(todasNotas);
             }
         }
-        return 0;
+        throw new IllegalArgumentException("Aluno não encontrado na turma");
     }
 
     public String verificarAprovacao(double media) {
@@ -65,6 +96,14 @@ public class Turma {
         return exibir;
     }
 
+    public List<String> getMatriculasAlunos() {
+        return new ArrayList<>(matriculasAlunos);
+    }
+
+    public int getQtdUnidadesAvaliativas() {
+        return qtdUnidadesAvaliativas;
+    }
+
     public void setQtdUnidadesAvaliativas(int qtdUnidadesAvaliativas) {
         this.qtdUnidadesAvaliativas = qtdUnidadesAvaliativas;
     }
@@ -77,6 +116,18 @@ public class Turma {
         contador++;
         String dataFormatada = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
         return String.format("%s-%05d", dataFormatada, contador);
+    }
+
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public String getCodigoTurma() {
+        return codigoTurma;
     }
 
     @Override

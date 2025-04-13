@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MediaDescartaMenorNota implements TiposDeMediaIF {
 
-    public double calcularMedia(List<Double> notas) {
+    public double calcularMedia(List<Double> notas)  {
         double menorNota = notas.get(0);
         double soma = 0;
 
@@ -15,6 +15,6 @@ public class MediaDescartaMenorNota implements TiposDeMediaIF {
             soma += notas.get(i);
         }
 
-        return (soma - menorNota)/notas.size() - 1;
+        return (soma - menorNota)/(notas.size() - 1);
     }
 }

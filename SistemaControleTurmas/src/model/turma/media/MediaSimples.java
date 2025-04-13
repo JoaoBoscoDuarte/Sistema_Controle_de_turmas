@@ -14,6 +14,7 @@ public class MediaSimples implements TiposDeMediaIF {
         for (Double nota : notas) {
             soma += nota;
         }
+
         return soma / notas.size();
     }
 }
