@@ -2,6 +2,6 @@ package model.turma.media;
 
 import java.util.List;
 
-public interface TiposDeMedia {
+public interface TiposDeMediaIF {
     double calcularMedia(List<Double> notas);
 }

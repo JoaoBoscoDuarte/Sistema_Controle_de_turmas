@@ -1,9 +1,8 @@
 package model.turma.media;
 
-import model.turma.Nota;
 import java.util.List;
 
-public class MediaDescartaMenorNota implements TiposDeMedia {
+public class MediaDescartaMenorNota implements TiposDeMediaIF {
 
     public double calcularMedia(List<Double> notas) {
         double menorNota = notas.get(0);

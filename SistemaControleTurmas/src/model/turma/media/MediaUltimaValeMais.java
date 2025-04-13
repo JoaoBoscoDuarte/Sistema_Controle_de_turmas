@@ -1,9 +1,8 @@
 package model.turma.media;
 
-import model.turma.Nota;
 import java.util.List;
 
-public class MediaUltimaValeMais implements TiposDeMedia {
+public class MediaUltimaValeMais implements TiposDeMediaIF {
     public double calcularMedia(List<Double> notas) {
         double ultimaNota = notas.size() - 1;
         double soma = 0;

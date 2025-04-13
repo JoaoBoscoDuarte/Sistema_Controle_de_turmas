@@ -3,7 +3,7 @@ package model.turma;
 import model.disciplina.Disciplina;
 import model.pessoa.Aluno;
 import model.pessoa.Professor;
-import model.turma.media.TiposDeMedia;
+import model.turma.media.TiposDeMediaIF;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
@@ -19,12 +19,12 @@ public class Turma {
 
     private List<Nota> notasAluno;
 
-    private TiposDeMedia tipoDeMedia;
+    private TiposDeMediaIF tipoDeMedia;
     private LocalDate dataCriacaoTurma;
     private String codigoTurma;
     private static int contador = 0;
 
-    public Turma(Disciplina disciplina, Professor professor, int qtdUnidadesAvaliativas, TiposDeMedia tipoDeMedia) {
+    public Turma(Disciplina disciplina, Professor professor, int qtdUnidadesAvaliativas, TiposDeMediaIF tipoDeMedia) {
         this.disciplina = disciplina;
         this.professor = professor;
         this.qtdUnidadesAvaliativas = qtdUnidadesAvaliativas;

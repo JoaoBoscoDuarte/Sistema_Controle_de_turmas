@@ -1,11 +1,8 @@
 package model.turma.media;
 
-import model.turma.Nota;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class MediaSimples implements TiposDeMedia {
+public class MediaSimples implements TiposDeMediaIF {
 
     @Override
     public double calcularMedia(List<Double> notas) {
