@@ -3,7 +3,7 @@ package model.servicos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GerenciamentoDeAluno {
+public class GerenciamentoDeAlunos {
     private final List<Aluno> alunos = new ArrayList<>();
 
     public void adicionaAluno(Aluno aluno) {
