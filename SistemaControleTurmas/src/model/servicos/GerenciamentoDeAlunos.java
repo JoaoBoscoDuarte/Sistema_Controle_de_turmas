@@ -1,5 +1,8 @@
 package model.servicos;
 
+import model.exceptions.AlunoNaoEncontradoException;
+import model.pessoa.Aluno;
+
 import java.util.ArrayList;
 import java.util.List;
 

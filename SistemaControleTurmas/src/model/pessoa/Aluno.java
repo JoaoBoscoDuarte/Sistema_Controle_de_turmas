@@ -1,5 +1,7 @@
 package model.pessoa;
 
+import model.exceptions.PessoaInvalidaException;
+
 import java.time.LocalDate;
 
 public class Aluno extends Pessoa {

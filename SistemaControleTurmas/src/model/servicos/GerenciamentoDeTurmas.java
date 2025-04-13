@@ -7,7 +7,6 @@ import model.pessoa.Professor;
 import model.turma.Turma;
 import model.turma.media.TiposDeMediaIF;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class GerenciamentoDeTurmas {
 
     public GerenciamentoDeTurmas(GerenciamentoDeAlunos gerenciamentoDeAlunos) {
         this.turmas = new ArrayList<>();
-        this.gerenciamentoDeAlunos = new GerenciamentoDeAlunos;
+        this.gerenciamentoDeAlunos = new GerenciamentoDeAlunos();
     }
 
     public void criarTurma(Disciplina disciplina, Professor professor, int qtdUnidadesAvaliativas, TiposDeMediaIF tipoDeMedia) {
@@ -25,9 +24,26 @@ public class GerenciamentoDeTurmas {
         turmas.add(turma);
     }
 
-    public void adicionaarAlunoATurma(String matricula, Turma turma) {
-        if (GerenciamentoDeAluno.exiteAluno(matricula)) {
-            System.out.println("Adiciona aluno");
+    public void adicionarAlunoATurma(String matricula, Turma turma) {
+        if (gerenciamentoDeAlunos.existeAluno(matricula)) {
+            turma.adicionarAluno(matricula);
         }
     }
+
+    //public void adicionarProfessorATurma(String)
+
+    public void atribuirQuantidadeDeUnidadesAvaliativas(int qtdUnidadesAvaliativas, Turma turma) {
+        for (Turma t : turmas) {
+            if (t.equals(turma)) {
+                t.setQtdUnidadesAvaliativas(qtdUnidadesAvaliativas);
+            }
+        }
+    }
+
+//    public void cadastrarNotas(Aluno aluno, int Unidade, double nota) {
+//        String matricula = aluno.getMatricula();
+//        List<Aluno> alunos = turmas.
+//
+//        for ()
+//    }
 }

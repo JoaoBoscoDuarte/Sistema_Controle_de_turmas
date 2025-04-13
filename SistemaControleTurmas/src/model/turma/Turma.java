@@ -19,6 +19,7 @@ public class Turma {
     private int qtdUnidadesAvaliativas;
 
     private List<Nota> notasAluno;
+    private List<String> matriculasAlunos;
 
     private TiposDeMediaIF tipoDeMedia;
     private LocalDate dataCriacaoTurma;
@@ -31,8 +32,15 @@ public class Turma {
         this.qtdUnidadesAvaliativas = qtdUnidadesAvaliativas;
         this.tipoDeMedia = tipoDeMedia;
         this.notasAluno = new ArrayList<>();
+        this.matriculasAlunos = new ArrayList<>();
         this.dataCriacaoTurma = LocalDate.now();
         this.codigoTurma = geraCodigoTurma();
+    }
+
+    public void adicionarAluno(String matricula) {
+        if (!matriculasAlunos.contains(matricula)) {
+            matriculasAlunos.add(matricula);
+        }
     }
 
     public double calcularMedia(Aluno aluno) {
@@ -55,6 +63,10 @@ public class Turma {
         }
 
         return exibir;
+    }
+
+    public void setQtdUnidadesAvaliativas(int qtdUnidadesAvaliativas) {
+        this.qtdUnidadesAvaliativas = qtdUnidadesAvaliativas;
     }
 
     public String formataData() {
