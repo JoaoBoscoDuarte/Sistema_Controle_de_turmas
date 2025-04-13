@@ -8,42 +8,42 @@ public abstract class Pessoa implements PessoaIF {
     private String telefone;
     private String email;
     private boolean ativo = false;
-    private String matricula;
+    private final String matricula;
     private LocalDate dataCriacao;
     private static int contaMatricula = 1;
 
-    public Pessoa(String nome, String telefone, String email) throws Exception {
+    public Pessoa(String nome, String telefone, String email) throws PessoaInvalidaException {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.matricula = geradorDeMatricula();
+        this.dataCriacao = LocalDate.now();
         validaNome(nome);
         validaTelefone(telefone);
         validaEmail(email);
     }
 
-    private void validaNome(String nome) throws Exception {
+    private void validaNome(String nome) throws PessoaInvalidaException {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new Exception("Nome inválido");
+            throw new PessoaInvalidaException("Nome inválido");
         }
     }
 
-    private void validaTelefone(String telefone) throws Exception {
-        if (telefone == null || telefone.trim().isEmpty()) {
-            throw new Exception("Número de telefone inválido");
+    private void validaTelefone(String telefone) throws PessoaInvalidaException {
+        if (telefone == null || telefone.trim().isEmpty() || telefone.length() != 11) {
+            throw new PessoaInvalidaException("Número de telefone inválido. Deve conter 11 digitos.");
         }
     }
 
-    private void validaEmail(String email) throws Exception {
-        if (email == null || email.trim().isEmpty()) {
-            throw new Exception("E-mail inválido");
+    private void validaEmail(String email) throws PessoaInvalidaException {
+        if (email == null || email.trim().isEmpty() || !email.contains("@")) {
+            throw new PessoaInvalidaException("E-mail inválido.");
         }
+
     }
 
     private String geradorDeMatricula() {
-        int anoMatricula = LocalDate.now().getYear();
-        int numeroMatricula = contaMatricula++;
-        return anoMatricula + "" + contaMatricula;
+        return LocalDate.now().getYear() + String.format("%04d" , contaMatricula++);
     }
 
     @Override
@@ -51,7 +51,8 @@ public abstract class Pessoa implements PessoaIF {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(String nome) throws PessoaInvalidaException {
+        validaNome(nome);
         this.nome = nome;
     }
 
@@ -60,7 +61,8 @@ public abstract class Pessoa implements PessoaIF {
         return telefone;
     }
 
-    public void setTelefone(String telefone) {
+    public void setTelefone(String telefone) throws PessoaInvalidaException {
+        validaTelefone(telefone);
         this.telefone = telefone;
     }
 
@@ -69,7 +71,8 @@ public abstract class Pessoa implements PessoaIF {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email) throws PessoaInvalidaException {
+        validaEmail(email);
         this.email = email;
     }
 
@@ -85,10 +88,6 @@ public abstract class Pessoa implements PessoaIF {
         return matricula;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
     public LocalDate getDataCriacao() {
         return dataCriacao;
     }
@@ -102,6 +101,18 @@ public abstract class Pessoa implements PessoaIF {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pessoa pessoa = (Pessoa) o;
+        return ativo == pessoa.ativo && Objects.equals(nome, pessoa.nome) && Objects.equals(telefone, pessoa.telefone) && Objects.equals(email, pessoa.email) && Objects.equals(matricula, pessoa.matricula) && Objects.equals(dataCriacao, pessoa.dataCriacao);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, telefone, email, ativo, matricula, dataCriacao);
+    }
+
+    @Override
     public String toString() {
         return "Pessoa{" +
                 "nome='" + nome + '\'' +
@@ -111,18 +122,5 @@ public abstract class Pessoa implements PessoaIF {
                 ", matricula='" + matricula + '\'' +
                 ", dataCriacao=" + dataCriacao +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pessoa pessoa = (Pessoa) o;
-        return ativo == pessoa.ativo && Objects.equals(nome, pessoa.nome) && Objects.equals(telefone, pessoa.telefone) && Objects.equals(email, pessoa.email) && Objects.equals(matricula, pessoa.matricula) && Objects.equals(dataCriacao, pessoa.dataCriacao);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nome, telefone, email, ativo, matricula, dataCriacao);
     }
 }
