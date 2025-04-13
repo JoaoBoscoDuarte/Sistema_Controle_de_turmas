@@ -1,5 +1,6 @@
 package model.servicos;
 
+import model.exceptions.PessoaInvalidaException;
 import model.pessoa.Professor;
 import model.turma.Turma;
 import java.util.ArrayList;
@@ -7,8 +8,7 @@ import java.util.List;
 
 public class GerenciamentoDeProfessores {
 
-    private List<Professor> listaProfessores = new ArrayList<>();
-
+    private final List<Professor> listaProfessores = new ArrayList<>();
 
     public void adicionarProfessor(String nome, String telefone , String email, List<Turma> turmas) throws Exception {
 
@@ -28,7 +28,7 @@ public class GerenciamentoDeProfessores {
         return listaDeProfessores;
     }
 
-    public boolean existeProfessor(String nome) throws Exception{
+    public boolean existeProfessor(String nome) throws Exception {
         verificaNome(nome);
         for (Professor p : listaProfessores){
             if (p.getNome().contains(nome)){
@@ -38,9 +38,9 @@ public class GerenciamentoDeProfessores {
         return false;
     }
 
-    private static void verificaTelefone(String telefone) throws Exception {
+    private static void verificaTelefone(String telefone) throws PessoaInvalidaException {
         if(telefone == null || telefone.trim().isEmpty()){
-            throw new Exception("Telefone não pode se encontrar nulo ou vazio.");
+            throw new PessoaInvalidaException("Telefone inválido, pois não deve se encontrar nulo ou vazio.");
         }
     }
 
@@ -50,15 +50,15 @@ public class GerenciamentoDeProfessores {
         }
     }
 
-    private static void verificaEmail(String email) throws Exception {
+    private static void verificaEmail(String email) throws PessoaInvalidaException {
         if(email == null || email.trim().isEmpty()){
-            throw new Exception("E-mail não pode se encontrar nulo ou vazio");
+            throw new PessoaInvalidaException("E-mail inválido, pois não deve se encontrar nulo ou vazio");
         }
     }
 
-    private static void verificaNome(String nome) throws Exception {
+    private static void verificaNome(String nome) throws PessoaInvalidaException {
         if(nome == null || nome.trim().isEmpty()){
-            throw new Exception("Nome não pode se encontrar nulo ou vazio.");
+            throw new PessoaInvalidaException("Nome inválido, pois não deve se encontrar nulo ou vazio.");
         }
     }
 }

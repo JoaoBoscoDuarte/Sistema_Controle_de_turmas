@@ -9,7 +9,7 @@ public abstract class Pessoa {
     private String nome;
     private String telefone;
     private String email;
-    private boolean ativo = false;
+    private boolean ativo = true;
     private final String matricula;
     private LocalDate dataCriacao;
     private static int contaMatricula = 1;
@@ -95,8 +95,8 @@ public abstract class Pessoa {
         this.dataCriacao = dataCriacao;
     }
 
-    public void validar() {
-        this.ativo = true;
+    public void invalidar() {
+        this.ativo = false;
     }
 
     @Override
