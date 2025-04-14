@@ -1,18 +1,19 @@
 package model.servicos;
 
 import model.disciplina.Disciplina;
+import model.faculdade.Faculdade;
 import model.pessoa.Professor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class GerenciadorDeDisciplinas {
+    private Faculdade faculdade;
     private List<Disciplina> disciplinas;
     private List<Professor> professores;
 
     public GerenciadorDeDisciplinas() {
-        this.disciplinas = new ArrayList<>();
-        this.professores = new ArrayList<>();
+        this.professores = faculdade.getColecaoProfessor();
     }
 
     public static class DisciplinaJaCadastradaException extends Exception {

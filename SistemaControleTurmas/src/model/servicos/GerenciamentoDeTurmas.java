@@ -14,11 +14,21 @@ public class GerenciamentoDeTurmas {
     private List<Turma> turmas;
     private GerenciamentoDeAlunos gerenciamentoDeAlunos;
     private GerenciamentoDeProfessores gerenciamentoDeProfessores;
+    private Turma turma;
+    private Aluno aluno;
 
     public GerenciamentoDeTurmas(GerenciamentoDeAlunos gerenciamentoDeAlunos) {
         this.turmas = new ArrayList<>();
         this.gerenciamentoDeAlunos = new GerenciamentoDeAlunos();
         this.gerenciamentoDeProfessores = new GerenciamentoDeProfessores();
+    }
+
+    public void addAluno(String matricula, Turma turma) {
+        for (Turma t : turmas) {
+            if (t.equals(turma) && !(t.getMatriculasAlunos().contains(matricula))) {
+                t.adicionarAluno(matricula);
+            }
+        }
     }
 
     public void criarTurma(Disciplina disciplina, Professor professor, int qtdUnidadesAvaliativas, TiposDeMediaIF tipoDeMedia) {
@@ -56,11 +66,13 @@ public class GerenciamentoDeTurmas {
         }
     }
 
-    public void removerAluno() {
-        //não sei fazeeeer
+    public void removerAluno(String matricula) {
+
+         if(aluno.isAtivo() && turmas.contains(aluno.getMatricula())){
+             turmas.remove(aluno.getMatricula());
     }
 
-//    public void removerAlunoDeTurma(String matricula, Turma turma) {
+    //    public void removerAlunoDeTurma(String matricula, Turma turma) {
 //        // Verifica se a turma existe na lista
 //        if (!turmas.contains(turma)) {
 //            throw new IllegalArgumentException("Turma não encontrada");
@@ -71,25 +83,24 @@ public class GerenciamentoDeTurmas {
 //
 //        // Opcional: remover também as notas do aluno
 //        turma.getNotasAluno().removeIf(nota -> nota.getAluno().getMatricula().equals(matricula));
-//    }
-
-    public String listarTodasTurmas() {
-        if (turmas.isEmpty()) {
-            return "Nenhuma turma cadastrada";
-        }
-
-        StringBuilder lista = new StringBuilder();
-        lista.append("=== TURMAS CADASTRADAS ===\n");
-
-        for (Turma turma : turmas) {
-            lista.append("Código: ").append(turma.getCodigoTurma())
-                    .append(" | Disciplina: ").append(turma.getDisciplina().getNomeDisciplina())
-                    .append(" | Professor: ").append(turma.getProfessor().getNome())
-                    .append(" | Alunos: ").append(turma.getMatriculasAlunos().size())
-                    .append("\n");
-        }
-
-        return lista.toString();
     }
 
+        public String listarTodasTurmas() {
+            if () {
+                return "Nenhuma turma cadastrada";
+            }
+
+            //StringBuilder lista = new StringBuilder();
+            //lista.append("=== TURMAS CADASTRADAS ===\n");
+
+            //for (Turma turma : turmas) {
+            //  lista.append("Código: ").append(turma.getCodigoTurma())
+            //          .append(" | Disciplina: ").append(turma.getDisciplina().getNomeDisciplina())
+            //          .append(" | Professor: ").append(turma.getProfessor().getNome())
+            //          .append(" | Alunos: ").append(turma.getMatriculasAlunos().size())
+            //          .append("\n");
+            //}
+
+            //return lista.toString();
+        }
 }

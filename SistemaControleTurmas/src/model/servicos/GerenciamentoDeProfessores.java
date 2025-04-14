@@ -39,7 +39,7 @@ public class GerenciamentoDeProfessores {
     }
 
     private static void verificaTelefone(String telefone) throws PessoaInvalidaException {
-        if(telefone == null || telefone.trim().isEmpty()){
+        if(telefone == null || telefone.trim().isEmpty() ||  telefone.length() != 11){
             throw new PessoaInvalidaException("Telefone inválido, pois não deve se encontrar nulo ou vazio.");
         }
     }

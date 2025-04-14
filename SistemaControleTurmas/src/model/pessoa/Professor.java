@@ -16,7 +16,7 @@ public class Professor extends Pessoa{
         this.turmasMinistradas = turmasMinistradas;
     }
 
-    private static void verificaTurmas(List<Turma> turmasMinistradas) throws Exception {
+    private static void verificaTurmas(List<Turma> turmasMinistradas) throws Exception{
         if(turmasMinistradas.isEmpty()){
             throw new Exception("A lista de turmas não se encontrar vazia");
         }
