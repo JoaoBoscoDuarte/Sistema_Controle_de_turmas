@@ -1,4 +1,4 @@
-package model.testes;
+package testes;
 
 import model.pessoa.Pessoa;
 import model.exceptions.PessoaInvalidaException;

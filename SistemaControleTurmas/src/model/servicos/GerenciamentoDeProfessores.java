@@ -11,7 +11,6 @@ public class GerenciamentoDeProfessores {
     private final List<Professor> listaProfessores = new ArrayList<>();
 
     public void adicionarProfessor(String nome, String telefone , String email, List<Turma> turmas) throws Exception {
-
         verificaNome(nome);
         verificaTelefone(telefone);
         verificaEmail(email);
@@ -28,14 +27,8 @@ public class GerenciamentoDeProfessores {
         return listaDeProfessores;
     }
 
-    public boolean existeProfessor(String nome) throws Exception {
-        verificaNome(nome);
-        for (Professor p : listaProfessores){
-            if (p.getNome().contains(nome)){
-                return true;
-            }
-        }
-        return false;
+    public boolean existeProfessor(Professor professor) {
+        return listaProfessores.contains(professor);
     }
 
     private static void verificaTelefone(String telefone) throws PessoaInvalidaException {
@@ -60,5 +53,9 @@ public class GerenciamentoDeProfessores {
         if(nome == null || nome.trim().isEmpty()){
             throw new PessoaInvalidaException("Nome inválido, pois não deve se encontrar nulo ou vazio.");
         }
+    }
+
+    public List<Professor> getListaProfessores() {
+        return listaProfessores;
     }
 }

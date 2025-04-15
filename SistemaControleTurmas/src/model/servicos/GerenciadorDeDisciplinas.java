@@ -100,4 +100,28 @@ public class GerenciadorDeDisciplinas {
     public boolean existeProfessor(Professor professor) {
         return this.professores.contains(professor);
     }
+
+    public Faculdade getFaculdade() {
+        return faculdade;
+    }
+
+    public void setFaculdade(Faculdade faculdade) {
+        this.faculdade = faculdade;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
+
+    public List<Professor> getProfessores() {
+        return professores;
+    }
+
+    public void setProfessores(List<Professor> professores) {
+        this.professores = professores;
+    }
 }

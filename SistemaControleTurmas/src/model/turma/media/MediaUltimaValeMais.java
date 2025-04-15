@@ -4,6 +4,7 @@ import java.util.List;
 
 public class MediaUltimaValeMais implements TiposDeMediaIF {
 
+    @Override
     public double calcularMedia(List<Double> notas) {
         double ultimaNota = notas.get(notas.size() - 1);
         double soma = 0;

@@ -1,106 +1,108 @@
 package model.servicos;
 
 import model.disciplina.Disciplina;
-import model.pessoa.Aluno;
+import model.exceptions.AlunoNaoEncontradoException;
 import model.pessoa.Professor;
+import model.turma.Nota;
 import model.turma.Turma;
-import model.turma.media.TiposDeMediaIF;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GerenciamentoDeTurmas {
+    // A lista turma contem todas as turmas, a lista professoresAssociados contem todos os professores
+    // associados as turmas de modo que, a associação corresponde ao índice de ambas as listas
     private List<Turma> turmas;
+    private List<Professor> professoresAssociados;
+
     private GerenciamentoDeAlunos gerenciamentoDeAlunos;
     private GerenciamentoDeProfessores gerenciamentoDeProfessores;
-    private Turma turma;
-    private Aluno aluno;
+    private GerenciadorDeDisciplinas gerenciadorDeDisciplinas;
 
-    public GerenciamentoDeTurmas(GerenciamentoDeAlunos gerenciamentoDeAlunos) {
+    public GerenciamentoDeTurmas() {
         this.turmas = new ArrayList<>();
-        this.gerenciamentoDeAlunos = new GerenciamentoDeAlunos();
-        this.gerenciamentoDeProfessores = new GerenciamentoDeProfessores();
+        this.professoresAssociados = new ArrayList<>();
     }
 
-    public void addAluno(String matricula, Turma turma) {
+    // Cria turma
+    public void criarTurma(Disciplina disciplina, Professor professor) {
+        if (!gerenciadorDeDisciplinas.existeDisciplina(disciplina) && gerenciamentoDeProfessores.existeProfessor(professor)) {
+            turmas.add(new Turma(disciplina, professor));
+            professoresAssociados.add(professor);
+        }
+    }
+
+    // Adiciona aluno pela matrícula
+    public void adicionarAlunoATurma(String matricula, String codigoDaTurma) {
         for (Turma t : turmas) {
-            if (t.equals(turma) && !(t.getMatriculasAlunos().contains(matricula))) {
-                t.adicionarAluno(matricula);
+            if (t.getCodigoTurma().equals(codigoDaTurma) && !(t.getMatriculasAlunos().contains(matricula))) {
+                t.getMatriculasAlunos().add(matricula);
             }
         }
     }
 
-    public void criarTurma(Disciplina disciplina, Professor professor, int qtdUnidadesAvaliativas, TiposDeMediaIF tipoDeMedia) {
-        Turma turma = new Turma(disciplina, professor, qtdUnidadesAvaliativas, tipoDeMedia);
-        turmas.add(turma);
-    }
-
-    public void adicionarAlunoATurma(String matricula, Turma turma) {
-        if (gerenciamentoDeAlunos.existeAluno(matricula)) {
-            turma.adicionarAluno(matricula);
+    // Adicionar professor pela matrícula
+    public void adicionarProfessorATurma(String matricula, String codigoDaTurma) {
+        for (Turma t : turmas) {
+            if (t.getCodigoTurma().equals(codigoDaTurma) && !t.getMatriculasProfessores().contains(matricula)) {
+                t.getMatriculasAlunos().add(matricula);
+            }
         }
     }
 
-    public void adicionarProfessorATurma(String matricula, Turma turma) throws Exception {
-        if (gerenciamentoDeProfessores.existeProfessor(matricula)) {
-            turma.adicionarProfessor(matricula);
-        }
-    }
-
+    // Atribuir quantidade de unidades avaliativas
     public void atribuirQuantidadeDeUnidadesAvaliativas(int qtdUnidadesAvaliativas, Turma turma) {
+        if (qtdUnidadesAvaliativas > 1) {
+            for (Turma t : turmas) {
+                if (t.equals(turma)) {
+                    t.setQtdUnidadesAvaliativas(qtdUnidadesAvaliativas);
+                }
+            }
+        }
+    }
+
+    // Cadastrar notas doas alunos
+    public void cadastrarNotasUnidade(String codigoDaTurma, int unidade, Double nota, String matricula) {
+        int aluno = 0;
         for (Turma t : turmas) {
-            if (t.equals(turma)) {
-                t.setQtdUnidadesAvaliativas(qtdUnidadesAvaliativas);
+            if (t.getCodigoTurma().equals(codigoDaTurma)) {
+                for (Nota n : t.getNotasAluno()) {
+                    if (n.getMatriculaAluno().equals(matricula)) {
+                        n.adicionarNota(unidade, nota);
+                    }
+                }
             }
         }
     }
 
-    public void cadastrarNotasUnidade(Turma turma, int unidade, Map<String, Double> notasAlunos) {
-        // Cadastra cada nota
-        for (Map.Entry<String, Double> entry : notasAlunos.entrySet()) {
-            String matricula = entry.getKey();
-            Double nota = entry.getValue();
+    // Remove aluno pela matrícula
+    // remove aluno da lista do gerenciador de alunos e da lista de notas por unidade dos alunos
+    // e matriculas dos alunos
+    public void removerAluno(String matricula) throws AlunoNaoEncontradoException {
+        gerenciamentoDeAlunos.desativaAluno(matricula);
 
-            turma.cadastrarNota(matricula, unidade, nota);
-        }
-    }
-
-    public void removerAluno(String matricula) {
-
-         if(aluno.isAtivo() && turmas.contains(aluno.getMatricula())){
-             turmas.remove(aluno.getMatricula());
-    }
-
-    //    public void removerAlunoDeTurma(String matricula, Turma turma) {
-//        // Verifica se a turma existe na lista
-//        if (!turmas.contains(turma)) {
-//            throw new IllegalArgumentException("Turma não encontrada");
-//        }
-//
-//        // Remove o aluno da turma
-//        turma.removerAluno(matricula);
-//
-//        // Opcional: remover também as notas do aluno
-//        turma.getNotasAluno().removeIf(nota -> nota.getAluno().getMatricula().equals(matricula));
-    }
-
-        public String listarTodasTurmas() {
-            if () {
-                return "Nenhuma turma cadastrada";
+        for (Turma t : turmas) {
+            if (t.getMatriculasAlunos().equals(matricula)) {
+                t.getMatriculasAlunos().remove(t);
+                t.getNotasAluno().remove(t);
             }
-
-            //StringBuilder lista = new StringBuilder();
-            //lista.append("=== TURMAS CADASTRADAS ===\n");
-
-            //for (Turma turma : turmas) {
-            //  lista.append("Código: ").append(turma.getCodigoTurma())
-            //          .append(" | Disciplina: ").append(turma.getDisciplina().getNomeDisciplina())
-            //          .append(" | Professor: ").append(turma.getProfessor().getNome())
-            //          .append(" | Alunos: ").append(turma.getMatriculasAlunos().size())
-            //          .append("\n");
-            //}
-
-            //return lista.toString();
         }
+    }
+
+    // Gerar o relatório da turma
+    public String gerarRelatorioDaTurma() {
+        return "FAZER ESSE RELATORIO MIZERAAAAAA";
+    }
+
+    // Listar todas as turmas
+    public StringBuilder listarTurmas() {
+        StringBuilder exibir = new StringBuilder();
+
+        for (Turma t : turmas) {
+            exibir.append(t.toString());
+            exibir.append("\n");
+        }
+
+        return exibir;
+    }
 }

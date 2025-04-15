@@ -1,4 +1,4 @@
-package model.testes;
+package testes;
 
 import model.pessoa.Aluno;
 import model.exceptions.AlunoNaoEncontradoException;

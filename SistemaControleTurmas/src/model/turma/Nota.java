@@ -3,16 +3,15 @@ package model.turma;
 import model.pessoa.Aluno;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Nota {
-    private Aluno aluno;
     private Map<Integer, Double> notasPorUnidade; // Key: número da unidade, Value: nota
+    private Aluno aluno;
 
     public Nota(Aluno aluno) {
-        this.aluno = aluno;
         this.notasPorUnidade = new HashMap<>();
+        this.aluno = aluno;
     }
 
     public void adicionarNota(int unidade, double nota) {
@@ -24,6 +23,10 @@ public class Nota {
 
     public Aluno getAluno() {
         return aluno;
+    }
+
+    public String getMatriculaAluno() {
+        return aluno.getMatricula();
     }
 
     public Map<Integer, Double> getNotasPorUnidade() {

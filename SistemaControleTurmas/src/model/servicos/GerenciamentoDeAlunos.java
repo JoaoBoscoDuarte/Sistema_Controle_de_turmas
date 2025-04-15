@@ -55,4 +55,8 @@ public class GerenciamentoDeAlunos {
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");
     }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
 }
