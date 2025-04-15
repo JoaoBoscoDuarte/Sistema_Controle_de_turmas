@@ -3,16 +3,16 @@ package model.servicos;
 import model.disciplina.Disciplina;
 import model.faculdade.Faculdade;
 import model.pessoa.Professor;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Objects;
 
-public class GerenciadorDeDisciplinas {
+public class GerenciamentoDeDisciplinas {
     private Faculdade faculdade;
     private List<Disciplina> disciplinas;
     private List<Professor> professores;
 
-    public GerenciadorDeDisciplinas() {
+    public GerenciamentoDeDisciplinas() {
         this.professores = faculdade.getColecaoProfessor();
     }
 

@@ -17,7 +17,7 @@ public class GerenciamentoDeTurmas {
 
     private GerenciamentoDeAlunos gerenciamentoDeAlunos;
     private GerenciamentoDeProfessores gerenciamentoDeProfessores;
-    private GerenciadorDeDisciplinas gerenciadorDeDisciplinas;
+    private GerenciamentoDeDisciplinas gerenciadorDeDisciplinas;
 
     public GerenciamentoDeTurmas() {
         this.turmas = new ArrayList<>();
