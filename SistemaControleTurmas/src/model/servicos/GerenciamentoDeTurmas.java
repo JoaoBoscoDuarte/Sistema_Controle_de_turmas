@@ -51,10 +51,10 @@ public class GerenciamentoDeTurmas {
     }
 
     // Atribuir quantidade de unidades avaliativas
-    public void atribuirQuantidadeDeUnidadesAvaliativas(int qtdUnidadesAvaliativas, Turma turma) {
+    public void atribuirQuantidadeDeUnidadesAvaliativas(int qtdUnidadesAvaliativas, String codigoDaTurma) {
         if (qtdUnidadesAvaliativas > 1) {
             for (Turma t : turmas) {
-                if (t.equals(turma)) {
+                if (t.getCodigoTurma().equals(codigoDaTurma)) {
                     t.setQtdUnidadesAvaliativas(qtdUnidadesAvaliativas);
                 }
             }
@@ -104,5 +104,9 @@ public class GerenciamentoDeTurmas {
         }
 
         return exibir;
+    }
+
+    public List<Turma> getTurmas() {
+        return turmas;
     }
 }
