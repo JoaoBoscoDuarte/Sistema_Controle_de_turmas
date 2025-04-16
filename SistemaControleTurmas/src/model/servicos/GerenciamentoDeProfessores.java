@@ -1,6 +1,7 @@
 package model.servicos;
 
 import model.exceptions.PessoaInvalidaException;
+import model.exceptions.ProfessorNaoEncontradoException;
 import model.servicos.GerenciamentoDeTurmas;
 import model.pessoa.Professor;
 import model.turma.Turma;
@@ -9,15 +10,11 @@ import java.util.List;
 
 public class GerenciamentoDeProfessores {
 
-    private final List<Professor> listaProfessores = new ArrayList<>();
+    private final   List<Professor> listaProfessores = new ArrayList<>();
     private GerenciamentoDeTurmas gerenciamentoDeTurmas;
     List<Turma> turmas = gerenciamentoDeTurmas.getTurmas();
 
     public void adicionarProfessor(String nome, String telefone , String email) throws Exception {
-        verificaNome(nome);
-        verificaTelefone(telefone);
-        verificaEmail(email);
-        verificaListaDeTurmas(turmas);
         Professor professor = new Professor(nome, telefone, email, turmas);
         listaProfessores.add(professor);
     }
@@ -30,8 +27,23 @@ public class GerenciamentoDeProfessores {
         return listaDeProfessores;
     }
 
-    public boolean existeProfessor(Professor professor) {
-        return listaProfessores.contains(professor);
+    public boolean existeProfessor(String matricula) throws ProfessorNaoEncontradoException{
+        for ( Professor p : listaProfessores){
+            if(p.getMatricula().equalsIgnoreCase(matricula) && p.isAtivo()){
+                return true;
+            }
+        }
+        throw new ProfessorNaoEncontradoException("Professor não encontrado ou se encontra desativado.");
+    }
+
+
+    public String buscaProfessor(String matricula)throws ProfessorNaoEncontradoException {
+        for(Professor p : listaProfessores){
+            if(p.getMatricula().equalsIgnoreCase(matricula)){
+                return p.toString();
+            }
+        }
+        throw new ProfessorNaoEncontradoException("Professor não encontrado ou se econtra desativo.");
     }
 
     private static void verificaTelefone(String telefone) throws PessoaInvalidaException {
@@ -46,19 +58,11 @@ public class GerenciamentoDeProfessores {
         }
     }
 
-    private static void verificaEmail(String email) throws PessoaInvalidaException {
-        if(email == null || email.trim().isEmpty()){
-            throw new PessoaInvalidaException("E-mail inválido, pois não deve se encontrar nulo ou vazio");
-        }
-    }
-
-    private static void verificaNome(String nome) throws PessoaInvalidaException {
-        if(nome == null || nome.trim().isEmpty()){
-            throw new PessoaInvalidaException("Nome inválido, pois não deve se encontrar nulo ou vazio.");
-        }
-    }
-
     public List<Professor> getListaProfessores() {
         return listaProfessores;
+    }
+
+    public void setTurmas(List<Turma> turmas) {
+        this.turmas = turmas;
     }
 }
