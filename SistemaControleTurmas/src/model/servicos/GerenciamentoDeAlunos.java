@@ -1,7 +1,7 @@
 package model.servicos;
 
-import model.exceptions.AlunoNaoEncontradoException;
 import model.pessoa.Aluno;
+import model.exceptions.AlunoNaoEncontradoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +9,16 @@ import java.util.List;
 public class GerenciamentoDeAlunos {
     private final List<Aluno> alunos = new ArrayList<>();
 
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
     public void adicionaAluno(Aluno aluno) {
-        aluno.invalidar();
         alunos.add(aluno);
     }
 
     public void adicionaAluno(String nome, String telefone, String email) throws Exception {
         Aluno aluno = new Aluno(nome, telefone, email);
-        aluno.invalidar();
         alunos.add(aluno);
     }
 
@@ -28,9 +30,9 @@ public class GerenciamentoDeAlunos {
         return lista.toString();
     }
 
-    public String consultaDadosAluno(String matricula) throws AlunoNaoEncontradoException{
+    public String consultaDadosAluno(String matricula) throws AlunoNaoEncontradoException {
         for (Aluno aluno : alunos) {
-            if (aluno.getMatricula().equalsIgnoreCase(matricula)) {
+            if (aluno.getMatricula().equalsIgnoreCase(matricula) && aluno.isAtivo()) {
                 return aluno.toString();
             }
         }
@@ -49,14 +51,10 @@ public class GerenciamentoDeAlunos {
     public void desativaAluno (String matricula) throws AlunoNaoEncontradoException {
         for (Aluno aluno : alunos) {
             if (aluno.getMatricula().equalsIgnoreCase(matricula) && aluno.isAtivo()) {
-                aluno.setAtivo(false);
+                aluno.invalidar();
                 return;
             }
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");
-    }
-
-    public List<Aluno> getAlunos() {
-        return alunos;
     }
 }
