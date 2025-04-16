@@ -1,6 +1,7 @@
 package model.servicos;
 
 import model.exceptions.PessoaInvalidaException;
+import model.servicos.GerenciamentoDeTurmas;
 import model.pessoa.Professor;
 import model.turma.Turma;
 import java.util.ArrayList;
@@ -9,8 +10,10 @@ import java.util.List;
 public class GerenciamentoDeProfessores {
 
     private final List<Professor> listaProfessores = new ArrayList<>();
+    private GerenciamentoDeTurmas gerenciamentoDeTurmas;
+    List<Turma> turmas = gerenciamentoDeTurmas.getTurmas();
 
-    public void adicionarProfessor(String nome, String telefone , String email, List<Turma> turmas) throws Exception {
+    public void adicionarProfessor(String nome, String telefone , String email) throws Exception {
         verificaNome(nome);
         verificaTelefone(telefone);
         verificaEmail(email);

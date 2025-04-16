@@ -8,6 +8,7 @@ import model.exceptions.DisciplinaNaoEncontradaException;
 import model.exceptions.ProfessorNaoEncontradoException;
 import model.exceptions.AssociacaoInvalidaException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class GerenciamentoDeDisciplinas {
     private List<Professor> professores;
 
     public GerenciamentoDeDisciplinas() {
-        this.professores = faculdade.getColecaoProfessor();
+        this.professores = new ArrayList<>();
     }
 
     public void cadastraDisciplina(Disciplina disciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
@@ -35,6 +36,7 @@ public class GerenciamentoDeDisciplinas {
             throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nome + "'.");
         }
     }
+
     private boolean existeDisciplinaComMesmoNome(String nome) {
         for (Disciplina d : this.disciplinas) {
             if (d.getNomeDisciplina().equalsIgnoreCase(nome)) {
@@ -44,11 +46,11 @@ public class GerenciamentoDeDisciplinas {
         return false;
     }
 
-    public String listaDisciplinas(List<Disciplina> listaDeDisciplinas) {
-        if (listaDeDisciplinas == null || listaDeDisciplinas.isEmpty()) {
+    public String listaDisciplinas() {
+        if (disciplinas == null || disciplinas.isEmpty()) {
             return "Não tem disciplinas cadastradas.";
         }
-        return listaDeDisciplinas.toString();
+        return disciplinas.toString();
     }
 
     public void associarProfessor(Disciplina disciplina, Professor professor) throws DisciplinaNaoEncontradaException, ProfessorNaoEncontradoException, AssociacaoInvalidaException {
