@@ -52,7 +52,7 @@ public class Professor extends Pessoa{
                 ", email='" + getEmail() + '\'' +
                 ", matricula='" + getMatricula() + '\'' +
                 ", dataCriacao=" + getDataCriacao() +
-                "turmasMinistradas=" + getTurmasMinistradas() +
+                ", turmasMinistradas=" + getTurmasMinistradas() +
                 '}';
     }
 }
