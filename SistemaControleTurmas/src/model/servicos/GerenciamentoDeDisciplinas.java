@@ -3,6 +3,10 @@ package model.servicos;
 import model.disciplina.Disciplina;
 import model.faculdade.Faculdade;
 import model.pessoa.Professor;
+import model.exceptions.DisciplinaJaCadastradaException;
+import model.exceptions.DisciplinaNaoEncontradaException;
+import model.exceptions.ProfessorNaoEncontradoException;
+import model.exceptions.AssociacaoInvalidaException;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,27 +18,6 @@ public class GerenciamentoDeDisciplinas {
 
     public GerenciamentoDeDisciplinas() {
         this.professores = faculdade.getColecaoProfessor();
-    }
-
-    public static class DisciplinaJaCadastradaException extends Exception {
-        public DisciplinaJaCadastradaException(String message) {
-            super(message);
-        }
-    }
-    public static class DisciplinaNaoEncontradaException extends Exception {
-        public DisciplinaNaoEncontradaException(String message) {
-            super(message);
-        }
-    }
-    public static class ProfessorNaoEncontradoException extends Exception {
-        public ProfessorNaoEncontradoException(String message) {
-            super(message);
-        }
-    }
-    public static class AssociacaoInvalidaException extends Exception {
-        public AssociacaoInvalidaException(String message) {
-            super(message);
-        }
     }
 
     public void cadastraDisciplina(Disciplina disciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
