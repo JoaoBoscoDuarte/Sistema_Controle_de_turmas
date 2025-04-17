@@ -15,26 +15,31 @@ import java.util.Objects;
 public class GerenciamentoDeDisciplinas {
     private Faculdade faculdade;
     private List<Disciplina> disciplinas;
-    private List<Professor> professores;
+    private final GerenciamentoDeProfessores gerenciamentoDeProfessores;
+    private final GerenciamentoDeTurmas gerenciamentoDeTurmas;
 
-    public GerenciamentoDeDisciplinas() {
-        this.professores = new ArrayList<>();
+    public GerenciamentoDeDisciplinas(GerenciamentoDeProfessores gerenciamentoDeProfessores, GerenciamentoDeTurmas gerenciamentoDeTurmas) {
+        this.gerenciamentoDeProfessores = Objects.requireNonNull(gerenciamentoDeProfessores, "");
+        this.gerenciamentoDeTurmas = Objects.requireNonNull(gerenciamentoDeTurmas, "Gerenciamento de Turmas não pode ser nulo.");
+        this.disciplinas = new ArrayList<>();
     }
 
-    public void cadastraDisciplina(Disciplina disciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
-        Objects.requireNonNull(disciplina, "Disciplina não pode ser nula.");
-        validaNomeDisciplina(disciplina.getNomeDisciplina());
-        disciplina.setCargaHoraria(cargaHoraria);
-        this.disciplinas.add(disciplina);
-    }
+    public void cadastraDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
+        Objects.requireNonNull(nomeDisciplina, "Nome da disciplina não pode ser nulo.");
 
-    private void validaNomeDisciplina(String nome) throws DisciplinaJaCadastradaException {
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome da disciplina não pode ser nulo ou vazio.");
+        if (nomeDisciplina.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome da disciplina não pode ser vazio.");
         }
-        if (existeDisciplinaComMesmoNome(nome)) {
-            throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nome + "'.");
+        if (cargaHoraria <= 0) {
+            throw new IllegalArgumentException("Carga horária deve ser maior que zero.");
         }
+
+        if (existeDisciplinaComMesmoNome(nomeDisciplina)) {
+            throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nomeDisciplina + "'.");
+        }
+
+        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, null, cargaHoraria);
+        this.disciplinas.add(novaDisciplina);
     }
 
     private boolean existeDisciplinaComMesmoNome(String nome) {
@@ -55,16 +60,21 @@ public class GerenciamentoDeDisciplinas {
 
     public void associarProfessor(Disciplina disciplina, Professor professor) throws DisciplinaNaoEncontradaException, ProfessorNaoEncontradoException, AssociacaoInvalidaException {
         Objects.requireNonNull(disciplina, "Disciplina não pode ser nula.");
-        Objects.requireNonNull(professor, "Professor não pode ser nulo.");
+        Objects.requireNonNull(professor, "Professor não pode ser nula.");
 
-        if (!existeDisciplina(disciplina)) {
+        Disciplina disciplinaEncontrada = procuraDisciplina(disciplina.getNomeDisciplina());
+        if (disciplinaEncontrada == null) {
             throw new DisciplinaNaoEncontradaException("Disciplina não encontrada.");
         }
-        if (!existeProfessor(professor)) {
-            throw new ProfessorNaoEncontradoException("Professor não encontrado.");
+
+        Professor professorEncontrado = gerenciamentoDeProfessores.buscarProfessorPorMatricula(professor.getMatricula());
+        if (professorEncontrado == null) {
+            throw new ProfessorNaoEncontradoException("Professor com matrícula '" + professor.getMatricula() + "' não encontrado.");
         }
-        // Implementar a associação de professor!!!!
+
+        disciplinaEncontrada.adicionarProfessorAssociado(professorEncontrado);
     }
+
 
     public Disciplina procuraDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
         if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
@@ -82,31 +92,4 @@ public class GerenciamentoDeDisciplinas {
         return this.disciplinas.contains(disciplina);
     }
 
-    public boolean existeProfessor(Professor professor) {
-        return this.professores.contains(professor);
-    }
-
-    public Faculdade getFaculdade() {
-        return faculdade;
-    }
-
-    public void setFaculdade(Faculdade faculdade) {
-        this.faculdade = faculdade;
-    }
-
-    public List<Disciplina> getDisciplinas() {
-        return disciplinas;
-    }
-
-    public void setDisciplinas(List<Disciplina> disciplinas) {
-        this.disciplinas = disciplinas;
-    }
-
-    public List<Professor> getProfessores() {
-        return professores;
-    }
-
-    public void setProfessores(List<Professor> professores) {
-        this.professores = professores;
-    }
 }
