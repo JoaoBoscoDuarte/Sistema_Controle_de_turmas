@@ -1,12 +1,17 @@
 package model.disciplina;
 
+import model.pessoa.Professor;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Disciplina {
     private String nomeDisciplina;
     private String codigo;
     private int cargaHoraria;
+    private List<Professor> professoresAssociados = new ArrayList<>();
     private LocalDate dataDeCriacao;
     private static int contador = 1;
 
@@ -33,10 +38,22 @@ public class Disciplina {
         this.cargaHoraria = cargaHoraria;
     }
 
+    public void adicionarProfessorAssociado(Professor professor) {
+        this.professoresAssociados.add(professor);
+    }
+
+    public List<Professor> getProfessoresAssociados() {
+        return professoresAssociados;
+    }
+
     public String gerarCodigoDisciplina() {
         int anoMatricola = LocalDate.now().getYear();
         int codigo = contador++;
         return anoMatricola + contador + "";
+    }
+
+    public String getCodigo() {
+        return codigo;
     }
 
     @Override
