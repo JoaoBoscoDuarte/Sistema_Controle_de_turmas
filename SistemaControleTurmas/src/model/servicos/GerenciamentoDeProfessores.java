@@ -7,6 +7,7 @@ import model.pessoa.Professor;
 import model.turma.Turma;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GerenciamentoDeProfessores {
 
@@ -50,6 +51,15 @@ public class GerenciamentoDeProfessores {
         if(turmas.isEmpty()){
             throw new Exception("A lista de turmas não pode se encontar vazia");
         }
+    }
+    public Professor buscarProfessorPorMatricula(String matricula) throws ProfessorNaoEncontradoException {
+        Objects.requireNonNull(matricula, "Matrícula do professor não pode ser nula.");
+        for (Professor p : listaProfessores) {
+            if (p.getMatricula().equalsIgnoreCase(matricula) && p.isAtivo()) {
+                return p;
+            }
+        }
+        throw new ProfessorNaoEncontradoException("Professor com matrícula '" + matricula + "' não encontrado ou está desativado.");
     }
 
     public List<Professor> getListaProfessores() {
