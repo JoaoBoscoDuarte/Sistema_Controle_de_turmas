@@ -23,7 +23,7 @@ public class Faculdade {
         this.gerenciamentoDeTurmas = new GerenciamentoDeTurmas();
         this.gerenciamentoDeAlunos = new GerenciamentoDeAlunos();
         this.gerenciamentoDeProfessores = new GerenciamentoDeProfessores();
-        this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas();
+        this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas(this.gerenciamentoDeProfessores);
     }
 
     // Gerenciamento de turmas --------------------------------------------------->
@@ -81,19 +81,19 @@ public class Faculdade {
     }
 
     // Gerenciamento de disciplinas ---------------------------------------------->
-    public void cadastrarDisciplina(Disciplina disciplina, int cargaHoraria) throws DisciplinaJaCadastradaException, DisciplinaJaCadastradaException {
-        gerenciamentoDeDisciplinas.cadastraDisciplina(disciplina, cargaHoraria);
+    public void cadastrarDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
+        gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, cargaHoraria);
     }
 
     public void listarDisciplinas() {
         gerenciamentoDeDisciplinas.listaDisciplinas();
     }
 
-    public void associarProfessor(Disciplina disciplina, Professor professor) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+    public void associarProfessor(Disciplina disciplina, Professor professor) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
         gerenciamentoDeDisciplinas.associarProfessor(disciplina, professor);
     }
 
-    public void procurarDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException, DisciplinaNaoEncontradaException {
+    public void procurarDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
         gerenciamentoDeDisciplinas.procuraDisciplina(nomeDisciplina);
     }
 
@@ -105,13 +105,4 @@ public class Faculdade {
     public void listarProfessores() {
         gerenciamentoDeProfessores.listarProfessores();
     }
-
-    public void buscaProfessor(String matricula) throws ProfessorNaoEncontradoException {
-        gerenciamentoDeProfessores.buscaProfessor(matricula);
-    }
-
-    public boolean existeProfessor(String matricula) throws ProfessorNaoEncontradoException {
-        return gerenciamentoDeProfessores.existeProfessor(matricula);
-    }
-
 }
