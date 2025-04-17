@@ -1,7 +1,7 @@
 package model.faculdade;
 
 import model.disciplina.Disciplina;
-import model.exceptions.AlunoNaoEncontradoException;
+import model.exceptions.*;
 import model.pessoa.Aluno;
 import model.pessoa.Professor;
 import model.servicos.GerenciamentoDeAlunos;
@@ -81,7 +81,7 @@ public class Faculdade {
     }
 
     // Gerenciamento de disciplinas ---------------------------------------------->
-    public void cadastrarDisciplina(Disciplina disciplina, int cargaHoraria) throws GerenciamentoDeDisciplinas.DisciplinaJaCadastradaException {
+    public void cadastrarDisciplina(Disciplina disciplina, int cargaHoraria) throws DisciplinaJaCadastradaException, DisciplinaJaCadastradaException {
         gerenciamentoDeDisciplinas.cadastraDisciplina(disciplina, cargaHoraria);
     }
 
@@ -89,11 +89,11 @@ public class Faculdade {
         gerenciamentoDeDisciplinas.listaDisciplinas();
     }
 
-    public void associarProfessor(Disciplina disciplina, Professor professor) throws GerenciamentoDeDisciplinas.AssociacaoInvalidaException, GerenciamentoDeDisciplinas.ProfessorNaoEncontradoException, GerenciamentoDeDisciplinas.DisciplinaNaoEncontradaException {
+    public void associarProfessor(Disciplina disciplina, Professor professor) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
         gerenciamentoDeDisciplinas.associarProfessor(disciplina, professor);
     }
 
-    public void procurarDisciplina(String nomeDisciplina) throws GerenciamentoDeDisciplinas.DisciplinaNaoEncontradaException {
+    public void procurarDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException, DisciplinaNaoEncontradaException {
         gerenciamentoDeDisciplinas.procuraDisciplina(nomeDisciplina);
     }
 
@@ -105,4 +105,13 @@ public class Faculdade {
     public void listarProfessores() {
         gerenciamentoDeProfessores.listarProfessores();
     }
+
+    public void buscaProfessor(String matricula) throws ProfessorNaoEncontradoException {
+        gerenciamentoDeProfessores.buscaProfessor(matricula);
+    }
+
+    public boolean existeProfessor(String matricula) throws ProfessorNaoEncontradoException {
+        return gerenciamentoDeProfessores.existeProfessor(matricula);
+    }
+
 }

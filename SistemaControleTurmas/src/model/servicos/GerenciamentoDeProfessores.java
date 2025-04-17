@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GerenciamentoDeProfessores {
 
-    private final   List<Professor> listaProfessores = new ArrayList<>();
+    private List<Professor> listaProfessores = new ArrayList<>();
     private GerenciamentoDeTurmas gerenciamentoDeTurmas;
     List<Turma> turmas = gerenciamentoDeTurmas.getTurmas();
 
@@ -45,13 +45,7 @@ public class GerenciamentoDeProfessores {
         }
         throw new ProfessorNaoEncontradoException("Professor não encontrado ou se econtra desativo.");
     }
-
-    private static void verificaTelefone(String telefone) throws PessoaInvalidaException {
-        if(telefone == null || telefone.trim().isEmpty() ||  telefone.length() != 11){
-            throw new PessoaInvalidaException("Telefone inválido, pois não deve se encontrar nulo ou vazio.");
-        }
-    }
-
+    
     private static void verificaListaDeTurmas(List<Turma> turmas) throws Exception {
         if(turmas.isEmpty()){
             throw new Exception("A lista de turmas não pode se encontar vazia");
