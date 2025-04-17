@@ -16,11 +16,9 @@ public class GerenciamentoDeDisciplinas {
     private Faculdade faculdade;
     private List<Disciplina> disciplinas;
     private final GerenciamentoDeProfessores gerenciamentoDeProfessores;
-    private final GerenciamentoDeTurmas gerenciamentoDeTurmas;
 
-    public GerenciamentoDeDisciplinas(GerenciamentoDeProfessores gerenciamentoDeProfessores, GerenciamentoDeTurmas gerenciamentoDeTurmas) {
+    public GerenciamentoDeDisciplinas(GerenciamentoDeProfessores gerenciamentoDeProfessores) {
         this.gerenciamentoDeProfessores = Objects.requireNonNull(gerenciamentoDeProfessores, "");
-        this.gerenciamentoDeTurmas = Objects.requireNonNull(gerenciamentoDeTurmas, "Gerenciamento de Turmas não pode ser nulo.");
         this.disciplinas = new ArrayList<>();
     }
 
