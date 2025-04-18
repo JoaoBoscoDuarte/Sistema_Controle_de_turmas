@@ -37,10 +37,10 @@ public class GerenciamentoDeProfessores {
         throw new ProfessorNaoEncontradoException("Professor não encontrado ou se encontra desativado.");
     }
 
-    public String buscaProfessor(String matricula)throws ProfessorNaoEncontradoException {
+    public Professor buscaProfessor(String matricula)throws ProfessorNaoEncontradoException {
         for(Professor p : listaProfessores){
             if(p.getMatricula().equalsIgnoreCase(matricula)){
-                return p.toString();
+                return p;
             }
         }
         throw new ProfessorNaoEncontradoException("Professor não encontrado ou se encontra desativo.");
