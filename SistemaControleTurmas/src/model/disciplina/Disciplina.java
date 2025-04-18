@@ -47,9 +47,9 @@ public class Disciplina {
     }
 
     public String gerarCodigoDisciplina() {
-        int anoMatricola = LocalDate.now().getYear();
+        int anoMatricula = LocalDate.now().getYear();
         int codigo = contador++;
-        return anoMatricola + contador + "";
+        return anoMatricula + contador + "";
     }
 
     public String getCodigo() {
