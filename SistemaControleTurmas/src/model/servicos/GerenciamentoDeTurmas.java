@@ -97,12 +97,11 @@ public class GerenciamentoDeTurmas {
     }
 
     // Listar todas as turmas
-    public StringBuilder listarTurmas() {
-        StringBuilder exibir = new StringBuilder();
+    public String listarTurmas() {
+        String exibir = "";
 
         for (Turma t : turmas) {
-            exibir.append(t.toString());
-            exibir.append("\n");
+            exibir += t + "\n";
         }
 
         return exibir;
