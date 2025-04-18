@@ -56,8 +56,9 @@ public class GerenciamentoDeDisciplinas {
         return disciplinas.toString();
     }
 
-    public void associarProfessor(Disciplina disciplina, Professor professor) throws DisciplinaNaoEncontradaException, ProfessorNaoEncontradoException, AssociacaoInvalidaException {
+    public void associarProfessor(Disciplina disciplina, String matricula) throws DisciplinaNaoEncontradaException, ProfessorNaoEncontradoException, AssociacaoInvalidaException {
         Objects.requireNonNull(disciplina, "Disciplina não pode ser nula.");
+        Professor professor = gerenciamentoDeProfessores.buscaProfessor(matricula);
         Objects.requireNonNull(professor, "Professor não pode ser nula.");
 
         Disciplina disciplinaEncontrada = procuraDisciplina(disciplina.getNomeDisciplina());
@@ -65,12 +66,10 @@ public class GerenciamentoDeDisciplinas {
             throw new DisciplinaNaoEncontradaException("Disciplina não encontrada.");
         }
 
-        Professor professorEncontrado = gerenciamentoDeProfessores.buscarProfessorPorMatricula(professor.getMatricula());
-        if (professorEncontrado == null) {
-            throw new ProfessorNaoEncontradoException("Professor com matrícula '" + professor.getMatricula() + "' não encontrado.");
+        if (professor == null) {
+            throw new ProfessorNaoEncontradoException("Professor com matrícula " + professor.getMatricula() + "' não encontrado.");
         }
-
-        disciplinaEncontrada.adicionarProfessorAssociado(professorEncontrado);
+        disciplinaEncontrada.adicionarProfessorAssociado(professor);
     }
 
 
