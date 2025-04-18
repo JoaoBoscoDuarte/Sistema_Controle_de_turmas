@@ -36,7 +36,7 @@ public class GerenciamentoDeDisciplinas {
             throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nomeDisciplina + "'.");
         }
 
-        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, null, cargaHoraria);
+        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, cargaHoraria);
         this.disciplinas.add(novaDisciplina);
     }
 
@@ -71,7 +71,6 @@ public class GerenciamentoDeDisciplinas {
         }
         disciplinaEncontrada.adicionarProfessorAssociado(professor);
     }
-
 
     public Disciplina procuraDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
         if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
