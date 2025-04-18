@@ -8,9 +8,6 @@ import model.servicos.GerenciamentoDeAlunos;
 import model.servicos.GerenciamentoDeDisciplinas;
 import model.servicos.GerenciamentoDeProfessores;
 import model.servicos.GerenciamentoDeTurmas;
-import model.turma.Turma;
-
-import java.util.List;
 
 
 public class Faculdade {
@@ -27,8 +24,8 @@ public class Faculdade {
     }
 
     // Gerenciamento de turmas --------------------------------------------------->
-    public void criarTurma(Disciplina disciplina, Professor professor) {
-        gerenciamentoDeTurmas.criarTurma(disciplina, professor);
+    public void criarTurma(Disciplina disciplina, String matriculaDoProfessor) throws ProfessorNaoEncontradoException {
+        gerenciamentoDeTurmas.criarTurma(disciplina, matriculaDoProfessor);
     }
 
     public void adicionarAlunoATurma(String matricula, String codigoDaTurma) {
@@ -51,12 +48,12 @@ public class Faculdade {
         gerenciamentoDeTurmas.removerAluno(matricula);
     }
 
-    public void gerarRelatorioDaTurma() {
-        gerenciamentoDeTurmas.gerarRelatorioDaTurma();
+    public String gerarRelatorioDaTurma() {
+        return gerenciamentoDeTurmas.gerarRelatorioDaTurma();
     }
 
-    public void listarTurmas() {
-        gerenciamentoDeTurmas.listarTurmas();
+    public String listarTurmas() {
+        return gerenciamentoDeTurmas.listarTurmas();
     }
 
     // Gerenciamento de Alunos --------------------------------------------------->
@@ -68,12 +65,12 @@ public class Faculdade {
         gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email);
     }
 
-    public void listarAlunos() {
-        gerenciamentoDeAlunos.listaAlunos();
+    public String listarAlunos() {
+        return gerenciamentoDeAlunos.listaAlunos();
     }
 
-    public void consultarDadosAluno(String matricula) throws AlunoNaoEncontradoException {
-        gerenciamentoDeAlunos.consultaDadosAluno(matricula);
+    public String consultarDadosAluno(String matricula) throws AlunoNaoEncontradoException {
+        return gerenciamentoDeAlunos.consultaDadosAluno(matricula);
     }
 
     public void desativaAluno(String matricula) throws AlunoNaoEncontradoException {
@@ -85,16 +82,16 @@ public class Faculdade {
         gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, cargaHoraria);
     }
 
-    public void listarDisciplinas() {
-        gerenciamentoDeDisciplinas.listaDisciplinas();
+    public String listarDisciplinas() {
+        return gerenciamentoDeDisciplinas.listaDisciplinas();
     }
 
-    public void associarProfessor(Disciplina disciplina, Professor professor) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
-        gerenciamentoDeDisciplinas.associarProfessor(disciplina, professor);
+    public void associarProfessor(Disciplina disciplina, String matriculaDoProfessor) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+        gerenciamentoDeDisciplinas.associarProfessor(disciplina, matriculaDoProfessor);
     }
 
-    public void procurarDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
-        gerenciamentoDeDisciplinas.procuraDisciplina(nomeDisciplina);
+    public Disciplina procurarDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
+        return gerenciamentoDeDisciplinas.procuraDisciplina(nomeDisciplina);
     }
 
     // Gerenciamento de Professores ---------------------------------------------->
@@ -102,7 +99,12 @@ public class Faculdade {
         gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email);
     }
 
-    public void listarProfessores() {
-        gerenciamentoDeProfessores.listarProfessores();
+    public String listarProfessores() {
+        return  gerenciamentoDeProfessores.listarProfessores();
     }
+
+    public Professor buscaProfessor(String matricula) throws ProfessorNaoEncontradoException {
+        return gerenciamentoDeProfessores.buscaProfessor(matricula);
+    }
+
 }
