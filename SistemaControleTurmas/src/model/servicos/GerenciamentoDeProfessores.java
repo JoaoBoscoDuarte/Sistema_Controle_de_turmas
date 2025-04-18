@@ -37,29 +37,19 @@ public class GerenciamentoDeProfessores {
         throw new ProfessorNaoEncontradoException("Professor não encontrado ou se encontra desativado.");
     }
 
-
     public String buscaProfessor(String matricula)throws ProfessorNaoEncontradoException {
         for(Professor p : listaProfessores){
             if(p.getMatricula().equalsIgnoreCase(matricula)){
                 return p.toString();
             }
         }
-        throw new ProfessorNaoEncontradoException("Professor não encontrado ou se econtra desativo.");
+        throw new ProfessorNaoEncontradoException("Professor não encontrado ou se encontra desativo.");
     }
     
     private static void verificaListaDeTurmas(List<Turma> turmas) throws Exception {
         if(turmas.isEmpty()){
             throw new Exception("A lista de turmas não pode se encontar vazia");
         }
-    }
-    public Professor buscarProfessorPorMatricula(String matricula) throws ProfessorNaoEncontradoException {
-        Objects.requireNonNull(matricula, "Matrícula do professor não pode ser nula.");
-        for (Professor p : listaProfessores) {
-            if (p.getMatricula().equalsIgnoreCase(matricula) && p.isAtivo()) {
-                return p;
-            }
-        }
-        throw new ProfessorNaoEncontradoException("Professor com matrícula '" + matricula + "' não encontrado ou está desativado.");
     }
 
     public List<Professor> getListaProfessores() {
