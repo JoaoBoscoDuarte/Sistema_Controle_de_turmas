@@ -67,7 +67,7 @@ public class GerenciamentoDeDisciplinas {
         }
 
         if (professor == null) {
-            throw new ProfessorNaoEncontradoException("Professor com matrícula '" + professor.getMatricula() + "' não encontrado.");
+            throw new ProfessorNaoEncontradoException("Professor com matrícula " + professor.getMatricula() + "' não encontrado.");
         }
         disciplinaEncontrada.adicionarProfessorAssociado(professor);
     }
