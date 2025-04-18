@@ -15,7 +15,7 @@ public class Disciplina {
     private LocalDate dataDeCriacao;
     private static int contador = 1;
 
-    public Disciplina(String nomeDisciplina, String codigo, int cargaHoraria) {
+    public Disciplina(String nomeDisciplina, int cargaHoraria) {
         this.nomeDisciplina = nomeDisciplina;
         this.codigo = gerarCodigoDisciplina();
         this.cargaHoraria = cargaHoraria;
