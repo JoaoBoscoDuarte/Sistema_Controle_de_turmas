@@ -2,6 +2,7 @@ package model.servicos;
 
 import model.disciplina.Disciplina;
 import model.exceptions.AlunoNaoEncontradoException;
+import model.exceptions.ProfessorNaoEncontradoException;
 import model.pessoa.Professor;
 import model.turma.Nota;
 import model.turma.Turma;
@@ -25,8 +26,9 @@ public class GerenciamentoDeTurmas {
     }
 
     // Cria turma
-    public void criarTurma(Disciplina disciplina, Professor professor) {
-        if (!gerenciadorDeDisciplinas.existeDisciplina(disciplina) && gerenciamentoDeProfessores.existeProfessor(professor)) {
+    public void criarTurma(Disciplina disciplina, String matricula) throws ProfessorNaoEncontradoException {
+        if (gerenciadorDeDisciplinas.existeDisciplina(disciplina) && gerenciamentoDeProfessores.existeProfessor(matricula)) {
+            Professor professor = gerenciamentoDeProfessores.buscaProfessor(matricula);
             turmas.add(new Turma(disciplina, professor));
             professoresAssociados.add(professor);
         }
