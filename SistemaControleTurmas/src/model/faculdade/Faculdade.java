@@ -57,12 +57,8 @@ public class Faculdade {
     }
 
     // Gerenciamento de Alunos --------------------------------------------------->
-    public void adicionarAluno(Aluno aluno) {
-        gerenciamentoDeAlunos.adicionaAluno(aluno);
-    }
-
-    public void adicionarAluno(String nome, String telefone, String email) throws Exception {
-        gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email);
+    public void adicionarAluno(String nome, String telefone, String email, String curso) throws Exception {
+        gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email, curso);
     }
 
     public String listarAlunos() {
@@ -106,5 +102,4 @@ public class Faculdade {
     public Professor buscaProfessor(String matricula) throws ProfessorNaoEncontradoException {
         return gerenciamentoDeProfessores.buscaProfessor(matricula);
     }
-
 }
