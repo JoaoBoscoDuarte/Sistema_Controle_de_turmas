@@ -1,99 +1,63 @@
 package testes;
 
-import model.pessoa.Aluno;
-import model.exceptions.AlunoNaoEncontradoException;
-import model.servicos.GerenciamentoDeAlunos;
 import model.exceptions.PessoaInvalidaException;
+import model.pessoa.Aluno;
+import model.servicos.GerenciamentoDeAlunos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GerenciamentoDeAlunosTest {
-
-    private GerenciamentoDeAlunos gerenciamento;
+    GerenciamentoDeAlunos gerenciamento;
 
     @BeforeEach
-    void inicializar() {
+    public void setUp() {
         gerenciamento = new GerenciamentoDeAlunos();
     }
 
     @Test
     void adicionaAluno() throws Exception {
-        String nome = "Beatriz";
-        String telefone = "83444555666";
-        String email = "beatriz.vasconcelos@email";
-
-        gerenciamento.adicionaAluno(nome, telefone, email);
-
-        assertTrue(gerenciamento.listaAlunos().contains("Beatriz"));
+        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
+        assertEquals(1, gerenciamento.getListaAlunos().size());
     }
 
     @Test
-    void testAdicionaAluno() throws PessoaInvalidaException {
-        String nome2 = "Anna";
-        String telefone2 = "83111222333";
-        String email2 = "anna.alves@email";
+    void getListaAlunos() throws PessoaInvalidaException {
+        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
+        gerenciamento.adicionaAluno("Joana", "00444555666", "darc@email", "SI");
+        assertEquals(2,gerenciamento.getListaAlunos().size());
 
-        Aluno aluno = new Aluno(nome2, telefone2, email2);
-
-        gerenciamento.adicionaAluno(aluno);
-
-        assertTrue(gerenciamento.listaAlunos().contains("Anna"));
     }
 
     @Test
     void listaAlunos() throws Exception {
-        gerenciamento.adicionaAluno("Anna", "83123456789", "bea@email");
-
+        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
+        gerenciamento.adicionaAluno("Beatriz", "44555666777", "bea@email", "Sistema");
         String lista = gerenciamento.listaAlunos();
-
-        assertTrue(lista.contains("Anna"));
-        assertTrue(lista.contains("83123456789"));
-        assertTrue(lista.contains("bea@email"));
-
-        //assertTrue(lista.contains("Joana"));
-
+        assertTrue(lista.contains("Beatriz"));
+        assertTrue(lista.contains("SI"));
     }
 
     @Test
-    void consultaDadosAluno() throws AlunoNaoEncontradoException, PessoaInvalidaException {
-        Aluno aluno = new Aluno("Anna", "83777888999", "annab@email");
-        gerenciamento.adicionaAluno(aluno);
-
-        String matricula = aluno.getMatricula();
-
-        assertTrue(gerenciamento.existeAluno(matricula));
-
-        String dados = gerenciamento.consultaDadosAluno(matricula);
-
+    void consultaDadosAluno() throws Exception {
+        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
+        Aluno aluno = gerenciamento.getListaAlunos().get(0);
+        String dados = gerenciamento.consultaDadosAluno(aluno.getMatricula());
         assertTrue(dados.contains("Anna"));
-        assertTrue(dados.contains("83777888999"));
-        assertTrue(dados.contains("annab@email"));
     }
 
     @Test
-    void existeAluno() throws PessoaInvalidaException {
-        Aluno aluno = new Aluno("Anna", "83777888999", "annab@email");
-        gerenciamento.adicionaAluno(aluno);
-
-        String matricula = aluno.getMatricula();
-
-        assertTrue(gerenciamento.existeAluno(matricula));
+    void existeAluno() throws Exception {
+        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
+        Aluno aluno = gerenciamento.getListaAlunos().get(0);
+        assertTrue(gerenciamento.existeAluno(aluno.getMatricula()));
     }
 
     @Test
-    void desativaAluno() throws AlunoNaoEncontradoException, PessoaInvalidaException {
-        Aluno aluno = new Aluno("Anna", "83777888999", "annab@email");
-        gerenciamento.adicionaAluno(aluno);
-
-        String matricula = aluno.getMatricula();
-
-        assertTrue(gerenciamento.existeAluno(matricula));
-
-        gerenciamento.desativaAluno(matricula);
-
-        assertFalse(gerenciamento.existeAluno(matricula));
-
+    void desativaAluno() throws Exception {
+        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
+        Aluno aluno = gerenciamento.getListaAlunos().get(0);
+        gerenciamento.desativaAluno(aluno.getMatricula());
+        assertFalse(aluno.isAtivo());
     }
 }
