@@ -9,10 +9,12 @@ import model.turma.Turma;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GerenciamentoDeTurmas {
     // A lista turma contem todas as turmas, a lista professoresAssociados contem todos os professores
     // associados as turmas de modo que, a associação corresponde ao índice de ambas as listas
+
     private List<Turma> turmas;
     private List<Professor> professoresAssociados;
 
