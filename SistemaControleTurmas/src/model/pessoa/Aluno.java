@@ -13,7 +13,7 @@ public class Aluno extends Pessoa {
         this.curso = curso;
     }
 
-    public void validaCurso(String curso) throws PessoaInvalidaException {
+    private void validaCurso(String curso) throws PessoaInvalidaException {
         if (curso == null || curso.isEmpty()) {
             throw new PessoaInvalidaException("Inválido. O nome do curso não pode estar vazio.");
         }
