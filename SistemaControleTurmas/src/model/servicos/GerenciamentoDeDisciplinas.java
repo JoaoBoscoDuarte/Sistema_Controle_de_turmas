@@ -1,92 +1,95 @@
 package model.servicos;
 
 import model.disciplina.Disciplina;
-import model.faculdade.Faculdade;
-import model.pessoa.Professor;
-import model.exceptions.DisciplinaJaCadastradaException;
-import model.exceptions.DisciplinaNaoEncontradaException;
-import model.exceptions.ProfessorNaoEncontradoException;
-import model.exceptions.AssociacaoInvalidaException;
+import model.exceptions.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class GerenciamentoDeDisciplinas {
-    private Faculdade faculdade;
-    private List<Disciplina> disciplinas;
-    private final GerenciamentoDeProfessores gerenciamentoDeProfessores;
+
+    private final List<Disciplina> disciplinas;
+    private final GerenciamentoDeProfessores gerenciadorProfessores;
 
     public GerenciamentoDeDisciplinas(GerenciamentoDeProfessores gerenciamentoDeProfessores) {
-        this.gerenciamentoDeProfessores = Objects.requireNonNull(gerenciamentoDeProfessores, "");
         this.disciplinas = new ArrayList<>();
+        this.gerenciadorProfessores = gerenciamentoDeProfessores;
     }
 
-    public void cadastraDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
-        Objects.requireNonNull(nomeDisciplina, "Nome da disciplina não pode ser nulo.");
-
-        if (nomeDisciplina.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome da disciplina não pode ser vazio.");
+    // Cadastra uma nova disciplina
+    public void cadastraDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, DisciplinaInvalidaException {
+        if (nomeDisciplina == null) {
+            throw new DisciplinaInvalidaException("Nome para disciplina inválido.");
         }
+
         if (cargaHoraria <= 0) {
-            throw new IllegalArgumentException("Carga horária deve ser maior que zero.");
+            throw new CargaHorariaInvalidaException("Carga horária deve ser maior que zero.");
         }
 
         if (existeDisciplinaComMesmoNome(nomeDisciplina)) {
             throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nomeDisciplina + "'.");
         }
 
-        Disciplina novaDisciplina = new Disciplina(nomeDisciplina, cargaHoraria);
-        this.disciplinas.add(novaDisciplina);
+        this.disciplinas.add(new Disciplina(nomeDisciplina, cargaHoraria));
     }
 
+    // Verifica se existe disciplina com o mesmo nome
     private boolean existeDisciplinaComMesmoNome(String nome) {
-        for (Disciplina d : this.disciplinas) {
-            if (d.getNomeDisciplina().equalsIgnoreCase(nome)) {
+        for (Disciplina d : disciplinas) {
+            if (d.getNomeDisciplina().equals(nome)) {
                 return true;
             }
         }
         return false;
     }
 
-    public String listaDisciplinas() {
-        String listaDeDisciplinas = "";
-        for (Disciplina disciplina : disciplinas){
-            listaDeDisciplinas += disciplina + "\n";
+    // Lista todas as disciplinas
+    public StringBuilder listaDisciplinas() {
+
+        StringBuilder exibir = new StringBuilder();
+        for (Disciplina d : disciplinas) {
+            exibir.append(" | ").append(d);
         }
-        return listaDeDisciplinas;
+
+        return exibir;
     }
 
-    public void associarProfessor(Disciplina disciplina, String matricula) throws DisciplinaNaoEncontradaException, ProfessorNaoEncontradoException, AssociacaoInvalidaException {
-        Objects.requireNonNull(disciplina, "Disciplina não pode ser nula.");
-        Professor professor = gerenciamentoDeProfessores.buscaProfessor(matricula);
-        Objects.requireNonNull(professor, "Professor não pode ser nula.");
+    // Associa professor a disciplina
+    public void associarProfessorADisciplina(String nomeDisciplina, String matricula) throws DisciplinaInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
 
-        Disciplina disciplinaEncontrada = procuraDisciplina(disciplina.getNomeDisciplina());
-        if (disciplinaEncontrada == null) {
-            throw new DisciplinaNaoEncontradaException("Disciplina não encontrada.");
-        }
-
-        if (professor == null) {
-            throw new ProfessorNaoEncontradoException("Professor com matrícula " + professor.getMatricula() + "' não encontrado.");
-        }
-        disciplinaEncontrada.adicionarProfessorAssociado(professor);
-    }
-
-    public Disciplina procuraDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
         if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome da disciplina para a procura não pode ser nulo ou vazio.");
+            throw new DisciplinaInvalidaException("Nome para disciplina inválido.");
         }
-        for (Disciplina disciplina : this.disciplinas) {
-            if (disciplina.getNomeDisciplina().equalsIgnoreCase(nomeDisciplina)) {
-                return disciplina;
+
+        if (!gerenciadorProfessores.existeProfessor(matricula)) {
+            throw new ProfessorNaoEncontradoException("Professor não existe");
+        }
+
+        // Verifica se a disciplina existe e associa ela ao professor
+        Disciplina disciplina = procuraDisciplina(nomeDisciplina);
+        disciplina.getProfessoresAssociados().add(matricula);
+    }
+
+    public Disciplina procuraDisciplina(String nomeDisciplina) throws DisciplinaInvalidaException, DisciplinaNaoEncontradaException {
+
+        if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
+            throw new DisciplinaInvalidaException("Nome de disciplina inválido");
+        }
+
+        for (Disciplina d : disciplinas) {
+            if (d.getNomeDisciplina().equalsIgnoreCase(nomeDisciplina)) {
+                return d;
             }
         }
+
         throw new DisciplinaNaoEncontradaException("Disciplina com nome '" + nomeDisciplina + "' não encontrada.");
     }
 
-    public boolean existeDisciplina(Disciplina disciplina) {
-        return this.disciplinas.contains(disciplina);
+    public boolean existeDisciplina(String nomeDisciplina) {
+        for (Disciplina d : disciplinas) {
+            if (d.getNomeDisciplina().equals(nomeDisciplina)) {
+                return true;
+            }
+        }
+        return false;
     }
-
 }

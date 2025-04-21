@@ -16,7 +16,7 @@ public class GerenciamentoDeProfessores {
     List<Turma> turmas = gerenciamentoDeTurmas.getTurmas();
 
     public void adicionarProfessor(String nome, String telefone , String email) throws Exception {
-        Professor professor = new Professor(nome, telefone, email, turmas);
+        Professor professor = new Professor(nome, telefone, email);
         listaProfessores.add(professor);
     }
 

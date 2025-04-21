@@ -9,17 +9,16 @@ import java.util.Objects;
 
 public class Disciplina {
     private String nomeDisciplina;
-    private String codigo;
     private int cargaHoraria;
-    private List<Professor> professoresAssociados = new ArrayList<>();
-    private LocalDate dataDeCriacao;
+    private String codigo;
+
+    private List<String> professorAssociado = new ArrayList<>();
     private static int contador = 1;
 
     public Disciplina(String nomeDisciplina, int cargaHoraria) {
         this.nomeDisciplina = nomeDisciplina;
         this.codigo = gerarCodigoDisciplina();
         this.cargaHoraria = cargaHoraria;
-        this.dataDeCriacao = LocalDate.now();
     }
 
     public String getNomeDisciplina() {
@@ -38,18 +37,20 @@ public class Disciplina {
         this.cargaHoraria = cargaHoraria;
     }
 
-    public void adicionarProfessorAssociado(Professor professor) {
-        this.professoresAssociados.add(professor);
+    public void adicionarProfessorAssociado(String codigoProfessor) {
+        this.professorAssociado.add(codigoProfessor);
     }
 
-    public List<Professor> getProfessoresAssociados() {
-        return professoresAssociados;
+    public List<String> getProfessoresAssociados() {
+        return professorAssociado;
+    }
+
+    public void setProfessorAssociado(List<String> professorAssociado) {
+        this.professorAssociado = professorAssociado;
     }
 
     public String gerarCodigoDisciplina() {
-        int anoMatricula = LocalDate.now().getYear();
-        int codigo = contador++;
-        return anoMatricula + contador + "";
+        return LocalDate.now().getYear() + String.format("%04d" , contador++);
     }
 
     public String getCodigo() {
@@ -60,12 +61,12 @@ public class Disciplina {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Disciplina that = (Disciplina) o;
-        return cargaHoraria == that.cargaHoraria && Objects.equals(nomeDisciplina, that.nomeDisciplina) && Objects.equals(codigo, that.codigo) && Objects.equals(dataDeCriacao, that.dataDeCriacao);
+        return cargaHoraria == that.cargaHoraria && Objects.equals(nomeDisciplina, that.nomeDisciplina) && Objects.equals(codigo, that.codigo) && Objects.equals(professorAssociado, that.professorAssociado);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nomeDisciplina, codigo, cargaHoraria, dataDeCriacao);
+        return Objects.hash(nomeDisciplina, codigo, cargaHoraria, professorAssociado);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class Disciplina {
                 "nomeDisciplina='" + nomeDisciplina + '\'' +
                 ", codigo='" + codigo + '\'' +
                 ", cargaHoraria=" + cargaHoraria +
-                ", dataDeCriacao=" + dataDeCriacao +
+                ", professoresAssociados=" + professorAssociado +
                 '}';
     }
 }

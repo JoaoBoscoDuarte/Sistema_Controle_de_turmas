@@ -2,7 +2,6 @@ package model.faculdade;
 
 import model.disciplina.Disciplina;
 import model.exceptions.*;
-import model.pessoa.Aluno;
 import model.pessoa.Professor;
 import model.servicos.GerenciamentoDeAlunos;
 import model.servicos.GerenciamentoDeDisciplinas;
@@ -20,7 +19,7 @@ public class Faculdade {
         this.gerenciamentoDeTurmas = new GerenciamentoDeTurmas();
         this.gerenciamentoDeAlunos = new GerenciamentoDeAlunos();
         this.gerenciamentoDeProfessores = new GerenciamentoDeProfessores();
-        this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas(this.gerenciamentoDeProfessores);
+        this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas();
     }
 
     // Gerenciamento de turmas --------------------------------------------------->

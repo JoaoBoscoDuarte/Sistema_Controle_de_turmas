@@ -91,7 +91,11 @@ public class Turma {
         return codigoTurma;
     }
 
-    public List<Nota> getNotasAluno() {
-        return notasAluno;
+    public List<Nota> getNotasAluno(String matricula) {
+
+    }
+
+    public int getNumeroUnidades() {
+        return numeroUnidades;
     }
 }
