@@ -1,8 +1,8 @@
 package model.servicos;
 
 import model.exceptions.*;
-import model.pessoa.Aluno;
 import model.pessoa.Professor;
+import model.turma.Nota;
 import model.turma.Turma;
 
 import java.util.ArrayList;
@@ -11,24 +11,18 @@ import java.util.List;
 import java.util.Map;
 
 public class GerenciamentoDeTurmas {
-    // A lista turma contem todas as turmas, a lista professoresAssociados contem todos os professores
-    // associados as turmas de modo que, a associação corresponde ao índice de ambas as listas
-
     private List<Turma> turmas;
-    private List<Professor> professoresAssociados;
-
     private GerenciamentoDeAlunos aluno;
     private GerenciamentoDeProfessores professor;
     private GerenciamentoDeDisciplinas disciplina;
 
     public GerenciamentoDeTurmas() {
         this.turmas = new ArrayList<>();
-        this.professoresAssociados = new ArrayList<>();
     }
 
-    // Cria turma
-    public void criarTurma(String nomeDisciplina, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
-        if (!disciplina.existeDisciplina(nomeDisciplina)) {
+    // Método par cria turma ------------------------------------------------------------> OK
+    public void criarTurma(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+        if (!disciplina.existeDisciplina(nome)) {
             throw new DisciplinaNaoEncontradaException("Disciplina não existe.");
         }
 
@@ -36,80 +30,65 @@ public class GerenciamentoDeTurmas {
             throw new ProfessorNaoEncontradoException("Professor não existe.");
         }
 
-        turmas.add(new Turma(disciplina.procuraDisciplina(nomeDisciplina), professor.buscaProfessor(matricula)));
+        turmas.add(new Turma(disciplina.buscaDisciplina(nome), professor.buscaProfessor(matricula)));
     }
 
-    // Adiciona aluno pela matrícula
+    // Método para adicionar aluno a turma ----------------------------------------------> Ok
     public void adicionarAlunoATurma(String matricula, String codigo) {
-        Turma turma = exiteTurma(codigo);
-        if (aluno.existeAluno(matricula) && turma != null) {
-            turma.getMatriculasProfessores().add(matricula);
+        excecoesTurma(codigo);
+        Turma turma = buscarTurma(codigo);
+
+        // Adiciona o aluno ao mapa e inicializa a lista das notas dele
+        if (aluno.getListaAlunos().contains(aluno.buscaAluno(matricula))) {
+            Nota nota = new Nota(turma.getNumeroUnidades());
+            Map<String, List<Double>> notasAluno = nota.getNotasDoAluno();
+
+            notasAluno.put(matricula, new ArrayList<>());
         }
     }
 
-    // Adicionar professor pela matrícula
-    public void adicionarProfessorATurma(String matricula, String codigo) throws ProfessorNaoEncontradoException {
-        Turma turma = exiteTurma(codigo);
-        if (professor.existeProfessor(matricula) && turma != null) {
-            turma.getMatriculasProfessores().add(matricula);
-        }
-    }
-
-    // Atribuir quantidade de unidades avaliativas
+    // Método para atribuir quantidade de unidades avaliativas --------------------------> OK
     public void atribuirUnidades(int unidades, String codigo) throws IntervaloDeUnidadeException {
+        Turma turma = buscarTurma(codigo);
         if (1 < unidades) {
-            Turma turma = exiteTurma(codigo);
             turma.setNumeroUnidades(unidades);
+
+        } else {
+            throw new IntervaloDeUnidadeException("Número de unidades inválido.");
         }
     }
 
     // Cadastra notas as unidades
-    public void cadastrarNotasUnidade(String codigoTurma, int unidade, Double nota, String matriculaAluno) throws IntervaloDeNotaException, IntervaloDeUnidadeException, TurmaNaoEncontradaException, AlunoNaoEncontradoException {
+    public void cadastrarNotasUnidade(String codigo, int unidade, Double nota, String matricula) throws IntervaloDeNotaException, IntervaloDeUnidadeException, TurmaInvalidaException, AlunoNaoEncontradoException {
+        // Encontra a turma
+        Turma turma = buscarTurma(codigo);
 
+        // Verifica se a nota é válida
         if (nota < 0 || nota > 10) {
             throw new IntervaloDeNotaException("Nota deve estar entre 0 e 10");
         }
 
-        // Encontra a turma
-        Turma turma = exiteTurma(codigoTurma);
-        if (turma == null) {
-            throw new TurmaNaoEncontradaException("Turma não encontrada com o código: " + codigoTurma);
-        }
-
-        // Verifica se o aluno está na turma
-        if (!turma.getMatriculasAlunos().contains(matriculaAluno)) {
-            throw new AlunoNaoEncontradoException("Aluno não está matriculado nesta turma");
-        }
-
         // Verifica se a unidade é válida
-        if (unidade < 1 || unidade > turma.getNumeroUnidades()) {
+        if (unidade < 1 || unidade > (turma.getNumeroUnidades())) {
             throw new IntervaloDeUnidadeException("Unidade inválida. Deve estar entre 1 e " + turma.getNumeroUnidades());
         }
 
-        // Obtém ou cria o mapa de notas do aluno na turma
-        Map<String, List<Double>> notasDaTurma = turma.getNotasAlunos();
-        if (notasDaTurma == null) {
-            notasDaTurma = new HashMap<>();
-            turma.setNotasAlunos(notasDaTurma);
-        }
+        for (Nota n : turma.getNotasAluno()) {
+            if (n.getNotasDoAluno().containsKey(matricula)) {
+                List<Double> notas = n.getNotasDoAluno().get(matricula);
 
-        // Obtém ou inicializa a lista de notas do aluno
-        List<Double> notasDoAluno = notasDaTurma.get(matriculaAluno);
-        if (notasDoAluno == null) {
-            notasDoAluno = new ArrayList<>(turma.getNumeroUnidades());
-            for (int i = 0; i < turma.getNumeroUnidades(); i++) {
-                notasDoAluno.add(null); // Inicializa com null para todas as unidades
+                // Garante que a lista tenha espaço suficiente para a unidade desejada
+                while (notas.size() <= turma.getNumeroUnidades()) {
+                    notas.add(0.0); // valor padrão
+                }
+
+                // Atualiza a nota na unidade específica
+                notas.set(unidade, nota);
             }
-            notasDaTurma.put(matriculaAluno, notasDoAluno);
         }
-
-        // Adiciona a nota na posição correta (unidade-1 porque lista começa em 0)
-        notasDoAluno.set(unidade - 1, nota);
     }
 
-    // Remove aluno pela matrícula
-    // remove aluno da lista do gerenciador de alunos e da lista de notas por unidade dos alunos
-    // e matriculas dos alunos
+    // Método para remover aluno pela matrícula
     public void removerAluno(String matricula) throws AlunoNaoEncontradoException {
 
     }
@@ -119,29 +98,42 @@ public class GerenciamentoDeTurmas {
         return "FAZER ESSE RELATORIO MIZERAAAAAA";
     }
 
-    // Listar todas as turmas
-    public String listarTurmas() {
-        String exibir = "";
+    // Método para listar todas as turmas -----------------------------------> OK
+    public StringBuilder listarTurmas() {
+        StringBuilder exibir =  new StringBuilder();
 
         for (Turma t : turmas) {
-            exibir += t + "\n";
+            exibir.append(t + "\n");
         }
 
         return exibir;
     }
 
-    public List<Turma> getTurmas() {
-        return turmas;
+    // Método que condensa as exceções de turma -----------------------------> OK
+    public void excecoesTurma(String codigo) throws TurmaInvalidaException {
+        // Verifica se a turma é nula
+        if (codigo == null) {
+            throw new TurmaInvalidaException("Turma inválida. O campo de código não pode ser nulo.");
+        }
+
+        // Verifica se a turma exite
+        if (!turmas.contains(buscarTurma(codigo))) {
+            throw new TurmaInvalidaException("A turma não existe.");
+        }
     }
 
-    // Método que retorna a turma existente
-    public Turma exiteTurma(String codigo) {
+    // método para buscar turma (retorna a turma se achar) ------------------> OK
+    public Turma buscarTurma(String codigo) throws TurmaInvalidaException {
+        if (codigo == null) {
+            throw new TurmaInvalidaException("Turma inválida. O campo de código não pode ser nulo.");
+        }
+
         for (Turma t : turmas) {
             if (t.getCodigoTurma().equals(codigo)) {
                 return t;
             }
         }
 
-        return null;
+        throw new TurmaInvalidaException("A turma não existe.");
     }
 }

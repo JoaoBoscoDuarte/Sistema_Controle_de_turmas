@@ -14,9 +14,10 @@ public class Turma {
 
     private Disciplina disciplina;
     private Professor professor;
-    private int numeroUnidades = 2;        // Por padrão são 2 unidades (pode ser mudado somente 1 vez)
+    private int numeroUnidades;
     private TiposDeMediaIF tipoDeMedia;
 
+    // Coleção de alunos do tipo Nota (matricula --> notas)
     private List<Nota> notasAluno;
     private List<String> matriculasProfessores;
 
@@ -30,10 +31,10 @@ public class Turma {
         this.matriculasProfessores = new ArrayList<>();
         this.codigoTurma = geraCodigoTurma();
         this.tipoDeMedia = null;
+        this.numeroUnidades = 0;   // Valor incial
     }
 
     public double calcularMedia(String matricula) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException {
-
         if (this.tipoDeMedia.equals(null)) {
             throw new TipoDeMediaNaoDefinidaException("O tipo de média da turma não foi definida. Configure o tipo de média.");
         }
@@ -63,20 +64,32 @@ public class Turma {
         return exibir;
     }
 
-    public void setNumeroUnidades(int numeroUnidades) {
-        this.numeroUnidades = numeroUnidades;
-    }
-
-    public List<String> getMatriculasProfessores() {
-        return matriculasProfessores;
-    }
-
-    public void setMatriculasProfessores(List<String> matriculasProfessores) {
-        this.matriculasProfessores = matriculasProfessores;
-    }
-
     public static String geraCodigoTurma() {
         return LocalDate.now().getYear() + String.format("%02d" , contador++);
+    }
+
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public int getNumeroUnidades() {
+        return numeroUnidades;
+    }
+
+    public void setNumeroUnidades(int numeroUnidades) {
+        this.numeroUnidades = numeroUnidades;
     }
 
     public TiposDeMediaIF getTipoDeMedia() {
@@ -87,15 +100,27 @@ public class Turma {
         this.tipoDeMedia = tipoDeMedia;
     }
 
+    public List<Nota> getNotasAluno() {
+        return notasAluno;
+    }
+
+    public void setNotasAluno(List<Nota> notasAluno) {
+        this.notasAluno = notasAluno;
+    }
+
+    public List<String> getMatriculasProfessores() {
+        return matriculasProfessores;
+    }
+
+    public void setMatriculasProfessores(List<String> matriculasProfessores) {
+        this.matriculasProfessores = matriculasProfessores;
+    }
+
     public String getCodigoTurma() {
         return codigoTurma;
     }
 
-    public List<Nota> getNotasAluno(String matricula) {
-
-    }
-
-    public int getNumeroUnidades() {
-        return numeroUnidades;
+    public void setCodigoTurma(String codigoTurma) {
+        this.codigoTurma = codigoTurma;
     }
 }

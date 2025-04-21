@@ -1,15 +1,44 @@
 package model.pessoa;
-import model.exceptions.PessoaInvalidaException;
-import model.turma.Turma;
 
-import java.time.LocalDate;
+import model.disciplina.Disciplina;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Professor extends Pessoa{
+    private List<Disciplina> disciplinasMinistradas;
 
     public Professor(String nome, String telefone, String email) throws Exception {
         super(nome, telefone, email);
+        disciplinasMinistradas = new ArrayList<>();
+    }
+
+    public List<Disciplina> getDisciplinasMinistradas() {
+        return disciplinasMinistradas;
+    }
+
+    public void setDisciplinasMinistradas(List<Disciplina> disciplinasMinistradas) {
+        this.disciplinasMinistradas = disciplinasMinistradas;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Professor professor = (Professor) o;
+        return Objects.equals(disciplinasMinistradas, professor.disciplinasMinistradas);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), disciplinasMinistradas);
+    }
+
+    @Override
+    public String toString() {
+        return "Professor{" +
+                "disciplinasMinistradas=" + disciplinasMinistradas +
+                '}';
     }
 }

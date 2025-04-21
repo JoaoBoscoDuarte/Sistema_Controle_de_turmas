@@ -15,17 +15,19 @@ public class GerenciamentoDeProfessores {
     private GerenciamentoDeTurmas gerenciamentoDeTurmas;
     List<Turma> turmas = gerenciamentoDeTurmas.getTurmas();
 
+    // Adiciona professor
     public void adicionarProfessor(String nome, String telefone , String email) throws Exception {
         Professor professor = new Professor(nome, telefone, email);
         listaProfessores.add(professor);
     }
 
-    public String listarProfessores(){
-        String listaDeProfessores = "";
+    // Listar Professores
+    public StringBuilder listarProfessores() {
+        StringBuilder exibir = new StringBuilder();
         for (Professor p : listaProfessores){
-            listaDeProfessores += p + "\n";
+            exibir.append(p + "\n");
         }
-        return listaDeProfessores;
+        return exibir;
     }
 
     public boolean existeProfessor(String matricula) throws ProfessorNaoEncontradoException{
@@ -37,7 +39,7 @@ public class GerenciamentoDeProfessores {
         throw new ProfessorNaoEncontradoException("Professor não encontrado ou se encontra desativado.");
     }
 
-    public Professor buscaProfessor(String matricula)throws ProfessorNaoEncontradoException {
+    public Professor buscaProfessor(String matricula) throws ProfessorNaoEncontradoException {
         for(Professor p : listaProfessores){
             if(p.getMatricula().equalsIgnoreCase(matricula)){
                 return p;

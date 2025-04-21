@@ -65,12 +65,11 @@ public class GerenciamentoDeDisciplinas {
         }
 
         // Verifica se a disciplina existe e associa ela ao professor
-        Disciplina disciplina = procuraDisciplina(nomeDisciplina);
+        Disciplina disciplina = buscaDisciplina(nomeDisciplina);
         disciplina.getProfessoresAssociados().add(matricula);
     }
 
-    public Disciplina procuraDisciplina(String nomeDisciplina) throws DisciplinaInvalidaException, DisciplinaNaoEncontradaException {
-
+    public Disciplina buscaDisciplina(String nomeDisciplina) throws DisciplinaInvalidaException, DisciplinaNaoEncontradaException {
         if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
             throw new DisciplinaInvalidaException("Nome de disciplina inválido");
         }
@@ -80,7 +79,6 @@ public class GerenciamentoDeDisciplinas {
                 return d;
             }
         }
-
         throw new DisciplinaNaoEncontradaException("Disciplina com nome '" + nomeDisciplina + "' não encontrada.");
     }
 
