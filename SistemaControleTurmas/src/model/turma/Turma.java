@@ -1,31 +1,30 @@
 package model.turma;
 
 import model.disciplina.Disciplina;
-import model.pessoa.Aluno;
 import model.pessoa.Professor;
+import model.turma.media.MediaSimples;
 import model.turma.media.TiposDeMediaIF;
 
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
+/*  ================| Só altere em caso de urgência! |====================
+ *  ----------------------Classe 100% concluída-----------------------> OK
+ */
 
 public class Turma {
 
     private Disciplina disciplina;
     private Professor professor;
-    private int qtdUnidadesAvaliativas = 2;
+    private int numeroUnidades;
+    private TiposDeMediaIF tipoDeMedia;
 
-    // A lista de notas e matrículas de alunos estão associadas pelo índice, ou seja: a nota
-    // e o aluno correspondem ao índice específico
+    // Temos uma lista Nota | Nota é uma classe que guarda uma matrícula (referente a uma aluno) e suas notas
+    // Logo, temos Nota (aponta para um aluno único) e NotasAluno (aponta para todas as notas dos alunos)
     private List<Nota> notasAluno;
-    private List<String> matriculasAlunos;
     private List<String> matriculasProfessores;
 
-    private TiposDeMediaIF tipoDeMedia;
-    private LocalDate dataCriacaoTurma;
     private String codigoTurma;
     private static int contador = 0;
 
@@ -33,58 +32,38 @@ public class Turma {
         this.disciplina = disciplina;
         this.professor = professor;
         this.notasAluno = new ArrayList<>();
-        this.matriculasAlunos = new ArrayList<>();
         this.matriculasProfessores = new ArrayList<>();
-        this.dataCriacaoTurma = LocalDate.now();
         this.codigoTurma = geraCodigoTurma();
+        this.tipoDeMedia = new MediaSimples();           // valor padrão
+        this.numeroUnidades = 0;                         // Valor padrão
     }
 
-    public double calcularMedia(Aluno aluno, TiposDeMediaIF tipoDeMedia) {
-        for (Nota nota : notasAluno) {
-            if (nota.getAluno().equals(aluno)) {
-                Map<Integer, Double> notasPorUnidade = nota.getNotasPorUnidade(); // pega todas as nota s
-                List<Double> todasNotas = new ArrayList<>(notasPorUnidade.values()); // passa de map para arraylist (double)
-                return tipoDeMedia.calcularMedia(todasNotas); // calcula a media de acordo com a media passada no parâmetro
-            }
-        }
-        throw new IllegalArgumentException("Aluno não encontrado na turma");
+    public static String geraCodigoTurma() {
+        return LocalDate.now().getYear() + String.format("%02d" , contador++);
     }
 
-    public String verificarAprovacao(double media) {
-        String exibir = "";
-
-        if (media < 7) {
-            exibir = "REPROVADO";
-
-        } else if (media >= 7) {
-            exibir = "APROVADO";
-        }
-
-        return exibir;
+    public Disciplina getDisciplina() {
+        return disciplina;
     }
 
-    public int getQtdUnidadesAvaliativas() {
-        return qtdUnidadesAvaliativas;
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
     }
 
-    public void setQtdUnidadesAvaliativas(int qtdUnidadesAvaliativas) {
-        this.qtdUnidadesAvaliativas = qtdUnidadesAvaliativas;
+    public Professor getProfessor() {
+        return professor;
     }
 
-    public List<String> getMatriculasAlunos() {
-        return new ArrayList<>(matriculasAlunos);
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
-    public void setMatriculasAlunos(List<String> matriculasAlunos) {
-        this.matriculasAlunos = matriculasAlunos;
+    public int getNumeroUnidades() {
+        return numeroUnidades;
     }
 
-    public List<String> getMatriculasProfessores() {
-        return matriculasProfessores;
-    }
-
-    public void setMatriculasProfessores(List<String> matriculasProfessores) {
-        this.matriculasProfessores = matriculasProfessores;
+    public void setNumeroUnidades(int numeroUnidades) {
+        this.numeroUnidades = numeroUnidades;
     }
 
     public TiposDeMediaIF getTipoDeMedia() {
@@ -95,44 +74,38 @@ public class Turma {
         this.tipoDeMedia = tipoDeMedia;
     }
 
-    public String getCodigoTurma() {
-        return codigoTurma;
-    }
-
     public List<Nota> getNotasAluno() {
         return notasAluno;
     }
 
-    public static String geraCodigoTurma() {
-        contador++;
-        String dataFormatada = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
-        return String.format("%s-%05d", dataFormatada, contador);
+    public void setNotasAluno(List<Nota> notasAluno) {
+        this.notasAluno = notasAluno;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Turma turma = (Turma) o;
-        return qtdUnidadesAvaliativas == turma.qtdUnidadesAvaliativas && Objects.equals(disciplina, turma.disciplina) && Objects.equals(professor, turma.professor) && Objects.equals(notasAluno, turma.notasAluno) && Objects.equals(matriculasAlunos, turma.matriculasAlunos) && Objects.equals(matriculasProfessores, turma.matriculasProfessores) && Objects.equals(tipoDeMedia, turma.tipoDeMedia) && Objects.equals(dataCriacaoTurma, turma.dataCriacaoTurma) && Objects.equals(codigoTurma, turma.codigoTurma);
+    public List<String> getMatriculasProfessores() {
+        return matriculasProfessores;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(disciplina, professor, qtdUnidadesAvaliativas, notasAluno, matriculasAlunos, matriculasProfessores, tipoDeMedia, dataCriacaoTurma, codigoTurma);
+    public void setMatriculasProfessores(List<String> matriculasProfessores) {
+        this.matriculasProfessores = matriculasProfessores;
+    }
+
+    public String getCodigoTurma() {
+        return codigoTurma;
+    }
+
+    public void setCodigoTurma(String codigoTurma) {
+        this.codigoTurma = codigoTurma;
     }
 
     @Override
     public String toString() {
-        return "Turma{" +
-                "disciplina=" + disciplina +
-                ", professor=" + professor +
-                ", qtdUnidadesAvaliativas=" + qtdUnidadesAvaliativas +
-                ", notasAluno=" + notasAluno +
-                ", matriculasAlunos=" + matriculasAlunos +
-                ", matriculasProfessores=" + matriculasProfessores +
-                ", tipoDeMedia=" + tipoDeMedia +
-                ", dataCriacaoTurma=" + dataCriacaoTurma +
-                ", codigoTurma='" + codigoTurma + '\'' +
-                '}';
+        return "TURMA: " +
+                "| Disciplina associada: " + disciplina.getNomeDisciplina() + " | \n" +
+                "| Professor: " + professor.getNome() + " | \n" +
+                "| Nº Unidades Avaliativas: " + getNumeroUnidades() + " | \n" +
+                "| Tipo de Média: " + getTipoDeMedia() + " | \n" +
+                "| Alunos associados: " + getNotasAluno().toString() + " | \n" +
+                "| Codigo da turma: " + getCodigoTurma() + " | \n";
     }
 }

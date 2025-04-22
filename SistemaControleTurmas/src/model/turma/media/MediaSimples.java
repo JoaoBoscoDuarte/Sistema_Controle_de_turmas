@@ -2,6 +2,10 @@ package model.turma.media;
 
 import java.util.List;
 
+/*  ================| Só altere em caso de urgência! |====================
+ *  ----------------------Classe 100% concluída-----------------------> OK
+ */
+
 public class MediaSimples implements TiposDeMediaIF {
 
     @Override

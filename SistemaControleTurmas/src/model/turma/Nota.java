@@ -1,35 +1,22 @@
 package model.turma;
 
-import model.pessoa.Aluno;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Nota {
-    private Map<Integer, Double> notasPorUnidade; // Key: número da unidade, Value: nota
-    private Aluno aluno;
+    private final String matricula;
+    private final List<Double> notas;
 
-    public Nota(Aluno aluno) {
-        this.notasPorUnidade = new HashMap<>();
-        this.aluno = aluno;
+    public Nota(String matricula, int numeroUnidades) {
+        this.matricula = matricula;
+        this.notas = new ArrayList<>(numeroUnidades); // pode iniciar com capacidade
     }
 
-    public void adicionarNota(int unidade, double nota) {
-        if (nota < 0 || nota > 10) {
-            throw new IllegalArgumentException("Nota deve estar entre 0 e 10");
-        }
-        notasPorUnidade.put(unidade, nota);
-    }
+    public String getMatricula() { return matricula; }
+    public List<Double> getNotas() { return notas; }
 
-    public Aluno getAluno() {
-        return aluno;
-    }
-
-    public String getMatriculaAluno() {
-        return aluno.getMatricula();
-    }
-
-    public Map<Integer, Double> getNotasPorUnidade() {
-        return new HashMap<>(notasPorUnidade);
+    public void adicionarNota(double nota) {
+        notas.add(nota);
     }
 }
+

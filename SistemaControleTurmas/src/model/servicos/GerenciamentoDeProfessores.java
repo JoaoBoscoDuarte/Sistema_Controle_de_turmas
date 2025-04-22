@@ -1,62 +1,51 @@
 package model.servicos;
 
-import model.exceptions.PessoaInvalidaException;
 import model.exceptions.ProfessorNaoEncontradoException;
-import model.servicos.GerenciamentoDeTurmas;
 import model.pessoa.Professor;
-import model.turma.Turma;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+/*  ================| Só altere em caso de urgência! |====================
+ *  ----------------------Classe 100% concluída-----------------------> OK
+ */
 
 public class GerenciamentoDeProfessores {
+    private final List<Professor> LISTA_DE_PROFESSORES = new ArrayList<>();
 
-    private List<Professor> listaProfessores = new ArrayList<>();
-    private GerenciamentoDeTurmas gerenciamentoDeTurmas;
-    List<Turma> turmas = gerenciamentoDeTurmas.getTurmas();
-
+    // Adiciona professor
     public void adicionarProfessor(String nome, String telefone , String email) throws Exception {
-        Professor professor = new Professor(nome, telefone, email, turmas);
-        listaProfessores.add(professor);
+        Professor professor = new Professor(nome, telefone, email);
+        LISTA_DE_PROFESSORES.add(professor);
     }
 
-    public String listarProfessores(){
-        String listaDeProfessores = "";
-        for (Professor p : listaProfessores){
-            listaDeProfessores += p + "\n";
+    // Listar Professores
+    public StringBuilder listarProfessores() {
+        StringBuilder exibir = new StringBuilder();
+        for (Professor p : LISTA_DE_PROFESSORES){
+            exibir.append(p).append("\n");
         }
-        return listaDeProfessores;
+        return exibir;
     }
 
     public boolean existeProfessor(String matricula) throws ProfessorNaoEncontradoException{
-        for ( Professor p : listaProfessores){
+        for ( Professor p : LISTA_DE_PROFESSORES){
             if(p.getMatricula().equalsIgnoreCase(matricula) && p.isAtivo()){
                 return true;
             }
         }
-        throw new ProfessorNaoEncontradoException("Professor não encontrado ou se encontra desativado.");
+        throw new ProfessorNaoEncontradoException("Professor não encontrado ou está desativado.");
     }
 
-    public Professor buscaProfessor(String matricula)throws ProfessorNaoEncontradoException {
-        for(Professor p : listaProfessores){
+    public Professor buscaProfessor(String matricula) throws ProfessorNaoEncontradoException {
+        for(Professor p : LISTA_DE_PROFESSORES){
             if(p.getMatricula().equalsIgnoreCase(matricula)){
                 return p;
             }
         }
-        throw new ProfessorNaoEncontradoException("Professor não encontrado ou se encontra desativo.");
-    }
-    
-    private static void verificaListaDeTurmas(List<Turma> turmas) throws Exception {
-        if(turmas.isEmpty()){
-            throw new Exception("A lista de turmas não pode se encontar vazia");
-        }
+        throw new ProfessorNaoEncontradoException("Professor não encontrado ou está desativado.");
     }
 
     public List<Professor> getListaProfessores() {
-        return listaProfessores;
-    }
-
-    public void setTurmas(List<Turma> turmas) {
-        this.turmas = turmas;
+        return LISTA_DE_PROFESSORES;
     }
 }

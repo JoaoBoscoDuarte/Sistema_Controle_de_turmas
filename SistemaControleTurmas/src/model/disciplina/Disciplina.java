@@ -1,33 +1,39 @@
 package model.disciplina;
 
-import model.pessoa.Professor;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/*  ================| Só altere em caso de urgência! |====================
+ *  --------------------Classe 100% concluída-------------------------> OK
+ */
+
 public class Disciplina {
-    private String nomeDisciplina;
-    private String codigo;
+    private String nome;
     private int cargaHoraria;
-    private List<Professor> professoresAssociados = new ArrayList<>();
-    private LocalDate dataDeCriacao;
+    private String codigo;
+
+    private List<String> professorAssociado = new ArrayList<>();
     private static int contador = 1;
 
-    public Disciplina(String nomeDisciplina, int cargaHoraria) {
-        this.nomeDisciplina = nomeDisciplina;
+    public Disciplina(String nome, int cargaHoraria) {
+        this.nome = nome;
         this.codigo = gerarCodigoDisciplina();
         this.cargaHoraria = cargaHoraria;
-        this.dataDeCriacao = LocalDate.now();
     }
 
+    public void adicionarProfessorAssociado(String codigoProfessor) {
+        this.professorAssociado.add(codigoProfessor);
+    }
+
+    // Getters e setters --------------------------------------------> OK
     public String getNomeDisciplina() {
-        return nomeDisciplina;
+        return nome;
     }
 
     public void setNomeDisciplina(String nomeDisciplina) {
-        this.nomeDisciplina = nomeDisciplina;
+        this.nome = nomeDisciplina;
     }
 
     public int getCargaHoraria() {
@@ -38,43 +44,41 @@ public class Disciplina {
         this.cargaHoraria = cargaHoraria;
     }
 
-    public void adicionarProfessorAssociado(Professor professor) {
-        this.professoresAssociados.add(professor);
+    public List<String> getProfessoresAssociados() {
+        return professorAssociado;
     }
 
-    public List<Professor> getProfessoresAssociados() {
-        return professoresAssociados;
+    public void setProfessorAssociado(List<String> professorAssociado) {
+        this.professorAssociado = professorAssociado;
     }
 
     public String gerarCodigoDisciplina() {
-        int anoMatricula = LocalDate.now().getYear();
-        int codigo = contador++;
-        return anoMatricula + contador + "";
+        return LocalDate.now().getYear() + String.format("%04d" , contador++);
     }
 
     public String getCodigo() {
         return codigo;
     }
 
+    // Métodos básicos ----------------------------------------------> OK
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Disciplina that = (Disciplina) o;
-        return cargaHoraria == that.cargaHoraria && Objects.equals(nomeDisciplina, that.nomeDisciplina) && Objects.equals(codigo, that.codigo) && Objects.equals(dataDeCriacao, that.dataDeCriacao);
+        return cargaHoraria == that.cargaHoraria && Objects.equals(nome, that.nome) && Objects.equals(codigo, that.codigo) && Objects.equals(professorAssociado, that.professorAssociado);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nomeDisciplina, codigo, cargaHoraria, dataDeCriacao);
+        return Objects.hash(nome, codigo, cargaHoraria, professorAssociado);
     }
 
     @Override
     public String toString() {
-        return "Disciplina{" +
-                "nomeDisciplina='" + nomeDisciplina + '\'' +
-                ", codigo='" + codigo + '\'' +
-                ", cargaHoraria=" + cargaHoraria +
-                ", dataDeCriacao=" + dataDeCriacao +
-                '}';
+        return "DISCIPLINA: \n" +
+                "| Nome: " + getNomeDisciplina() + " | \n" +
+                "| Carga horária: " + getCargaHoraria() + " | \n" +
+                "| Codigo: " + getCodigo() + " | \n" +
+                "| Professores associados: " + String.join(", ", professorAssociado) + " |";
     }
 }

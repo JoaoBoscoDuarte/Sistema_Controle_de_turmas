@@ -2,58 +2,63 @@ package model.faculdade;
 
 import model.disciplina.Disciplina;
 import model.exceptions.*;
-import model.pessoa.Aluno;
 import model.pessoa.Professor;
-import model.servicos.GerenciamentoDeAlunos;
-import model.servicos.GerenciamentoDeDisciplinas;
-import model.servicos.GerenciamentoDeProfessores;
-import model.servicos.GerenciamentoDeTurmas;
+import model.servicos.*;
+
+import java.io.IOException;
 
 
 public class Faculdade {
-    GerenciamentoDeTurmas gerenciamentoDeTurmas;
     GerenciamentoDeAlunos gerenciamentoDeAlunos;
     GerenciamentoDeProfessores gerenciamentoDeProfessores;
+    GerenciamentoDeArquivos gerenciamentoDeArquivos;
     GerenciamentoDeDisciplinas gerenciamentoDeDisciplinas;
+    GerenciamentoDeTurmas gerenciamentoDeTurmas;
+
 
     public Faculdade() {
-        this.gerenciamentoDeTurmas = new GerenciamentoDeTurmas();
         this.gerenciamentoDeAlunos = new GerenciamentoDeAlunos();
         this.gerenciamentoDeProfessores = new GerenciamentoDeProfessores();
-        this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas(this.gerenciamentoDeProfessores);
+        this.gerenciamentoDeArquivos = new GerenciamentoDeArquivos();
+        this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas(gerenciamentoDeProfessores);
+        this.gerenciamentoDeTurmas = new GerenciamentoDeTurmas(gerenciamentoDeAlunos, gerenciamentoDeProfessores, gerenciamentoDeDisciplinas, gerenciamentoDeArquivos);
     }
 
     // Gerenciamento de turmas --------------------------------------------------->
-    public void criarTurma(Disciplina disciplina, String matriculaDoProfessor) throws ProfessorNaoEncontradoException {
-        gerenciamentoDeTurmas.criarTurma(disciplina, matriculaDoProfessor);
+    public void criarTurma(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+        gerenciamentoDeTurmas.criarTurma(nome, matricula);
     }
 
-    public void adicionarAlunoATurma(String matricula, String codigoDaTurma) {
-        gerenciamentoDeTurmas.adicionarAlunoATurma(matricula, codigoDaTurma);
+    public void adicionarAlunoATurma(String matricula, String codigo) {
+        gerenciamentoDeTurmas.adicionarAlunoATurma(matricula, codigo);
     }
 
-    public void adicionarProfessorATurma(String matricula, String codigoDaTurama) {
-        gerenciamentoDeTurmas.adicionarAlunoATurma(matricula, codigoDaTurama);
+    public void atribuirUnidades(int unidades, String codigo) {
+        gerenciamentoDeTurmas.atribuirUnidades(unidades, codigo);
     }
 
-    public void atribuirQuantidadeDeUnidadesAvaliativas(int qtdUnidadesAvaliativas, String codigoDaTurma) {
-        gerenciamentoDeTurmas.atribuirQuantidadeDeUnidadesAvaliativas(qtdUnidadesAvaliativas, codigoDaTurma);
-    }
-
-    public void cadastrarNotasUnidade (String codigoDaTurma, int unidade, Double nota, String matricula) {
-        gerenciamentoDeTurmas.cadastrarNotasUnidade(codigoDaTurma, unidade, nota, matricula);
+    public void cadastrarNotasUnidade (String codigo, int unidade, Double nota, String matricula) throws AlunoNaoEncontradoException {
+        gerenciamentoDeTurmas.cadastrarNotasUnidade(codigo, unidade, nota, matricula);
     }
 
     public void removerAluno(String matricula) throws AlunoNaoEncontradoException {
         gerenciamentoDeTurmas.removerAluno(matricula);
     }
 
-    public String gerarRelatorioDaTurma() {
-        return gerenciamentoDeTurmas.gerarRelatorioDaTurma();
+    public void gerarRelatorioDaTurma() throws IOException {
+        gerenciamentoDeTurmas.gerarRelatorioDaTurma();
     }
 
-    public String listarTurmas() {
+    public StringBuilder listarTurmas() {
         return gerenciamentoDeTurmas.listarTurmas();
+    }
+
+    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException {
+        return gerenciamentoDeTurmas.calcularMedia(matricula, codigo);
+    }
+
+    public String verificarAprovacao(double media) {
+        return gerenciamentoDeTurmas.verificarAprovacao(media);
     }
 
     // Gerenciamento de Alunos --------------------------------------------------->
@@ -62,7 +67,7 @@ public class Faculdade {
     }
 
     public String listarAlunos() {
-        return gerenciamentoDeAlunos.listaAlunos();
+        return gerenciamentoDeAlunos.listarAlunos();
     }
 
     public String consultarDadosAluno(String matricula) throws AlunoNaoEncontradoException {
@@ -78,16 +83,16 @@ public class Faculdade {
         gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, cargaHoraria);
     }
 
-    public String listarDisciplinas() {
+    public StringBuilder listarDisciplinas() {
         return gerenciamentoDeDisciplinas.listaDisciplinas();
     }
 
-    public void associarProfessor(Disciplina disciplina, String matriculaDoProfessor) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
-        gerenciamentoDeDisciplinas.associarProfessor(disciplina, matriculaDoProfessor);
+    public void associarProfessorADisciplina(String nome, String matricula) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+        gerenciamentoDeDisciplinas.associarProfessorADisciplina(nome, matricula);
     }
 
-    public Disciplina procurarDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
-        return gerenciamentoDeDisciplinas.procuraDisciplina(nomeDisciplina);
+    public Disciplina buscaDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
+        return gerenciamentoDeDisciplinas.buscaDisciplina(nomeDisciplina);
     }
 
     // Gerenciamento de Professores ---------------------------------------------->
@@ -95,8 +100,8 @@ public class Faculdade {
         gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email);
     }
 
-    public String listarProfessores() {
-        return  gerenciamentoDeProfessores.listarProfessores();
+    public StringBuilder listarProfessores() {
+        return gerenciamentoDeProfessores.listarProfessores();
     }
 
     public Professor buscaProfessor(String matricula) throws ProfessorNaoEncontradoException {

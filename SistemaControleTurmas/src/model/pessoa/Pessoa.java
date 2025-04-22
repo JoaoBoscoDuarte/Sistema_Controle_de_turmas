@@ -5,6 +5,10 @@ import model.exceptions.PessoaInvalidaException;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/*  ================| Só altere em caso de urgência! |====================
+ *  --------------------Classe 100% concluída-------------------------> OK
+ */
+
 public abstract class Pessoa {
     private String nome;
     private String telefone;
@@ -41,13 +45,21 @@ public abstract class Pessoa {
         if (email == null || email.trim().isEmpty() || !email.contains("@")) {
             throw new PessoaInvalidaException("E-mail inválido.");
         }
+    }
 
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void invalidar() {
+        this.ativo = false;
     }
 
     private String geradorDeMatricula() {
         return LocalDate.now().getYear() + String.format("%04d" , contaMatricula++);
     }
 
+    // Getters e setters --------------------------------------------> OK
     public String getNome() {
         return nome;
     }
@@ -75,10 +87,6 @@ public abstract class Pessoa {
         this.email = email;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
-
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
@@ -95,10 +103,7 @@ public abstract class Pessoa {
         this.dataCriacao = dataCriacao;
     }
 
-    public void invalidar() {
-        this.ativo = false;
-    }
-
+    // Métodos básicos ----------------------------------------------> OK
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

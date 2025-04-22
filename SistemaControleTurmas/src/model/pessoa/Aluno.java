@@ -4,6 +4,10 @@ import model.exceptions.PessoaInvalidaException;
 
 import java.util.Objects;
 
+/*  ================| Só altere em caso de urgência! |====================
+ *  --------------------Classe 100% concluída-------------------------> OK
+ */
+
 public class Aluno extends Pessoa {
     private String curso;
 
@@ -19,6 +23,7 @@ public class Aluno extends Pessoa {
         }
     }
 
+    // Getters e setters --------------------------------------------> OK
     public String getCurso() {
         return curso;
     }
@@ -28,6 +33,7 @@ public class Aluno extends Pessoa {
         this.curso = curso;
     }
 
+    // Métodos básicos ----------------------------------------------> OK
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -38,13 +44,11 @@ public class Aluno extends Pessoa {
     }
     @Override
     public String toString() {
-        return "Aluno{" +
-                "nome='" + getNome() + '\'' +
-                ", telefone='" + getTelefone() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", matricula='" + getMatricula() + '\'' +
-                ", dataCriacao=" + getDataCriacao() +
-                ", curso=" + curso +
-                '}';
+        return "ALUNO: " +
+                "| Nome: " + getNome() + " | \n" +
+                "| Telefone: " + getTelefone() + " | \n" +
+                "| Email: " + getEmail() + " | \n" +
+                "| Matricula: " + getMatricula() + " | \n" +
+                "| Curso: " + curso + " | \n";
     }
 }
