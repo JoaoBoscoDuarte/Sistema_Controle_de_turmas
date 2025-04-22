@@ -53,6 +53,14 @@ public class Faculdade {
         return gerenciamentoDeTurmas.listarTurmas();
     }
 
+    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException {
+        return gerenciamentoDeTurmas.calcularMedia(matricula, codigo);
+    }
+
+    public String verificarAprovacao(double media) {
+        return gerenciamentoDeTurmas.verificarAprovacao(media);
+    }
+
     // Gerenciamento de Alunos --------------------------------------------------->
     public void adicionarAluno(String nome, String telefone, String email, String curso) throws Exception {
         gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email, curso);

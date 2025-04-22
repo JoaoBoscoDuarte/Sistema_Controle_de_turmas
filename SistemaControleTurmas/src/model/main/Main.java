@@ -62,6 +62,76 @@ public class Main {
                 case 4:
                     criarTurma();
                     break;
+
+                case 5:
+                    matricularAlunoEmTurma();
+                    break;
+
+                case 6:
+                    listarAlunosDeUmaTurma();
+                    break;
+
+                case 7:
+                    configurarTurma();
+                    break;
+
+                case 8:
+                    cadastrarNotas();
+                    break;
+
+                case 9:
+                    inativarAluno();
+                    break;
+
+                case 10:
+                    inativarAluno(); // Duplicado, como comentado antes — pode ajustar se for outro caso
+                    break;
+
+                case 11:
+                    gerarRelatorioDeTurma();
+                    break;
+
+                case 12:
+                    encerrarTurmas();
+                    break;
+
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+                    break;
+            }
         }
+    }
+
+    public void cadastrarAluno() {
+    }
+
+    public void cadastrarDisciplina() {
+    }
+
+    public void cadastrarProfessor() {
+    }
+
+    public void criarTurma() {
+    }
+
+    public void matricularAlunoEmTurma() {
+    }
+
+    public void listarAlunosDeUmaTurma() {
+    }
+
+    public void configurarTurma() {
+    }
+
+    public void cadastrarNotas() {
+    }
+
+    public void inativarAluno() {
+    }
+
+    public void gerarRelatorioDeTurma() {
+    }
+
+    public void encerrarTurmas() {
     }
 }
