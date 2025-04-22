@@ -1,32 +1,39 @@
 package model.disciplina;
 
-import model.pessoa.Professor;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/*  ================| Só altere em caso de urgência! |====================
+ *  --------------------Classe 100% concluída-------------------------> OK
+ */
+
 public class Disciplina {
-    private String nomeDisciplina;
+    private String nome;
     private int cargaHoraria;
     private String codigo;
 
     private List<String> professorAssociado = new ArrayList<>();
     private static int contador = 1;
 
-    public Disciplina(String nomeDisciplina, int cargaHoraria) {
-        this.nomeDisciplina = nomeDisciplina;
+    public Disciplina(String nome, int cargaHoraria) {
+        this.nome = nome;
         this.codigo = gerarCodigoDisciplina();
         this.cargaHoraria = cargaHoraria;
     }
 
+    public void adicionarProfessorAssociado(String codigoProfessor) {
+        this.professorAssociado.add(codigoProfessor);
+    }
+
+    // Getters e setters --------------------------------------------> OK
     public String getNomeDisciplina() {
-        return nomeDisciplina;
+        return nome;
     }
 
     public void setNomeDisciplina(String nomeDisciplina) {
-        this.nomeDisciplina = nomeDisciplina;
+        this.nome = nomeDisciplina;
     }
 
     public int getCargaHoraria() {
@@ -35,10 +42,6 @@ public class Disciplina {
 
     public void setCargaHoraria(int cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
-    }
-
-    public void adicionarProfessorAssociado(String codigoProfessor) {
-        this.professorAssociado.add(codigoProfessor);
     }
 
     public List<String> getProfessoresAssociados() {
@@ -57,16 +60,17 @@ public class Disciplina {
         return codigo;
     }
 
+    // Métodos básicos ----------------------------------------------> OK
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Disciplina that = (Disciplina) o;
-        return cargaHoraria == that.cargaHoraria && Objects.equals(nomeDisciplina, that.nomeDisciplina) && Objects.equals(codigo, that.codigo) && Objects.equals(professorAssociado, that.professorAssociado);
+        return cargaHoraria == that.cargaHoraria && Objects.equals(nome, that.nome) && Objects.equals(codigo, that.codigo) && Objects.equals(professorAssociado, that.professorAssociado);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nomeDisciplina, codigo, cargaHoraria, professorAssociado);
+        return Objects.hash(nome, codigo, cargaHoraria, professorAssociado);
     }
 
     @Override
@@ -75,6 +79,6 @@ public class Disciplina {
                 "| Nome: " + getNomeDisciplina() + " | \n" +
                 "| Carga horária: " + getCargaHoraria() + " | \n" +
                 "| Codigo: " + getCodigo() + " | \n" +
-                "| Professor associado: " + getProfessoresAssociados().toString() + " | \n";
+                "| Professores associados: " + String.join(", ", professorAssociado) + " |";
     }
 }

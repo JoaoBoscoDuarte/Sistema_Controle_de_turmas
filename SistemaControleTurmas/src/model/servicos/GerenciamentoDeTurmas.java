@@ -1,16 +1,12 @@
 package model.servicos;
 
 import model.exceptions.*;
-import model.pessoa.Professor;
 import model.turma.Nota;
 import model.turma.Turma;
-import model.turma.media.TiposDeMediaIF;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GerenciamentoDeTurmas {
     private List<Turma> turmas;
@@ -19,8 +15,12 @@ public class GerenciamentoDeTurmas {
     private GerenciamentoDeDisciplinas disciplina;
     private GerenciamentoDeArquivos arquivos;
 
-    public GerenciamentoDeTurmas() {
+    public GerenciamentoDeTurmas(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeArquivos arquivos) {
         this.turmas = new ArrayList<>();
+        this.aluno = aluno;
+        this.professor = professor;
+        this.disciplina = disciplina;
+        this.arquivos = arquivos;
     }
 
     // Método par cria turma ------------------------------------------------------------> OK
@@ -43,10 +43,8 @@ public class GerenciamentoDeTurmas {
 
         // Adiciona o aluno ao mapa e inicializa a lista das notas dele
         if (aluno.getListaAlunos().contains(aluno.buscaAluno(matricula))) {
-            Nota nota = new Nota(turma.getNumeroUnidades());
-            Map<String, List<Double>> notasAluno = nota.getNotasDoAluno();
-
-            notasAluno.put(matricula, new ArrayList<>());
+            Nota nota = new Nota(matricula, turma.getNumeroUnidades());
+            turma.getNotasAluno().add(nota);
         }
     }
 
@@ -61,7 +59,7 @@ public class GerenciamentoDeTurmas {
         }
     }
 
-    // Cadastra notas as unidades
+    // Método para cadastra notas as unidades
     public void cadastrarNotasUnidade(String codigo, int unidade, Double nota, String matricula) throws IntervaloDeNotaException, IntervaloDeUnidadeException, TurmaInvalidaException, AlunoNaoEncontradoException {
         // Encontra a turma
         Turma turma = buscarTurma(codigo);
@@ -75,25 +73,28 @@ public class GerenciamentoDeTurmas {
         if (unidade < 1 || unidade > (turma.getNumeroUnidades())) {
             throw new IntervaloDeUnidadeException("Unidade inválida. Deve estar entre 1 e " + turma.getNumeroUnidades());
         }
-
         for (Nota n : turma.getNotasAluno()) {
-            if (n.getNotasDoAluno().containsKey(matricula)) {
-                List<Double> notas = n.getNotasDoAluno().get(matricula);
+            if (n.getMatricula().equals(matricula)) {
+                List<Double> notas = n.getNotas();
 
                 // Garante que a lista tenha espaço suficiente para a unidade desejada
-                while (notas.size() <= turma.getNumeroUnidades()) {
+                while (notas.size() <= unidade) {
                     notas.add(0.0); // valor padrão
                 }
 
-                // Atualiza a nota na unidade específica
-                notas.set(unidade, nota);
+                // Atualiza a nota na unidade específica (observe o decremento no índice para pegar a posição certa)
+                notas.set(unidade - 1, nota);
             }
         }
     }
 
     // Método para remover aluno pela matrícula
     public void removerAluno(String matricula) throws AlunoNaoEncontradoException {
-        System.out.println("Precisa fazer");
+        for (Turma turma : turmas) {
+            boolean removido = turma.getNotasAluno().removeIf(n -> n.getMatricula().equals(matricula));
+            if (removido) return;
+        }
+        throw new AlunoNaoEncontradoException("Aluno não encontrado em nenhuma turma.");
     }
 
     // Método para gerar o relatório da turma
@@ -103,12 +104,14 @@ public class GerenciamentoDeTurmas {
 
     // Método para listar todas as turmas -----------------------------------> OK
     public StringBuilder listarTurmas() {
-        StringBuilder exibir =  new StringBuilder();
-
-        for (Turma t : turmas) {
-            exibir.append(t + "\n");
+        if (turmas.isEmpty()) {
+            return new StringBuilder("Nenhuma turma cadastrada.");
         }
 
+        StringBuilder exibir =  new StringBuilder();
+        for (Turma t : turmas) {
+            exibir.append(t).append("\n");
+        }
         return exibir;
     }
 
@@ -142,16 +145,7 @@ public class GerenciamentoDeTurmas {
 
     // Método para verificar aprovação --------------------------------------> OK
     public String verificarAprovacao(double media) {
-        String exibir = "";
-
-        if (media < 7) {
-            exibir = "REPROVADO";
-
-        } else if (media >= 7) {
-            exibir = "APROVADO";
-        }
-
-        return exibir;
+        return media >= 7 ? "APROVADO" : "REPROVADO";
     }
 
     // Método para calcular a média de um aluno -----------------------------> OK
@@ -159,16 +153,16 @@ public class GerenciamentoDeTurmas {
         Turma turma = buscarTurma(codigo);
 
         for (Nota n : turma.getNotasAluno()) {
-            if (n.getNotasDoAluno().containsKey(matricula)) {
-                List<Double> notas = n.getNotasDoAluno().get(matricula);
-                turma.getTipoDeMedia().calcularMedia(notas);
+            if (n.getMatricula().equals(matricula)) {
+                if (turma.getTipoDeMedia() == null) {
+                    throw new TipoDeMediaNaoDefinidaException("Tipo de média não foi definido.");
+                }
+                return turma.getTipoDeMedia().calcularMedia(n.getNotas());
 
-            } else {
-                throw new AlunoNaoEncontradoException("Aluno não encontrado na turma.");
             }
         }
 
-        return 0;
+        throw new AlunoNaoEncontradoException("Aluno não encontrado na turma.");
     }
 
     public List<Turma> getTurmas() {

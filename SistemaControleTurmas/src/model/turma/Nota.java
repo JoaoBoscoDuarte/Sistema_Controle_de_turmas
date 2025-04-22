@@ -1,23 +1,22 @@
 package model.turma;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Nota {
-    private final Map<String, List<Double>> notasDoAluno; // Key: Matrículo do aluno, Value: notas
-    private final int numeroUnidades;                     // Tamanho da Array = nº Unidades
+    private final String matricula;
+    private final List<Double> notas;
 
-    public Nota(int numeroUnidades) {
-        this.notasDoAluno = new HashMap<>();
-        this.numeroUnidades = numeroUnidades;
+    public Nota(String matricula, int numeroUnidades) {
+        this.matricula = matricula;
+        this.notas = new ArrayList<>(numeroUnidades); // pode iniciar com capacidade
     }
 
-    public Map<String, List<Double>> getNotasDoAluno() {
-        return notasDoAluno;
-    }
+    public String getMatricula() { return matricula; }
+    public List<Double> getNotas() { return notas; }
 
-    public int getNumeroUnidades() {
-        return numeroUnidades;
+    public void adicionarNota(double nota) {
+        notas.add(nota);
     }
 }
+

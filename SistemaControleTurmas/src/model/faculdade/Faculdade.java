@@ -3,23 +3,23 @@ package model.faculdade;
 import model.disciplina.Disciplina;
 import model.exceptions.*;
 import model.pessoa.Professor;
-import model.servicos.GerenciamentoDeAlunos;
-import model.servicos.GerenciamentoDeDisciplinas;
-import model.servicos.GerenciamentoDeProfessores;
-import model.servicos.GerenciamentoDeTurmas;
+import model.servicos.*;
 
 
 public class Faculdade {
-    GerenciamentoDeTurmas gerenciamentoDeTurmas;
     GerenciamentoDeAlunos gerenciamentoDeAlunos;
     GerenciamentoDeProfessores gerenciamentoDeProfessores;
+    GerenciamentoDeArquivos gerenciamentoDeArquivos;
     GerenciamentoDeDisciplinas gerenciamentoDeDisciplinas;
+    GerenciamentoDeTurmas gerenciamentoDeTurmas;
+
 
     public Faculdade() {
-        this.gerenciamentoDeTurmas = new GerenciamentoDeTurmas();
         this.gerenciamentoDeAlunos = new GerenciamentoDeAlunos();
         this.gerenciamentoDeProfessores = new GerenciamentoDeProfessores();
-        this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas();
+        this.gerenciamentoDeArquivos = new GerenciamentoDeArquivos();
+        this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas(gerenciamentoDeProfessores);
+        this.gerenciamentoDeTurmas = new GerenciamentoDeTurmas(gerenciamentoDeAlunos, gerenciamentoDeProfessores, gerenciamentoDeDisciplinas, gerenciamentoDeArquivos);
     }
 
     // Gerenciamento de turmas --------------------------------------------------->

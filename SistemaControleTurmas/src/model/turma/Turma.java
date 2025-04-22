@@ -2,11 +2,16 @@ package model.turma;
 
 import model.disciplina.Disciplina;
 import model.pessoa.Professor;
+import model.turma.media.MediaSimples;
 import model.turma.media.TiposDeMediaIF;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+/*  ================| Só altere em caso de urgência! |====================
+ *  ----------------------Classe 100% concluída-----------------------> OK
+ */
 
 public class Turma {
 
@@ -15,7 +20,8 @@ public class Turma {
     private int numeroUnidades;
     private TiposDeMediaIF tipoDeMedia;
 
-    // Coleção de alunos do tipo Nota (matricula --> notas)
+    // Temos uma lista Nota | Nota é uma classe que guarda uma matrícula (referente a uma aluno) e suas notas
+    // Logo, temos Nota (aponta para um aluno único) e NotasAluno (aponta para todas as notas dos alunos)
     private List<Nota> notasAluno;
     private List<String> matriculasProfessores;
 
@@ -28,8 +34,8 @@ public class Turma {
         this.notasAluno = new ArrayList<>();
         this.matriculasProfessores = new ArrayList<>();
         this.codigoTurma = geraCodigoTurma();
-        this.tipoDeMedia = null;
-        this.numeroUnidades = 0;   // Valor incial
+        this.tipoDeMedia = new MediaSimples();           // valor padrão
+        this.numeroUnidades = 0;                         // Valor padrão
     }
 
     public static String geraCodigoTurma() {

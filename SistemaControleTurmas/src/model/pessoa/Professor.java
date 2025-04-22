@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/*  ================| Só altere em caso de urgência! |====================
+ *  --------------------Classe 100% concluída-------------------------> OK
+ */
+
 public class Professor extends Pessoa{
     private List<Disciplina> disciplinasMinistradas;
 
@@ -14,6 +18,7 @@ public class Professor extends Pessoa{
         disciplinasMinistradas = new ArrayList<>();
     }
 
+    // Getters e setters --------------------------------------------> OK
     public List<Disciplina> getDisciplinasMinistradas() {
         return disciplinasMinistradas;
     }
@@ -22,6 +27,7 @@ public class Professor extends Pessoa{
         this.disciplinasMinistradas = disciplinasMinistradas;
     }
 
+    // Métodos básicos ----------------------------------------------> OK
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

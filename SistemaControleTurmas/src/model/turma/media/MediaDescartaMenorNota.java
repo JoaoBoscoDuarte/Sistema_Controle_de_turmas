@@ -1,7 +1,10 @@
 package model.turma.media;
 
 import java.util.List;
-import java.util.Map;
+
+/*  ================| Só altere em caso de urgência! |====================
+ *  ----------------------Classe 100% concluída-----------------------> OK
+ */
 
 public class MediaDescartaMenorNota implements TiposDeMediaIF {
 

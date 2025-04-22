@@ -7,6 +7,10 @@ import model.exceptions.AlunoNaoEncontradoException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*  ================| Só altere em caso de urgência! |====================
+ *  ----------------------Classe 100% concluída-----------------------> OK
+ */
+
 public class GerenciamentoDeAlunos {
     private final List<Aluno> listaAlunos = new ArrayList<>();
 
