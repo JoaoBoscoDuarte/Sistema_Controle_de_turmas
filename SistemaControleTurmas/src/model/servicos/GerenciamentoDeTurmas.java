@@ -4,7 +4,9 @@ import model.exceptions.*;
 import model.pessoa.Professor;
 import model.turma.Nota;
 import model.turma.Turma;
+import model.turma.media.TiposDeMediaIF;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,7 @@ public class GerenciamentoDeTurmas {
     private GerenciamentoDeAlunos aluno;
     private GerenciamentoDeProfessores professor;
     private GerenciamentoDeDisciplinas disciplina;
+    private GerenciamentoDeArquivos arquivos;
 
     public GerenciamentoDeTurmas() {
         this.turmas = new ArrayList<>();
@@ -90,12 +93,12 @@ public class GerenciamentoDeTurmas {
 
     // Método para remover aluno pela matrícula
     public void removerAluno(String matricula) throws AlunoNaoEncontradoException {
-
+        System.out.println("Precisa fazer");
     }
 
-    // Gerar o relatório da turma
-    public String gerarRelatorioDaTurma() {
-        return "FAZER ESSE RELATORIO MIZERAAAAAA";
+    // Método para gerar o relatório da turma
+    public void gerarRelatorioDaTurma() throws IOException {
+        arquivos.gerarRelatorioTxt();
     }
 
     // Método para listar todas as turmas -----------------------------------> OK
@@ -135,5 +138,40 @@ public class GerenciamentoDeTurmas {
         }
 
         throw new TurmaInvalidaException("A turma não existe.");
+    }
+
+    // Método para verificar aprovação --------------------------------------> OK
+    public String verificarAprovacao(double media) {
+        String exibir = "";
+
+        if (media < 7) {
+            exibir = "REPROVADO";
+
+        } else if (media >= 7) {
+            exibir = "APROVADO";
+        }
+
+        return exibir;
+    }
+
+    // Método para calcular a média de um aluno -----------------------------> OK
+    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException {
+        Turma turma = buscarTurma(codigo);
+
+        for (Nota n : turma.getNotasAluno()) {
+            if (n.getNotasDoAluno().containsKey(matricula)) {
+                List<Double> notas = n.getNotasDoAluno().get(matricula);
+                turma.getTipoDeMedia().calcularMedia(notas);
+
+            } else {
+                throw new AlunoNaoEncontradoException("Aluno não encontrado na turma.");
+            }
+        }
+
+        return 0;
+    }
+
+    public List<Turma> getTurmas() {
+        return turmas;
     }
 }

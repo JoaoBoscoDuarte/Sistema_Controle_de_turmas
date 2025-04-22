@@ -38,13 +38,11 @@ public class Aluno extends Pessoa {
     }
     @Override
     public String toString() {
-        return "Aluno{" +
-                "nome='" + getNome() + '\'' +
-                ", telefone='" + getTelefone() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", matricula='" + getMatricula() + '\'' +
-                ", dataCriacao=" + getDataCriacao() +
-                ", curso=" + curso +
-                '}';
+        return "ALUNO: " +
+                "| Nome: " + getNome() + " | \n" +
+                "| Telefone: " + getTelefone() + " | \n" +
+                "| Email: " + getEmail() + " | \n" +
+                "| Matricula: " + getMatricula() + " | \n" +
+                "| Curso: " + curso + " | \n";
     }
 }

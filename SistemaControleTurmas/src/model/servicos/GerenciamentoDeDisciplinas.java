@@ -90,4 +90,8 @@ public class GerenciamentoDeDisciplinas {
         }
         return false;
     }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
 }

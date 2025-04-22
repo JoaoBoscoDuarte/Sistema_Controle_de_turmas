@@ -1,8 +1,6 @@
 package model.turma;
 
 import model.disciplina.Disciplina;
-import model.exceptions.AlunoNaoEncontradoException;
-import model.exceptions.TipoDeMediaNaoDefinidaException;
 import model.pessoa.Professor;
 import model.turma.media.TiposDeMediaIF;
 
@@ -32,36 +30,6 @@ public class Turma {
         this.codigoTurma = geraCodigoTurma();
         this.tipoDeMedia = null;
         this.numeroUnidades = 0;   // Valor incial
-    }
-
-    public double calcularMedia(String matricula) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException {
-        if (this.tipoDeMedia.equals(null)) {
-            throw new TipoDeMediaNaoDefinidaException("O tipo de média da turma não foi definida. Configure o tipo de média.");
-        }
-
-        for (Nota n : notasAluno) {
-            if (n.getMatricula().equals(matricula)) {
-                return tipoDeMedia.calcularMedia(n.getNotasDoAluno());
-
-            } else {
-                throw new AlunoNaoEncontradoException("Aluno não encontrado na turma.");
-            }
-        }
-
-        return 0;
-    }
-
-    public String verificarAprovacao(double media) {
-        String exibir = "";
-
-        if (media < 7) {
-            exibir = "REPROVADO";
-
-        } else if (media >= 7) {
-            exibir = "APROVADO";
-        }
-
-        return exibir;
     }
 
     public static String geraCodigoTurma() {
@@ -122,5 +90,16 @@ public class Turma {
 
     public void setCodigoTurma(String codigoTurma) {
         this.codigoTurma = codigoTurma;
+    }
+
+    @Override
+    public String toString() {
+        return "TURMA: " +
+                "| Disciplina associada: " + disciplina.getNomeDisciplina() + " | \n" +
+                "| Professor: " + professor.getNome() + " | \n" +
+                "| Nº Unidades Avaliativas: " + getNumeroUnidades() + " | \n" +
+                "| Tipo de Média: " + getTipoDeMedia() + " | \n" +
+                "| Alunos associados: " + getNotasAluno().toString() + " | \n" +
+                "| Codigo da turma: " + getCodigoTurma() + " | \n";
     }
 }

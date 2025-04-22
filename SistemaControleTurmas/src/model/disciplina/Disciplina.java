@@ -71,11 +71,10 @@ public class Disciplina {
 
     @Override
     public String toString() {
-        return "Disciplina{" +
-                "nomeDisciplina='" + nomeDisciplina + '\'' +
-                ", codigo='" + codigo + '\'' +
-                ", cargaHoraria=" + cargaHoraria +
-                ", professoresAssociados=" + professorAssociado +
-                '}';
+        return "DISCIPLINA: \n" +
+                "| Nome: " + getNomeDisciplina() + " | \n" +
+                "| Carga horária: " + getCargaHoraria() + " | \n" +
+                "| Codigo: " + getCodigo() + " | \n" +
+                "| Professor associado: " + getProfessoresAssociados().toString() + " | \n";
     }
 }
