@@ -92,6 +92,7 @@ public class GerenciamentoDeTurmas {
     public void removerAluno(String matricula) throws AlunoNaoEncontradoException {
         for (Turma turma : turmas) {
             boolean removido = turma.getNotasAluno().removeIf(n -> n.getMatricula().equals(matricula));
+            aluno.desativaAluno(matricula);
             if (removido) return;
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado em nenhuma turma.");

@@ -23,7 +23,7 @@ public class GerenciamentoDeAlunos {
         listaAlunos.add(aluno);
     }
 
-    public String listaAlunos() {
+    public String listarAlunos() {
         StringBuilder lista = new StringBuilder();
         for (Aluno aluno : listaAlunos) {
             lista.append(aluno).append("\n");

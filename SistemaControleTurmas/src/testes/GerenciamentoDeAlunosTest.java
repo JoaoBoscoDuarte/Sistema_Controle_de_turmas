@@ -33,7 +33,7 @@ class GerenciamentoDeAlunosTest {
     void listaAlunos() throws Exception {
         gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
         gerenciamento.adicionaAluno("Beatriz", "44555666777", "bea@email", "Sistema");
-        String lista = gerenciamento.listaAlunos();
+        String lista = gerenciamento.listarAlunos();
         assertTrue(lista.contains("Beatriz"));
         assertTrue(lista.contains("SI"));
     }
