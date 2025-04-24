@@ -24,7 +24,7 @@ public class Main {
 
         boolean repetir = true;
         while (repetir) {
-            final String menuPrincipal =
+            final String MENU_PRINCIPAL =
                     "===========| Sistema de controle de turmas |===========\n" +
                             "[1] Cadastrar Aluno\n" +
                             "[2] Cadastrar Disciplina\n" +
@@ -40,10 +40,26 @@ public class Main {
                             "[12] Encerrar Turmas\n" +
                             "[0] Sair\n";
 
-            System.out.println(menuPrincipal);
-            int escolha = sc.nextInt();
-            sc.nextLine();
+            System.out.println(MENU_PRINCIPAL);
 
+            // Verifica e evita entrada inválida (Aceita apenas números inteiros)
+            int escolha = 0;
+            boolean entradaValida = false;
+
+            while (!entradaValida) {
+                String entrada = sc.nextLine();
+
+                try {
+                    escolha = Integer.parseInt(entrada);
+                    entradaValida = true;
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Erro: Escolha aceita apenas números inteiros");
+                    System.out.println(MENU_PRINCIPAL);
+                }
+            }
+
+            // Escolhas (chamada das operações)
             switch (escolha) {
                 case 0:
                     repetir = false;
@@ -107,7 +123,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    System.out.println("Opção inválida. Tente novamente.\n");
                     break;
             }
         }
@@ -128,6 +144,7 @@ public class Main {
     }
 
     public void cadastrarDisciplina() {
+
     }
 
     public void cadastrarProfessor() {

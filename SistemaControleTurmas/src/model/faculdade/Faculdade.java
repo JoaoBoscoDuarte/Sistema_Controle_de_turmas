@@ -78,6 +78,11 @@ public class Faculdade {
         gerenciamentoDeAlunos.desativaAluno(matricula);
     }
 
+    public boolean existeAluno(String matricula) {
+        return gerenciamentoDeAlunos.existeAluno(matricula);
+    }
+
+
     // Gerenciamento de disciplinas ---------------------------------------------->
     public void cadastrarDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
         gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, cargaHoraria);
