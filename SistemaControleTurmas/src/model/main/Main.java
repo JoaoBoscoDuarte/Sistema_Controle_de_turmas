@@ -1,5 +1,7 @@
 package model.main;
 
+import model.exceptions.AlunoNaoEncontradoException;
+import model.exceptions.PessoaInvalidaException;
 import model.faculdade.Faculdade;
 
 import java.util.Scanner;
@@ -13,24 +15,24 @@ public class Main {
         this.sc = new Scanner(System.in);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Main main = new Main();
         main.executar();
     }
 
-    public void executar() {
+    public void executar() throws Exception {
 
         boolean repetir = true;
         while (repetir) {
             final String menuPrincipal =
                     "===========| Sistema de controle de turmas |===========\n" +
                             "[1] Cadastrar Aluno\n" +
-                            "[2] Cadastrar disciplina\n" +
-                            "[3] Cadastrar professor\n" +
+                            "[2] Cadastrar Disciplina\n" +
+                            "[3] Cadastrar Professor\n" +
                             "[4] Criar Turma\n" +
                             "[5] Matricular Aluno em uma Turma\n" +
                             "[6] Listar Alunos de uma Turma\n" +
-                            "[7] Configurar turma\n" +
+                            "[7] Configurar Turma\n" +
                             "[8] Cadastrar notas\n" +
                             "[9] Inativar um aluno\n" +
                             "[10] Inativar um aluno\n" +
@@ -48,7 +50,11 @@ public class Main {
                     break;
 
                 case 1:
-                    cadastrarAluno();
+                    try {
+                        cadastrarAluno();
+                    } catch (PessoaInvalidaException e) {
+                        System.out.println("Erro ao tentar cadastrar aluno: " +e.getMessage());
+                    }
                     break;
 
                 case 2:
@@ -80,11 +86,16 @@ public class Main {
                     break;
 
                 case 9:
-                    inativarAluno();
+                    try {
+                        inativarAluno();
+                    } catch (AlunoNaoEncontradoException e) {
+                        System.out.println("Erro ao tentar desativar aluno: " +e.getMessage());
+                    }
                     break;
 
                 case 10:
                     inativarAluno(); // Duplicado, como comentado antes — pode ajustar se for outro caso
+                    //é complicado
                     break;
 
                 case 11:
@@ -102,7 +113,18 @@ public class Main {
         }
     }
 
-    public void cadastrarAluno() {
+    public void cadastrarAluno() throws Exception {
+        System.out.println("Informe o nome do aluno: ");
+        String nome = sc.nextLine();
+        System.out.println("Informe o telefone do aluno: ");
+        String telefone = sc.nextLine();
+        System.out.println("Informe o e-mail do aluno: ");
+        String email = sc.nextLine();
+        System.out.println("Informe o curso do aluno: ");
+        String curso = sc.nextLine();
+
+        faculdade.adicionarAluno(nome, telefone, email, curso);
+        System.out.println("Aluno cadastrado.");
     }
 
     public void cadastrarDisciplina() {
@@ -126,7 +148,18 @@ public class Main {
     public void cadastrarNotas() {
     }
 
-    public void inativarAluno() {
+    public void inativarAluno() throws AlunoNaoEncontradoException {
+        System.out.println("Informe a matrícula do aluno: ");
+        String matricula = sc.nextLine();
+
+        boolean alunoEstaAtivo = faculdade.existeAluno(matricula);
+
+        if (alunoEstaAtivo) {
+            faculdade.desativaAluno(matricula);
+            System.out.println("Aluno desativado.");
+        } else {
+            System.out.println("Aluno não encontrado ou já inativo.");
+        }
     }
 
     public void gerarRelatorioDeTurma() {
