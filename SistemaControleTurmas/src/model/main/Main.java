@@ -1,6 +1,7 @@
 package model.main;
 
 import model.exceptions.AlunoNaoEncontradoException;
+import model.exceptions.DisciplinaJaCadastradaException;
 import model.exceptions.PessoaInvalidaException;
 import model.faculdade.Faculdade;
 
@@ -74,11 +75,20 @@ public class Main {
                     break;
 
                 case 2:
-                    cadastrarDisciplina();
+                    try {
+                        cadastrarDisciplina();
+                    } catch (DisciplinaJaCadastradaException e){
+                        System.out.println("Falha ao cadastrar disciplina: " + e.getMessage());
+                    }
                     break;
 
                 case 3:
-                    cadastrarProfessor();
+                    // Tratanado exceções referentes ao cadastramento de professor
+                    try {
+                        cadastrarProfessor();
+                    } catch (PessoaInvalidaException e){
+                        System.out.println("Falha ao tentar cadastrar professor: " + e.getMessage());
+                    }
                     break;
 
                 case 4:
@@ -98,7 +108,12 @@ public class Main {
                     break;
 
                 case 8:
-                    cadastrarNotas();
+                    // Tratando exceções referente ao cadastramento de notas
+                    try {
+                        cadastrarNotas();
+                    } catch (AlunoNaoEncontradoException e){
+                        System.out.println("Falha ao cadastrar nota: " + e.getMessage());
+                    }
                     break;
 
                 case 9:
@@ -143,11 +158,27 @@ public class Main {
         System.out.println("Aluno cadastrado.");
     }
 
-    public void cadastrarDisciplina() {
+    public void cadastrarDisciplina() throws DisciplinaJaCadastradaException {
+
+        System.out.println("Informe o nome da disciplina: ");
+        String disciplina = sc.nextLine();
+        System.out.println("Informe a carga horária: ");
+        int cargaHoraria = sc.nextInt();
+        faculdade.cadastrarDisciplina(disciplina,cargaHoraria);
 
     }
 
-    public void cadastrarProfessor() {
+    public void cadastrarProfessor() throws Exception {
+        // Recebendo dados do professor e cadastrando no sistema
+
+        System.out.println("Informe o nome do professor: ");
+        String nome = sc.nextLine();
+        System.out.println("Informe o telefone do professor: ");
+        String telefone = sc.nextLine();
+        System.out.println("Informe o e-mail do professor: ");
+        String email = sc.nextLine();
+        faculdade.adicionarProfessor(nome, telefone, email);
+        System.out.println("Professor cadastrado.");
     }
 
     public void criarTurma() {
@@ -162,7 +193,19 @@ public class Main {
     public void configurarTurma() {
     }
 
-    public void cadastrarNotas() {
+    public void cadastrarNotas() throws AlunoNaoEncontradoException {
+        //Ver a quetão da quantidade de unidades avaliativas
+
+        System.out.println("Informe o código da disciplina: ");
+        String codigo = sc.nextLine();
+        System.out.println("Informe a unidade avaliativa: ");
+        int unidade = sc.nextInt();
+        System.out.println("Informe a nota: ");
+        double nota = sc.nextDouble();
+        System.out.println("Informe a matricula do aluno: ");
+        String matricula = sc.nextLine();
+        faculdade.cadastrarNotasUnidade(codigo, unidade, nota, matricula);
+        System.out.println("Nota cadastradas.");
     }
 
     public void inativarAluno() throws AlunoNaoEncontradoException {
