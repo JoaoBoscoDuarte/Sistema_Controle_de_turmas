@@ -22,7 +22,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
     }
 
     // Método que cadastra uma nova disciplina ---------------------------------------------> OK
-    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, NomeDaDisciplinaInvalidoException, DisciplinaInvalidaException {
+    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, DisciplinaInvalidaException {
         validaNomeDisciplina(nome);
 
         if (cargaHoraria <= 0) {
@@ -34,9 +34,8 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         }
 
         if (nome == null) {
-            throw new NomeDaDisciplinaInvalidoException("O nome da disciplina não pode ser vazil");
+            throw new DisciplinaInvalidaException("O nome da disciplina não pode ser vazil");
         }
-
         this.disciplinas.add(new Disciplina(nome, cargaHoraria));
     }
 
