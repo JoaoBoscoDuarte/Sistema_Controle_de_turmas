@@ -22,7 +22,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
     }
 
     // Método que cadastra uma nova disciplina ---------------------------------------------> OK
-    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, DisciplinaInvalidaException {
+    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, NomeDaDisciplinaInvalidoException, DisciplinaInvalidaException {
         validaNomeDisciplina(nome);
 
         if (cargaHoraria <= 0) {
