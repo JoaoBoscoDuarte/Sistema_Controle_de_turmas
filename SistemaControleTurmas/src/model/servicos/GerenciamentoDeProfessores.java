@@ -1,7 +1,10 @@
 package model.servicos;
 
+import model.disciplina.Disciplina;
 import model.exceptions.ProfessorNaoEncontradoException;
 import model.pessoa.Professor;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +12,19 @@ import java.util.List;
  *  ----------------------Classe 100% concluída-----------------------> OK
  */
 
-public class GerenciamentoDeProfessores {
+public class GerenciamentoDeProfessores implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final List<Professor> LISTA_DE_PROFESSORES = new ArrayList<>();
 
     // Adiciona professor
-    public void adicionarProfessor(String nome, String telefone , String email) throws Exception {
+    public void adicionarProfessor(String nome, String telefone, String email) throws Exception {
         Professor professor = new Professor(nome, telefone, email);
+        LISTA_DE_PROFESSORES.add(professor);
+    }
+
+    public void adicionarProfessor(String nome, String telefone , String email, List<Disciplina> disciplinaDoProfessor) throws Exception {
+        Professor professor = new Professor(nome, telefone, email, disciplinaDoProfessor);
         LISTA_DE_PROFESSORES.add(professor);
     }
 

@@ -2,13 +2,14 @@ package model.pessoa;
 
 import model.exceptions.PessoaInvalidaException;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /*  ================| Só altere em caso de urgência! |====================
  *  --------------------Classe 100% concluída-------------------------> OK
  */
 
-public class Aluno extends Pessoa {
+public class Aluno extends Pessoa implements Serializable {
     private String curso;
 
     public Aluno(String nome, String telefone, String email, String curso) throws PessoaInvalidaException {
@@ -42,6 +43,7 @@ public class Aluno extends Pessoa {
         return Objects.equals(curso, aluno.curso);
 
     }
+
     @Override
     public String toString() {
         return "ALUNO: " +

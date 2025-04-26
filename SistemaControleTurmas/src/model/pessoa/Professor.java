@@ -11,11 +11,18 @@ import java.util.Objects;
  */
 
 public class Professor extends Pessoa{
+    private static final long serialVersionUID = 1L;
+
     private List<Disciplina> disciplinasMinistradas;
 
     public Professor(String nome, String telefone, String email) throws Exception {
         super(nome, telefone, email);
         disciplinasMinistradas = new ArrayList<>();
+    }
+
+    public Professor(String nome, String telefone, String email, List<Disciplina> disciplinasDoProfessor) throws Exception {
+        super(nome, telefone, email);
+        disciplinasMinistradas = disciplinasDoProfessor;
     }
 
     // Getters e setters --------------------------------------------> OK

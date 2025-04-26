@@ -1,9 +1,12 @@
 package model.main;
 
+import model.disciplina.Disciplina;
 import model.exceptions.*;
 import model.faculdade.Faculdade;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -62,6 +65,7 @@ public class Main {
             switch (escolha) {
                 case 0:
                     repetir = false;
+                    faculdade.salvaControleDeTurmas(faculdade);
                     break;
 
                 case 1:
@@ -69,21 +73,28 @@ public class Main {
                     try {
                         cadastrarAluno();
                     } catch (PessoaInvalidaException e) {
-                        System.out.println("Falha ao cadastrar aluno: " +e.getMessage());
+                        System.out.println("Falha ao cadastrar aluno: " + e.getMessage());
                     }
                     break;
 
                 case 2:
-                    //Ajustes nas exceções para cadastrar disciplina
+                    // Caso de uso concluído ---------------------------------------------------> OK
                     try {
                         cadastrarDisciplina();
+
                     } catch (DisciplinaJaCadastradaException e){
                         System.out.println("Falha ao cadastrar disciplina: " + e.getMessage());
+
                     } catch (DisciplinaInvalidaException e) {
-                        System.out.println("Falha no nome da disciplina: " +e.getMessage());
+                        System.out.println("Falha no nome da disciplina: " + e.getMessage());
+
                     } catch (CargaHorariaInvalidaException e) {
-                        System.out.println("Falha quanto a carga horária informada: " +e.getMessage());
+                        System.out.println("Falha quanto a carga horária informada: " + e.getMessage());
+
+                    } catch (NomeDaDisciplinaInvalidoException e) {
+                        System.out.println("O nome da disciplina não pode ser vazio");
                     }
+
                     break;
 
                 case 3:
@@ -156,54 +167,109 @@ public class Main {
         }
     }
 
+    // Método de cadastro aluno --------------------------------------------------->  Falta o tratamento de exceções
     public void cadastrarAluno() throws Exception {
         //Recebendo dados do aluno e cadastrando no sistema
         System.out.println("Informe o nome do aluno: ");
         String nome = sc.nextLine();
+
         System.out.println("Informe o telefone do aluno: ");
         String telefone = sc.nextLine();
+
         System.out.println("Informe o e-mail do aluno: ");
         String email = sc.nextLine();
+
         System.out.println("Informe o curso do aluno: ");
         String curso = sc.nextLine();
 
         faculdade.adicionarAluno(nome, telefone, email, curso);
         System.out.println("Aluno cadastrado.");
+
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
-    public void cadastrarDisciplina() throws DisciplinaJaCadastradaException {
+    // Método de cadastro da disciplina -------------------------------------------> Falta o tratamento de exceções
+    public void cadastrarDisciplina() throws DisciplinaJaCadastradaException, IOException {
+        // Recebendo os dados da disciplina e cadastrando
         System.out.println("Informe o nome da disciplina: ");
         String disciplina = sc.nextLine();
+
         System.out.println("Informe a carga horária: ");
         int cargaHoraria = sc.nextInt();
+        sc.nextLine();
 
-        faculdade.cadastrarDisciplina(disciplina,cargaHoraria);
+        faculdade.cadastrarDisciplina(disciplina, cargaHoraria);
         System.out.println("Disciplina cadastrada.");
+
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
+    // Método de cadastro de professor ------------------------------------------->  Falta o tratamento de exceções
     public void cadastrarProfessor() throws Exception {
+        List<Disciplina>  disciplinasDoProfessor = new ArrayList<>();
         // Recebendo dados do professor e cadastrando no sistema
-
         System.out.println("Informe o nome do professor: ");
         String nome = sc.nextLine();
+
+        // Aqui o usuário pode escolher se quer passar todas as disciplinas do professor na criação (conforme o caso de uso)
+        System.out.println("Gostaria de adicionar as disciplinas do professor agora? [s]/[n]");
+        String escolha = sc.nextLine().toLowerCase();
+
+        boolean comDisciplinas = false;
+        if (escolha.equals("s")) {
+            try {
+                System.out.println("Quantidade de disciplinas que deseja adicionar: ");
+                int quantidade = sc.nextInt();
+                sc.nextLine();
+
+                for (int i = 0; i < quantidade; i++) {
+                    System.out.println("Insira o nome da disciplina: ");
+                    String nomeDisciplina = sc.nextLine();
+
+                    if (faculdade.existeDisciplina(nomeDisciplina)) {
+                        disciplinasDoProfessor.add(faculdade.buscaDisciplina(nomeDisciplina));
+                    }
+                }
+
+                comDisciplinas = true;
+            } catch (DisciplinaNaoEncontradaException e) {
+                throw new DisciplinaNaoEncontradaException("Disciplina não existe");
+            }
+        }
+
         System.out.println("Informe o telefone do professor: ");
         String telefone = sc.nextLine();
+
         System.out.println("Informe o e-mail do professor: ");
         String email = sc.nextLine();
-        faculdade.adicionarProfessor(nome, telefone, email);
-        System.out.println("Professor cadastrado.");
+
+        if (comDisciplinas) {
+            faculdade.adicionarProfessor(nome, telefone, email, disciplinasDoProfessor);
+
+        } else {
+            faculdade.adicionarProfessor(nome, telefone, email);
+            System.out.println("Professor cadastrado.");
+        }
+
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
-    public void criarTurma() throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+    // Método para criar uma turma ------------------------------------------->  Falta o tratamento de exceções
+    public void criarTurma() throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, IOException {
         System.out.println("Informe o nome da disciplina: ");
         String nomeDisciplina = sc.nextLine();
+
         System.out.println("Informe o id do professor: ");
         String idProfessor = sc.nextLine();
+
         faculdade.criarTurma(nomeDisciplina, idProfessor);
         System.out.println("Turma criada com sucesso.");
+
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
-    public void matricularAlunoEmTurma() throws TurmaInvalidaException, AlunoNaoEncontradoException {
+    // Método para matricular um aluno a uma turma ------------------------------------------->  Falta o tratamento de exceções
+    public void matricularAlunoEmTurma() throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
 
@@ -222,11 +288,19 @@ public class Main {
 
         faculdade.adicionarAlunoATurma(matricula, codigo);
         System.out.println("Aluno matriculado a turma.");
+
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
+    // Método de listagem de alunos de uma turma ------------------------------------------->  Falta o tratamento de exceções
     public void listarAlunosDeUmaTurma() {
         //verificar se esse metodo esta correto
         System.out.println("Alunos da turma: \n" + faculdade.listarAlunos());
+    }
+
+    // Método de listagem de alunos da faculdade
+    public void listarAlunosdDaFaculdade() {
+        System.out.println("Precisa listar os alunos da faculdade");
     }
 
     public void configurarTurma() {
@@ -234,15 +308,18 @@ public class Main {
 
     public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException {
         //Ver a quetão da quantidade de unidades avaliativas
-
         System.out.println("Informe o código da disciplina: ");
         String codigo = sc.nextLine();
+
         System.out.println("Informe a unidade avaliativa: ");
         int unidade = sc.nextInt();
+
         System.out.println("Informe a nota: ");
         double nota = sc.nextDouble();
+
         System.out.println("Informe a matricula do aluno: ");
         String matricula = sc.nextLine();
+
         faculdade.cadastrarNotasUnidade(codigo, unidade, nota, matricula);
         System.out.println("Nota cadastrada.");
     }
@@ -260,6 +337,7 @@ public class Main {
         System.out.println("Aluno desativado.");
     }
 
+    // Método que gera os relatŕoios da turma ------------------------------------------->  Falta o tratamento de exceções
     public void gerarRelatorioDeTurma() throws IOException {
         faculdade.gerarRelatorioDaTurma();
         System.out.println("Relatório da turma gerado com sucesso!\n");

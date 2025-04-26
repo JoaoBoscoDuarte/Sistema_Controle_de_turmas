@@ -1,14 +1,20 @@
 package model.servicos;
 
+import model.disciplina.Disciplina;
 import model.exceptions.*;
+import model.pessoa.Aluno;
+import model.pessoa.Professor;
 import model.turma.Nota;
 import model.turma.Turma;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GerenciamentoDeTurmas {
+public class GerenciamentoDeTurmas implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private List<Turma> turmas;
     private GerenciamentoDeAlunos aluno;
     private GerenciamentoDeProfessores professor;
@@ -34,6 +40,12 @@ public class GerenciamentoDeTurmas {
         }
 
         turmas.add(new Turma(disciplina.buscaDisciplina(nome), professor.buscaProfessor(matricula)));
+
+        //Adiciona a disciplina na lista do professor (caso ele não tenha a disciplina cadastrada antes
+        Professor professorDaTurma = professor.buscaProfessor(matricula);
+        if (!professorDaTurma.getDisciplinasMinistradas().contains(disciplina)) {
+            professorDaTurma.getDisciplinasMinistradas().add(disciplina.buscaDisciplina(nome));
+        }
     }
 
     // Método para adicionar aluno a turma ----------------------------------------------> Ok
@@ -99,8 +111,8 @@ public class GerenciamentoDeTurmas {
     }
 
     // Método para gerar o relatório da turma
-    public void gerarRelatorioDaTurma() throws IOException {
-        arquivos.gerarRelatorioTxt();
+    public void gerarRelatorioDaTurma(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeTurmas turmas) throws IOException {
+        arquivos.gerarRelatorioTxt(aluno, professor, disciplina, turmas);
     }
 
     // Método para listar todas as turmas -----------------------------------> OK

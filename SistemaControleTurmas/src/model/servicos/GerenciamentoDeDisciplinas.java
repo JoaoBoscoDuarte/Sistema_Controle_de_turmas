@@ -3,13 +3,15 @@ package model.servicos;
 import model.disciplina.Disciplina;
 import model.exceptions.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 /*  ================| Só altere em caso de urgência! |====================
  *  ----------------------Classe 100% concluída-----------------------> OK
  */
 
-public class GerenciamentoDeDisciplinas {
+public class GerenciamentoDeDisciplinas implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final List<Disciplina> disciplinas;
     private GerenciamentoDeProfessores gerenciadorProfessores;
@@ -20,7 +22,7 @@ public class GerenciamentoDeDisciplinas {
     }
 
     // Método que cadastra uma nova disciplina ---------------------------------------------> OK
-    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException {
+    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, NomeDaDisciplinaInvalidoException {
         validaNomeDisciplina(nome);
 
         if (cargaHoraria <= 0) {
@@ -29,6 +31,10 @@ public class GerenciamentoDeDisciplinas {
 
         if (existeDisciplinaComMesmoNome(nome)) {
             throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nome + "'.");
+        }
+
+        if (nome == null) {
+            throw new NomeDaDisciplinaInvalidoException("O nome da disciplina não pode ser vazil");
         }
 
         this.disciplinas.add(new Disciplina(nome, cargaHoraria));

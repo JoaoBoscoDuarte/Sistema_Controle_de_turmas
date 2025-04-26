@@ -7,75 +7,93 @@ import model.pessoa.Professor;
 import model.turma.Turma;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class GerenciamentoDeArquivos {
-    private GerenciamentoDeAlunos aluno;
-    private GerenciamentoDeProfessores professor;
-    private GerenciamentoDeDisciplinas disciplina;
-    private GerenciamentoDeTurmas turma;
+public class GerenciamentoDeArquivos implements Serializable {
+    private static final String ARQUIVO_CONTROLE = "controleTurmas.ser";
+    private static final String DIRETORIO_ARQUIVOS = "SistemaControleTurmas//src//data";
+    private static final String DIRETORIO_RELATORIOS = DIRETORIO_ARQUIVOS + File.separator + "relatorios";
+    private static final String NOME_RELATORIO = "relatorio_controle_turmas.txt";
 
-    private static final String CONTROLE_TURMAS = "controleTurmas.ser";
+    public GerenciamentoDeArquivos() {
+        criarDiretorios();
+    }
+
+    private void criarDiretorios() {
+        new File(DIRETORIO_ARQUIVOS).mkdirs();
+        new File(DIRETORIO_RELATORIOS).mkdirs();
+    }
 
     public void salvarControleTurmas(Faculdade faculdade) throws IOException {
+        Path caminhoArquivo = Paths.get(DIRETORIO_ARQUIVOS, ARQUIVO_CONTROLE);
         try (ObjectOutputStream oos = new ObjectOutputStream(
-                new FileOutputStream(CONTROLE_TURMAS))) {
+                new FileOutputStream(caminhoArquivo.toFile()))) {
             oos.writeObject(faculdade);
         }
     }
 
     public Faculdade carregarControleTurmas() throws IOException, ClassNotFoundException {
+        Path caminhoArquivo = Paths.get(DIRETORIO_ARQUIVOS, ARQUIVO_CONTROLE);
         try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream(CONTROLE_TURMAS))) {
+                new FileInputStream(caminhoArquivo.toFile()))) {
             return (Faculdade) ois.readObject();
         }
     }
 
-    public Faculdade carregarOuCriarEstoque() {
-        try {
-            return carregarControleTurmas();
+    // Modifique para receber a Faculdade como parâmetro
+    public void gerarRelatorioTxt(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeTurmas turmas) throws IOException {
+        Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, NOME_RELATORIO);
 
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Criando novo ser");
-            return new Faculdade();
-        }
-    }
-
-    public void gerarRelatorioTxt() throws IOException {
-        final String NOME_ARQUIVO = "RelatorioSistemaControleTurmas";
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(NOME_ARQUIVO))){
-            // Cabeçalho inicial (Apresentação com data)
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoRelatorio.toFile()))) {
+            // Cabeçalho inicial
             writer.write("RELATÓRIO: SISTEMA DE CONTROLE DE TURMAS\n");
             writer.write("Gerado em: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + "\n");
             writer.write("|=================================================================================|\n\n");
 
-            // PARTE 1: Alunos da faculdade (Todos os alunos ativos e suas informações da faculdade)
+            // PARTE 1: Alunos
             writer.write("1. ALUNOS ATIVOS\n");
-            for (Aluno a : aluno.getListaAlunos()) {
-                writer.write(a.toString());
+            if (aluno.getListaAlunos().isEmpty()) {
+                writer.write("Sem alunos cadastrados\n");
+            } else {
+                for (Aluno a : aluno.getListaAlunos()) {
+                    writer.write(a.toString() + "\n");
+                }
             }
             writer.write("|=================================================================================|\n\n");
 
-            // PARTE 2: Professores da faculdade
+            // PARTE 2: Professores
             writer.write("2. PROFESSORES ATIVOS\n");
-            for (Professor p : professor.getListaProfessores()) {
-                writer.write(p.toString());
+            if (professor.getListaProfessores().isEmpty()) {
+                writer.write("Sem professores cadastrados\n");
+            } else {
+                for (Professor p : professor.getListaProfessores()) {
+                    writer.write(p.toString() + "\n");
+                }
             }
             writer.write("|=================================================================================|\n\n");
 
-            // PARTE 3: Disciplinas da faculdade
+            // PARTE 3: Disciplinas
             writer.write("3. DISCIPLINAS\n");
-            for (Disciplina d : disciplina.getDisciplinas()) {
-                writer.write(d.toString());
+            if (disciplina.getDisciplinas().isEmpty()) {
+                writer.write("Sem disciplinas cadastradas\n");
+            } else {
+                for (Disciplina d : disciplina.getDisciplinas()) {
+                    writer.write(d.toString() + "\n");
+                }
             }
             writer.write("|=================================================================================|\n\n");
 
-            // PARTE 4: Turmas da faculdade
+            // PARTE 4: Turmas
             writer.write("4. TURMAS\n");
-            for (Turma t : turma.getTurmas()) {
-                writer.write(t.toString());
+            if (turmas.getTurmas().isEmpty()) {
+                writer.write("Sem turmas cadastradas\n");
+            } else {
+                for (Turma t : turmas.getTurmas()) {
+                    writer.write(t.toString() + "\n");
+                }
             }
             writer.write("|=================================================================================|\n\n");
         }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Nota {
+    private static final long serialVersionUID = 1L;
+
     private final String matricula;
     private final List<Double> notas;
 

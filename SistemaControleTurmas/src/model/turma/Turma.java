@@ -5,6 +5,7 @@ import model.pessoa.Professor;
 import model.turma.media.MediaSimples;
 import model.turma.media.TiposDeMediaIF;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
  *  ----------------------Classe 100% concluída-----------------------> OK
  */
 
-public class Turma {
+public class Turma implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private Disciplina disciplina;
     private Professor professor;

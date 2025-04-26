@@ -4,6 +4,7 @@ import model.exceptions.PessoaInvalidaException;
 import model.pessoa.Aluno;
 import model.exceptions.AlunoNaoEncontradoException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,9 @@ import java.util.List;
  *  ----------------------Classe 100% concluída-----------------------> OK
  */
 
-public class GerenciamentoDeAlunos {
+public class GerenciamentoDeAlunos implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final List<Aluno> listaAlunos = new ArrayList<>();
 
     public List<Aluno> getListaAlunos() {

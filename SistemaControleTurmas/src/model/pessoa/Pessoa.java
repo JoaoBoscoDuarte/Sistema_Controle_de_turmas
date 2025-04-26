@@ -2,6 +2,7 @@ package model.pessoa;
 
 import model.exceptions.PessoaInvalidaException;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
  *  --------------------Classe 100% concluída-------------------------> OK
  */
 
-public abstract class Pessoa {
+public abstract class Pessoa implements Serializable {
     private String nome;
     private String telefone;
     private String email;

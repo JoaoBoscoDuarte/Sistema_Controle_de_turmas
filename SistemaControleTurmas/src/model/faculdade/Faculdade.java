@@ -6,9 +6,13 @@ import model.pessoa.Professor;
 import model.servicos.*;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
 
 
-public class Faculdade {
+public class Faculdade implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     GerenciamentoDeAlunos gerenciamentoDeAlunos;
     GerenciamentoDeProfessores gerenciamentoDeProfessores;
     GerenciamentoDeArquivos gerenciamentoDeArquivos;
@@ -46,7 +50,7 @@ public class Faculdade {
     }
 
     public void gerarRelatorioDaTurma() throws IOException {
-        gerenciamentoDeTurmas.gerarRelatorioDaTurma();
+        gerenciamentoDeTurmas.gerarRelatorioDaTurma(gerenciamentoDeAlunos, gerenciamentoDeProfessores, gerenciamentoDeDisciplinas, gerenciamentoDeTurmas);
     }
 
     public StringBuilder listarTurmas() {
@@ -82,7 +86,6 @@ public class Faculdade {
         return gerenciamentoDeAlunos.existeAluno(matricula);
     }
 
-
     // Gerenciamento de disciplinas ---------------------------------------------->
     public void cadastrarDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
         gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, cargaHoraria);
@@ -100,9 +103,17 @@ public class Faculdade {
         return gerenciamentoDeDisciplinas.buscaDisciplina(nomeDisciplina);
     }
 
+    public boolean existeDisciplina(String nome) {
+        return existeDisciplina(nome);
+    }
+
     // Gerenciamento de Professores ---------------------------------------------->
     public void adicionarProfessor(String nome, String telefone, String email) throws Exception {
         gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email);
+    }
+
+    public void adicionarProfessor(String nome, String telefone, String email, List<Disciplina> disciplinasDoProfessor) throws Exception {
+        gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email, disciplinasDoProfessor);
     }
 
     public StringBuilder listarProfessores() {
@@ -111,5 +122,31 @@ public class Faculdade {
 
     public Professor buscaProfessor(String matricula) throws ProfessorNaoEncontradoException {
         return gerenciamentoDeProfessores.buscaProfessor(matricula);
+    }
+
+    // Getters para os serviços --------------------------------------------------> OK
+    public GerenciamentoDeAlunos getGerenciamentoAlunos() {
+        return gerenciamentoDeAlunos;
+    }
+
+    public GerenciamentoDeProfessores getGerenciamentoProfessores() {
+        return gerenciamentoDeProfessores;
+    }
+
+    public GerenciamentoDeDisciplinas getGerenciamentoDisciplinas() {
+        return gerenciamentoDeDisciplinas;
+    }
+
+    public GerenciamentoDeTurmas getGerenciamentoTurmas() {
+        return gerenciamentoDeTurmas;
+    }
+
+    // Faculdade ---------------------------------------------------------------> OK
+    public void carregaControleDeTurmas() throws IOException, ClassNotFoundException {
+        gerenciamentoDeArquivos.carregarControleTurmas();
+    }
+
+    public void salvaControleDeTurmas(Faculdade faculdade) throws IOException {
+        gerenciamentoDeArquivos.salvarControleTurmas(faculdade);
     }
 }
