@@ -3,6 +3,7 @@ package model.main;
 import model.exceptions.*;
 import model.faculdade.Faculdade;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -96,7 +97,12 @@ public class Main {
                     break;
 
                 case 4:
-                    criarTurma();
+                    //Recebendo dados e criando turma, fazendo tratamento de exceções
+                    try {
+                        criarTurma();
+                    } catch (Exception e){
+                        System.out.println("Falha ao criar turma: " + e.getMessage());
+                    }
                     break;
 
                 case 5:
@@ -190,12 +196,17 @@ public class Main {
         String telefone = sc.nextLine();
         System.out.println("Informe o e-mail do professor: ");
         String email = sc.nextLine();
-
         faculdade.adicionarProfessor(nome, telefone, email);
         System.out.println("Professor cadastrado.");
     }
 
-    public void criarTurma() {
+    public void criarTurma() throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+        System.out.println("Informe o nome da disciplina: ");
+        String nomeDisciplina = sc.nextLine();
+        System.out.println("Informe o id do professor: ");
+        String idProfessor = sc.nextLine();
+        faculdade.criarTurma(nomeDisciplina, idProfessor);
+        System.out.println("Turma criada com sucesso.");
     }
 
     public void matricularAlunoEmTurma() throws TurmaInvalidaException, AlunoNaoEncontradoException {
@@ -220,6 +231,8 @@ public class Main {
     }
 
     public void listarAlunosDeUmaTurma() {
+        //verificar se esse metodo esta correto
+        System.out.println("Alunos da turma: \n" + faculdade.listarAlunos());
     }
 
     public void configurarTurma() {
@@ -237,7 +250,7 @@ public class Main {
         System.out.println("Informe a matricula do aluno: ");
         String matricula = sc.nextLine();
         faculdade.cadastrarNotasUnidade(codigo, unidade, nota, matricula);
-        System.out.println("Nota cadastradas.");
+        System.out.println("Nota cadastrada.");
     }
 
     public void inativarAluno() throws AlunoNaoEncontradoException {
@@ -253,7 +266,9 @@ public class Main {
         System.out.println("Aluno desativado.");
     }
 
-    public void gerarRelatorioDeTurma() {
+    public void gerarRelatorioDeTurma() throws IOException {
+
+        System.out.println("Relatório da turma: \n");
     }
 
     public void encerrarTurmas() {
