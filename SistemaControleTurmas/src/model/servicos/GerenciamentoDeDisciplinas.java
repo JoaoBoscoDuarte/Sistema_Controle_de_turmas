@@ -22,7 +22,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
     }
 
     // Método que cadastra uma nova disciplina ---------------------------------------------> OK
-    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, NomeDaDisciplinaInvalidoException {
+    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, NomeDaDisciplinaInvalidoException, DisciplinaInvalidaException {
         validaNomeDisciplina(nome);
 
         if (cargaHoraria <= 0) {
@@ -62,7 +62,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
     }
 
     // Método que associa professor a disciplina -------------------------------------------> OK
-    public void associarProfessorADisciplina(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+    public void associarProfessorADisciplina(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
         validaNomeDisciplina(nome);
 
         if (!gerenciadorProfessores.existeProfessor(matricula)) {

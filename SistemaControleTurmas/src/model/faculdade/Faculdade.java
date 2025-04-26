@@ -29,7 +29,7 @@ public class Faculdade implements Serializable {
     }
 
     // Gerenciamento de turmas --------------------------------------------------->
-    public void criarTurma(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+    public void criarTurma(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
         gerenciamentoDeTurmas.criarTurma(nome, matricula);
     }
 
@@ -37,11 +37,11 @@ public class Faculdade implements Serializable {
         gerenciamentoDeTurmas.adicionarAlunoATurma(matricula, codigo);
     }
 
-    public void atribuirUnidades(int unidades, String codigo) throws TurmaInvalidaException {
+    public void atribuirUnidades(int unidades, String codigo) throws TurmaInvalidaException, IntervaloDeUnidadeException {
         gerenciamentoDeTurmas.atribuirUnidades(unidades, codigo);
     }
 
-    public void cadastrarNotasUnidade (String codigo, int unidade, Double nota, String matricula) throws AlunoNaoEncontradoException, TurmaInvalidaException {
+    public void cadastrarNotasUnidade (String codigo, int unidade, Double nota, String matricula) throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException {
         gerenciamentoDeTurmas.cadastrarNotasUnidade(codigo, unidade, nota, matricula);
     }
 
@@ -66,7 +66,7 @@ public class Faculdade implements Serializable {
     }
 
     // Gerenciamento de Alunos --------------------------------------------------->
-    public void adicionarAluno(String nome, String telefone, String email, String curso) throws Exception {
+    public void adicionarAluno(String nome, String telefone, String email, String curso) throws PessoaInvalidaException {
         gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email, curso);
     }
 
@@ -87,7 +87,7 @@ public class Faculdade implements Serializable {
     }
 
     // Gerenciamento de disciplinas ---------------------------------------------->
-    public void cadastrarDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException {
+    public void cadastrarDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, DisciplinaInvalidaException {
         gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, cargaHoraria);
     }
 
@@ -95,11 +95,11 @@ public class Faculdade implements Serializable {
         return gerenciamentoDeDisciplinas.listaDisciplinas();
     }
 
-    public void associarProfessorADisciplina(String nome, String matricula) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+    public void associarProfessorADisciplina(String nome, String matricula) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
         gerenciamentoDeDisciplinas.associarProfessorADisciplina(nome, matricula);
     }
 
-    public Disciplina buscaDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException {
+    public Disciplina buscaDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
         return gerenciamentoDeDisciplinas.buscaDisciplina(nomeDisciplina);
     }
 

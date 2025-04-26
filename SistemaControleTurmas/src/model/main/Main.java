@@ -82,19 +82,15 @@ public class Main {
                     try {
                         cadastrarDisciplina();
 
-                    } catch (DisciplinaJaCadastradaException e){
+                    } catch (DisciplinaJaCadastradaException e) {
                         System.out.println("Falha ao cadastrar disciplina: " + e.getMessage());
-
                     } catch (DisciplinaInvalidaException e) {
-                        System.out.println("Falha no nome da disciplina: " + e.getMessage());
-
+                        System.out.println("Falha no cadastro de disciplina: " +e.getMessage());
                     } catch (CargaHorariaInvalidaException e) {
-                        System.out.println("Falha quanto a carga horária informada: " + e.getMessage());
-
+                        System.out.println("Falha na carga horária informada: " +e.getMessage());
                     } catch (NomeDaDisciplinaInvalidoException e) {
-                        System.out.println("O nome da disciplina não pode ser vazio");
+                        System.out.println("Falha no nome da disciplina informado: " +e.getMessage());
                     }
-
                     break;
 
                 case 3:
@@ -168,8 +164,7 @@ public class Main {
     }
 
     // Método de cadastro aluno --------------------------------------------------->  Falta o tratamento de exceções
-    public void cadastrarAluno() throws Exception {
-        //Recebendo dados do aluno e cadastrando no sistema
+    public void cadastrarAluno() throws PessoaInvalidaException, IOException {
         System.out.println("Informe o nome do aluno: ");
         String nome = sc.nextLine();
 
@@ -189,7 +184,7 @@ public class Main {
     }
 
     // Método de cadastro da disciplina -------------------------------------------> Falta o tratamento de exceções
-    public void cadastrarDisciplina() throws DisciplinaJaCadastradaException, IOException {
+    public void cadastrarDisciplina() throws DisciplinaJaCadastradaException, IOException, CargaHorariaInvalidaException, DisciplinaInvalidaException{
         // Recebendo os dados da disciplina e cadastrando
         System.out.println("Informe o nome da disciplina: ");
         String disciplina = sc.nextLine();
@@ -255,7 +250,7 @@ public class Main {
     }
 
     // Método para criar uma turma ------------------------------------------->  Falta o tratamento de exceções
-    public void criarTurma() throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, IOException {
+    public void criarTurma() throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, IOException, DisciplinaInvalidaException {
         System.out.println("Informe o nome da disciplina: ");
         String nomeDisciplina = sc.nextLine();
 
@@ -306,7 +301,7 @@ public class Main {
     public void configurarTurma() {
     }
 
-    public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException {
+    public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException {
         //Ver a quetão da quantidade de unidades avaliativas
         System.out.println("Informe o código da disciplina: ");
         String codigo = sc.nextLine();

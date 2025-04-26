@@ -32,19 +32,19 @@ public abstract class Pessoa implements Serializable {
 
     private void validaNome(String nome) throws PessoaInvalidaException {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new PessoaInvalidaException("Nome inválido");
+            throw new PessoaInvalidaException("Nome inválido. O nome não pode estar vazio.");
         }
     }
 
     private void validaTelefone(String telefone) throws PessoaInvalidaException {
-        if (telefone == null || telefone.trim().isEmpty() || telefone.length() != 11) {
-            throw new PessoaInvalidaException("Número de telefone inválido. Deve conter 11 digitos.");
+        if (telefone == null || telefone.trim().isEmpty() || telefone.length() < 11) {
+            throw new PessoaInvalidaException("Número de telefone inválido. Deve conter pelo menos 11 digitos.");
         }
     }
 
     private void validaEmail(String email) throws PessoaInvalidaException {
         if (email == null || email.trim().isEmpty() || !email.contains("@")) {
-            throw new PessoaInvalidaException("E-mail inválido.");
+            throw new PessoaInvalidaException("E-mail inválido. O e-mail não pode estar vazio ou sem '@'.");
         }
     }
 
