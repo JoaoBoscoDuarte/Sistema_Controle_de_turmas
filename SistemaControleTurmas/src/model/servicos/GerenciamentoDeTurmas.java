@@ -24,7 +24,7 @@ public class GerenciamentoDeTurmas {
     }
 
     // Método par cria turma ------------------------------------------------------------> OK
-    public void criarTurma(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException {
+    public void criarTurma(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
         if (!disciplina.existeDisciplina(nome)) {
             throw new DisciplinaNaoEncontradaException("Disciplina não existe.");
         }
@@ -37,7 +37,7 @@ public class GerenciamentoDeTurmas {
     }
 
     // Método para adicionar aluno a turma ----------------------------------------------> Ok
-    public void adicionarAlunoATurma(String matricula, String codigo) {
+    public void adicionarAlunoATurma(String matricula, String codigo) throws TurmaInvalidaException, AlunoNaoEncontradoException {
         excecoesTurma(codigo);
         Turma turma = buscarTurma(codigo);
 
@@ -49,7 +49,7 @@ public class GerenciamentoDeTurmas {
     }
 
     // Método para atribuir quantidade de unidades avaliativas --------------------------> OK
-    public void atribuirUnidades(int unidades, String codigo) throws IntervaloDeUnidadeException {
+    public void atribuirUnidades(int unidades, String codigo) throws IntervaloDeUnidadeException, TurmaInvalidaException {
         Turma turma = buscarTurma(codigo);
         if (1 < unidades) {
             turma.setNumeroUnidades(unidades);
@@ -150,7 +150,7 @@ public class GerenciamentoDeTurmas {
     }
 
     // Método para calcular a média de um aluno -----------------------------> OK
-    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException {
+    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException, TurmaInvalidaException {
         Turma turma = buscarTurma(codigo);
 
         for (Nota n : turma.getNotasAluno()) {

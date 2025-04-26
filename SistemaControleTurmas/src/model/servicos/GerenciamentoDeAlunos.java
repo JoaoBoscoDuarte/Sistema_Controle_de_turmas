@@ -59,12 +59,13 @@ public class GerenciamentoDeAlunos {
         throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");
     }
 
-    public Aluno buscaAluno(String matricula) {
+    public Aluno buscaAluno(String matricula) throws AlunoNaoEncontradoException{
+        //ajuste na verificação da matricula e atividade do aluno, adição de exception
         for (Aluno a : listaAlunos) {
-            if (a.getMatricula().equals(matricula)) {
+            if (a.getMatricula().equalsIgnoreCase(matricula) && a.isAtivo()) {
                 return a;
             }
         }
-        return null;
+        throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");
     }
 }

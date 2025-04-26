@@ -29,15 +29,15 @@ public class Faculdade {
         gerenciamentoDeTurmas.criarTurma(nome, matricula);
     }
 
-    public void adicionarAlunoATurma(String matricula, String codigo) {
+    public void adicionarAlunoATurma(String matricula, String codigo) throws TurmaInvalidaException, AlunoNaoEncontradoException {
         gerenciamentoDeTurmas.adicionarAlunoATurma(matricula, codigo);
     }
 
-    public void atribuirUnidades(int unidades, String codigo) {
+    public void atribuirUnidades(int unidades, String codigo) throws TurmaInvalidaException {
         gerenciamentoDeTurmas.atribuirUnidades(unidades, codigo);
     }
 
-    public void cadastrarNotasUnidade (String codigo, int unidade, Double nota, String matricula) throws AlunoNaoEncontradoException {
+    public void cadastrarNotasUnidade (String codigo, int unidade, Double nota, String matricula) throws AlunoNaoEncontradoException, TurmaInvalidaException {
         gerenciamentoDeTurmas.cadastrarNotasUnidade(codigo, unidade, nota, matricula);
     }
 
@@ -53,7 +53,7 @@ public class Faculdade {
         return gerenciamentoDeTurmas.listarTurmas();
     }
 
-    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException {
+    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException, TurmaInvalidaException {
         return gerenciamentoDeTurmas.calcularMedia(matricula, codigo);
     }
 

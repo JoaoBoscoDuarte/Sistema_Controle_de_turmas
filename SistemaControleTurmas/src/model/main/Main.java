@@ -1,8 +1,6 @@
 package model.main;
 
-import model.exceptions.AlunoNaoEncontradoException;
-import model.exceptions.DisciplinaJaCadastradaException;
-import model.exceptions.PessoaInvalidaException;
+import model.exceptions.*;
 import model.faculdade.Faculdade;
 
 import java.util.Scanner;
@@ -67,18 +65,24 @@ public class Main {
                     break;
 
                 case 1:
+                    //exceçoes cadastro aluno
                     try {
                         cadastrarAluno();
                     } catch (PessoaInvalidaException e) {
-                        System.out.println("Erro ao tentar cadastrar aluno: " +e.getMessage());
+                        System.out.println("Falha ao cadastrar aluno: " +e.getMessage());
                     }
                     break;
 
                 case 2:
+                    //Ajustes nas exceções para cadastrar disciplina
                     try {
                         cadastrarDisciplina();
                     } catch (DisciplinaJaCadastradaException e){
                         System.out.println("Falha ao cadastrar disciplina: " + e.getMessage());
+                    } catch (DisciplinaInvalidaException e) {
+                        System.out.println("Falha no nome da disciplina: " +e.getMessage());
+                    } catch (CargaHorariaInvalidaException e) {
+                        System.out.println("Falha quanto a carga horária informada: " +e.getMessage());
                     }
                     break;
 
@@ -96,7 +100,14 @@ public class Main {
                     break;
 
                 case 5:
-                    matricularAlunoEmTurma();
+                    // Tratando exceções ao matricular aluno em turma
+                    try {
+                        matricularAlunoEmTurma();
+                    } catch (TurmaInvalidaException e) {
+                        System.out.println("Falha ao matricular aluno em turma: " +e.getMessage());
+                    } catch (AlunoNaoEncontradoException e) {
+                        System.out.println("Falha ao tentar matricular aluno em turma: " +e.getMessage());
+                    }
                     break;
 
                 case 6:
@@ -117,10 +128,11 @@ public class Main {
                     break;
 
                 case 9:
+                    // Tratando exceções da inativação de alunos
                     try {
                         inativarAluno();
                     } catch (AlunoNaoEncontradoException e) {
-                        System.out.println("Erro ao tentar desativar aluno: " +e.getMessage());
+                        System.out.println("Falha ao desativar aluno: " +e.getMessage());
                     }
                     break;
 
@@ -145,6 +157,7 @@ public class Main {
     }
 
     public void cadastrarAluno() throws Exception {
+        //Recebendo dados do aluno e cadastrando no sistema
         System.out.println("Informe o nome do aluno: ");
         String nome = sc.nextLine();
         System.out.println("Informe o telefone do aluno: ");
@@ -159,13 +172,13 @@ public class Main {
     }
 
     public void cadastrarDisciplina() throws DisciplinaJaCadastradaException {
-
         System.out.println("Informe o nome da disciplina: ");
         String disciplina = sc.nextLine();
         System.out.println("Informe a carga horária: ");
         int cargaHoraria = sc.nextInt();
-        faculdade.cadastrarDisciplina(disciplina,cargaHoraria);
 
+        faculdade.cadastrarDisciplina(disciplina,cargaHoraria);
+        System.out.println("Disciplina cadastrada.");
     }
 
     public void cadastrarProfessor() throws Exception {
@@ -177,6 +190,7 @@ public class Main {
         String telefone = sc.nextLine();
         System.out.println("Informe o e-mail do professor: ");
         String email = sc.nextLine();
+
         faculdade.adicionarProfessor(nome, telefone, email);
         System.out.println("Professor cadastrado.");
     }
@@ -184,7 +198,25 @@ public class Main {
     public void criarTurma() {
     }
 
-    public void matricularAlunoEmTurma() {
+    public void matricularAlunoEmTurma() throws TurmaInvalidaException, AlunoNaoEncontradoException {
+        System.out.println("Informe a matrícula do aluno: ");
+        String matricula = sc.nextLine();
+
+        if (matricula.trim().isEmpty()) {
+            System.out.println("Inválido. O número da matrícula do aluno não pode estar vazia.");
+            return;
+        }
+
+        System.out.println("Informe o código da turma: ");
+        String codigo = sc.nextLine();
+
+        if (codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da turma não pode estar vazio.");
+            return;
+        }
+
+        faculdade.adicionarAlunoATurma(matricula, codigo);
+        System.out.println("Aluno matriculado a turma.");
     }
 
     public void listarAlunosDeUmaTurma() {
@@ -193,7 +225,7 @@ public class Main {
     public void configurarTurma() {
     }
 
-    public void cadastrarNotas() throws AlunoNaoEncontradoException {
+    public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException {
         //Ver a quetão da quantidade de unidades avaliativas
 
         System.out.println("Informe o código da disciplina: ");
@@ -212,14 +244,13 @@ public class Main {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
 
-        boolean alunoEstaAtivo = faculdade.existeAluno(matricula);
-
-        if (alunoEstaAtivo) {
-            faculdade.desativaAluno(matricula);
-            System.out.println("Aluno desativado.");
-        } else {
-            System.out.println("Aluno não encontrado ou já inativo.");
+        if (matricula.trim().isEmpty()) {
+            System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
+            return;
         }
+
+        faculdade.desativaAluno(matricula);
+        System.out.println("Aluno desativado.");
     }
 
     public void gerarRelatorioDeTurma() {
