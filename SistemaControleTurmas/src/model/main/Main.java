@@ -35,9 +35,8 @@ public class Main {
                             "[7] Configurar Turma\n" +
                             "[8] Cadastrar notas\n" +
                             "[9] Inativar um aluno\n" +
-                            "[10] Inativar um aluno\n" +
-                            "[11] Gerar relatório de turma\n" +
-                            "[12] Encerrar Turmas\n" +
+                            "[10] Gerar relatório de turma\n" +
+                            "[11] Encerrar Turmas\n" +
                             "[0] Sair\n";
 
             System.out.println(MENU_PRINCIPAL);
@@ -143,15 +142,10 @@ public class Main {
                     break;
 
                 case 10:
-                    inativarAluno(); // Duplicado, como comentado antes — pode ajustar se for outro caso
-                    //é complicado
-                    break;
-
-                case 11:
                     gerarRelatorioDeTurma();
                     break;
 
-                case 12:
+                case 11:
                     encerrarTurmas();
                     break;
 
@@ -267,8 +261,8 @@ public class Main {
     }
 
     public void gerarRelatorioDeTurma() throws IOException {
-
-        System.out.println("Relatório da turma: \n");
+        faculdade.gerarRelatorioDaTurma();
+        System.out.println("Relatório da turma gerado com sucesso!\n");
     }
 
     public void encerrarTurmas() {
