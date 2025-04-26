@@ -34,8 +34,9 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         }
 
         if (nome == null) {
-            throw new DisciplinaInvalidaException("O nome da disciplina não pode ser vazil");
+            throw new NomeDaDisciplinaInvalidoException("O nome da disciplina não pode ser vazil");
         }
+
         this.disciplinas.add(new Disciplina(nome, cargaHoraria));
     }
 
