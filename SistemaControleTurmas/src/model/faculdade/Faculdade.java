@@ -67,7 +67,7 @@ public class Faculdade implements Serializable {
     }
 
     public Turma buscarTurma(String codigo) throws TurmaInvalidaException {
-        gerenciamentoDeTurmas.buscarTurma(codigo);
+        return gerenciamentoDeTurmas.buscarTurma(codigo);
     }
 
     // Gerenciamento de Alunos --------------------------------------------------->
@@ -96,8 +96,8 @@ public class Faculdade implements Serializable {
     }
 
     // Gerenciamento de disciplinas ---------------------------------------------->
-    public void cadastrarDisciplina(String nomeDisciplina, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, DisciplinaInvalidaException, NomeDaDisciplinaInvalidoException {
-        gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, cargaHoraria);
+    public void cadastrarDisciplina(String nomeDisciplina, String codigo, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, DisciplinaInvalidaException, NomeDaDisciplinaInvalidoException {
+        gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, codigo, cargaHoraria);
     }
 
     public StringBuilder listarDisciplinas() {
