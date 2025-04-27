@@ -30,7 +30,6 @@ public class Main {
         faculdade = faculdade.carregaControleDeTurmas();
 
         boolean repetir = true;
-
         while (repetir) {
             final String MENU_PRINCIPAL =
                     "===========| Sistema de controle de turmas |===========\n" +
@@ -72,7 +71,6 @@ public class Main {
                 }
             }
 
-            //inicializando continuar p saber se usuario deseja repetir ação apos erro
             boolean tentarNovamente = true;
 
             // Escolhas (chamada das operações)
@@ -305,7 +303,20 @@ public class Main {
                     break;
 
                 case 14:
-                    encerrarTurmas();
+                    while(tentarNovamente) {
+                        try {
+                            removerAlunoDeTurma();
+                            System.out.println("Aluno removido da turma com sucesso!");
+                            tentarNovamente = false;
+                        } catch (AlunoNaoEncontradoException e) {
+                            System.out.println("Falha ao remover aluno de turma: " +e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
+                    }
                     break;
 
                 case 15:
@@ -316,14 +327,9 @@ public class Main {
                         } catch (TurmaInvalidaException | IOException e) {
                             System.err.println("Falha ao gerar relatório da turma: " + e.getMessage());
                             System.out.println("Deseja tentar novamente? [s]/[n]");
-                            String opcao = sc.nextLine();
-
-                            if (!opcao.equalsIgnoreCase("s")) {
-                                tentarNovamente = false;
-                            }
+                            String opcao = sc.nextLine();      
                         }
                     }
-
                     break;
 
                 case 16:
@@ -358,8 +364,7 @@ public class Main {
                                 tentarNovamente = false;
                             }
                         }
-
-                    }
+                    } 
                     break;
 
                 default:
@@ -397,6 +402,11 @@ public class Main {
         System.out.println("Informe o codigo para a disciplina: ");
         String codigo = sc.nextLine();
 
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da disciplina não pode estar vazio.");
+            return;
+        }
+
         System.out.println("Informe a carga horária: ");
         int cargaHoraria = sc.nextInt();
         sc.nextLine();
@@ -417,7 +427,7 @@ public class Main {
         String escolha = sc.nextLine().toLowerCase();
 
         boolean comDisciplinas = false;
-        if (escolha.equalsIgnoreCase("s")) {
+        if (escolha.equals("s")) {
             try {
                 System.out.println("Quantidade de disciplinas que deseja adicionar: ");
                 int quantidade = sc.nextInt();
@@ -463,6 +473,11 @@ public class Main {
         System.out.println("Informe o id do professor: ");
         String idProfessor = sc.nextLine();
 
+        if (idProfessor == null || idProfessor.trim().isEmpty()) {
+            System.out.println("Inválido. O código da disciplina não pode estar vazio.");
+            return;
+        }
+
         faculdade.criarTurma(nomeDisciplina, idProfessor);
         System.out.println("Turma criada com sucesso.");
 
@@ -474,7 +489,7 @@ public class Main {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
 
-        if (matricula.trim().isEmpty()) {
+        if (matricula == null || matricula.trim().isEmpty()) {
             System.out.println("Inválido. O número da matrícula do aluno não pode estar vazia.");
             return;
         }
@@ -482,7 +497,7 @@ public class Main {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
-        if (codigo.trim().isEmpty()) {
+        if (codigo == null || codigo.trim().isEmpty()) {
             System.out.println("Inválido. O código da turma não pode estar vazio.");
             return;
         }
@@ -522,12 +537,18 @@ public class Main {
     }
 
     public void configurarTurma() {
+
     }
 
     // Cadastra a nota dos alunos ---------------------------------------------------->
     public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da turma não pode estar vazio.");
+            return;
+        }
 
         System.out.println("Informe a unidade avaliativa: ");
         int unidade = sc.nextInt();
@@ -554,12 +575,12 @@ public class Main {
         }
     }
 
-    // Método para inativar aluno da turma --------------------------------------------->
+    // Método para inativar aluno da faculdade --------------------------------------------->
     public void inativarAluno() throws AlunoNaoEncontradoException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
 
-        if (matricula.trim().isEmpty()) {
+        if (matricula == null || matricula.trim().isEmpty()) {
             System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
             return;
         }
@@ -567,7 +588,27 @@ public class Main {
         faculdade.desativaAluno(matricula);
     }
 
-    public void calcularNotaFinalAlunos() throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
+    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException {
+        System.out.println("Informe o código da turma: ");
+        String codigo = sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido o código da turma não pode estar vazio.");
+            return;
+        }
+
+        System.out.println("Informe a matrícula do aluno: ");
+        String matricula = sc.nextLine();
+
+        if (matricula == null || matricula.trim().isEmpty()) {
+            System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
+            return;
+        }
+
+        faculdade.removerAluno(matricula);
+    }
+
+    public void calcularNotaFinalAlunos() {
         System.out.println("Insira o código da turma que deseja calcular a nota dos alunos: ");
         String codigo = sc.nextLine();
 
@@ -580,6 +621,11 @@ public class Main {
         System.out.println("Insira o código da turma que deseja gerar o relatório: ");
         String codigo = sc.nextLine();
 
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da turma não pode estar vazio.");
+            return;
+        }
+
         faculdade.gerarRelatorioDaTurma(codigo);
         System.out.println("Relatorio gerado com sucesso!\n");
     }
@@ -590,6 +636,23 @@ public class Main {
         System.out.println("Relatório da turma gerado com sucesso!\n");
     }
 
-    public void encerrarTurmas() {
+    public void encerrarTurmas() throws ProfessorNaoEncontradoException, TurmaInvalidaException, IntervaloDeNotaException {
+        System.out.println("Informe o código da turma: ");
+        String codigo = sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da turma não pode estar vazio.");
+            return;
+        }
+
+        System.out.println("Informe o id do professor: ");
+        String idProfessor = sc.nextLine();
+
+        if (idProfessor == null || idProfessor.trim().isEmpty()) {
+            System.out.println("Inválido. O id do professor não pode estar vazio.");
+            return;
+        }
+
+        faculdade.encerrarTurma(idProfessor, codigo);
     }
 }

@@ -132,4 +132,8 @@ public class Turma implements Serializable {
                 "| Alunos associados: " + getNotasAluno().toString() + " | \n" +
                 "| Codigo da turma: " + getCodigoTurma() + " | \n";
     }
+
+    public void setAtivo(boolean b) {
+
+    }
 }
