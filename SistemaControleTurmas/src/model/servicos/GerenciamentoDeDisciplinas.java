@@ -64,8 +64,6 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         return false;
     }
 
-
-
     // Método que lista todas as disciplinas  ----------------------------------------------> OK
     public StringBuilder listaDisciplinas() {
 
