@@ -1,6 +1,7 @@
 package model.turma;
 
 import model.disciplina.Disciplina;
+import model.pessoa.Aluno;
 import model.pessoa.Professor;
 import model.turma.media.MediaSimples;
 import model.turma.media.TiposDeMediaIF;
@@ -24,6 +25,7 @@ public class Turma implements Serializable {
     // Logo, temos Nota (aponta para um aluno único) e NotasAluno (aponta para todas as notas dos alunos)
     private List<Nota> notasAluno;
     private List<String> matriculasProfessores;
+    private List<Aluno> alunos;
 
     private String codigoTurma;
     private static int contador = 0;
@@ -31,6 +33,7 @@ public class Turma implements Serializable {
     public Turma(Disciplina disciplina, Professor professor) {
         this.disciplina = disciplina;
         this.professor = professor;
+        this.alunos = new ArrayList<>();
         this.notasAluno = new ArrayList<>();
         this.matriculasProfessores = new ArrayList<>();
         this.codigoTurma = geraCodigoTurma();
@@ -40,6 +43,14 @@ public class Turma implements Serializable {
 
     public static String geraCodigoTurma() {
         return LocalDate.now().getYear() + String.format("%02d" , contador++);
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
     }
 
     public Disciplina getDisciplina() {

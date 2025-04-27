@@ -146,6 +146,16 @@ public class GerenciamentoDeTurmas implements Serializable {
         throw new TurmaInvalidaException("A turma não existe.");
     }
 
+    // Método para listar os alunos de uma turma -----------------------------> OK
+    public String listaAlunoDeTurma(String codigo) throws TurmaInvalidaException {
+        Turma t = buscarTurma(codigo);
+        StringBuilder listar = new StringBuilder();
+        for (Aluno a: t.getAlunos()){
+            listar.append(a).append("\n");
+        }
+        return listar.toString();
+    }
+
     // Método para verificar aprovação --------------------------------------> OK
     public String verificarAprovacao(double media) {
         return media >= 7 ? "APROVADO" : "REPROVADO";
