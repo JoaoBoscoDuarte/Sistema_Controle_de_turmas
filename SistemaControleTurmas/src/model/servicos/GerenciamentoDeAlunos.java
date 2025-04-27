@@ -26,19 +26,6 @@ public class GerenciamentoDeAlunos implements Serializable {
         listaAlunos.add(aluno);
     }
 
-    public String listarAlunos() throws AlunoNaoEncontradoException {
-        if (listaAlunos.isEmpty()) {
-            throw new AlunoNaoEncontradoException("Lista de alunos vazia");
-        }
-
-        String lista = "";
-
-        for (Aluno aluno : listaAlunos) {
-            lista += aluno.toString();
-        }
-        return lista;
-    }
-
     public String consultaDadosAluno(String matricula) throws AlunoNaoEncontradoException {
         for (Aluno aluno : listaAlunos) {
             if (aluno.getMatricula().equalsIgnoreCase(matricula) && aluno.isAtivo()) {
@@ -82,12 +69,12 @@ public class GerenciamentoDeAlunos implements Serializable {
             throw new AlunoNaoEncontradoException("A lista de alunos está vazia");
         }
 
-        String exibir = "";
+        StringBuilder exibir = new StringBuilder();
         for (Aluno a : listaAlunos) {
-            exibir += a.toString();
+            exibir.append(a.toString()).append("\n");
         }
 
-        return exibir;
+        return exibir.toString();
     }
 
     public String retornaNomeAluno(String matricula) throws AlunoNaoEncontradoException {

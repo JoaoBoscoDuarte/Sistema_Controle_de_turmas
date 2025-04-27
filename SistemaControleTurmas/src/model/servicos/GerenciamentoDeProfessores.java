@@ -33,12 +33,12 @@ public class GerenciamentoDeProfessores implements Serializable {
             throw new ProfessorNaoEncontradoException("Lista de professores vazia");
         }
 
-        String exibir = "";
+        StringBuilder exibir = new StringBuilder();
         for (Professor p : LISTA_DE_PROFESSORES){
-            exibir += p.toString();
+            exibir.append(p.toString());
         }
 
-        return exibir;
+        return exibir.toString();
     }
 
     public boolean existeProfessor(String matricula) throws ProfessorNaoEncontradoException{

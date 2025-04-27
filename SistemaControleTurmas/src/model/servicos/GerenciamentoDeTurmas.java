@@ -116,12 +116,12 @@ public class GerenciamentoDeTurmas implements Serializable {
             throw new TurmaInvalidaException("Nenhuma turma cadastrada.");
         }
 
-        String exibir = "";
+        StringBuilder exibir = new StringBuilder();
         for (Turma t : turmas) {
-            exibir += (t).toString();
+            exibir.append(t).append("\n");
         }
 
-        return exibir;
+        return exibir.toString();
     }
 
     // Método que condensa as exceções de turma -----------------------------> OK
@@ -168,10 +168,8 @@ public class GerenciamentoDeTurmas implements Serializable {
 
     // Método para calcular a média dos alunos -----------------------------> OK
     public double calculaMedia(List<Double> notas, String codigo) throws TurmaInvalidaException {
-        List<Double> notasAluno = notas;
         Turma turma = buscarTurma(codigo);
-
-        return turma.getTipoDeMedia().calcularMedia(notasAluno);
+        return turma.getTipoDeMedia().calcularMedia(notas);
     }
 
     // Método para exibir em tela o relatorio final das notas dos alunos de uma turma

@@ -5,7 +5,6 @@ import model.exceptions.*;
 import model.pessoa.Professor;
 import model.servicos.*;
 import model.turma.Turma;
-import model.turma.media.TiposDeMediaIF;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,7 +29,7 @@ public class Faculdade implements Serializable {
         this.gerenciamentoDeArquivos = new GerenciamentoDeArquivos(gerenciamentoDeTurmas, gerenciamentoDeAlunos);
     }
 
-    // Gerenciamento de turmas --------------------------------------------------->
+    // Gerenciamento de turmas ---------------------------------------------------> ok
     public void criarTurma(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
         gerenciamentoDeTurmas.criarTurma(nome, matricula);
     }
@@ -51,8 +50,8 @@ public class Faculdade implements Serializable {
         gerenciamentoDeTurmas.removerAluno(matricula);
     }
 
-    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException, TurmaInvalidaException {
-        return gerenciamentoDeTurmas.calcularMedia(matricula, codigo);
+    public double calcularMedia(List<Double> notas, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException, TurmaInvalidaException {
+        return gerenciamentoDeTurmas.calculaMedia(notas, codigo);
     }
 
     public String verificarAprovacao(double media) {
@@ -83,7 +82,7 @@ public class Faculdade implements Serializable {
         gerenciamentoDeTurmas.encerrarTurma(matricula, codigo);
     }
 
-    // Gerenciamento de Alunos --------------------------------------------------->
+    // Gerenciamento de Alunos ---------------------------------------------------> ok
     public void adicionarAluno(String nome, String telefone, String email, String curso) throws PessoaInvalidaException {
         gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email, curso);
     }
@@ -104,13 +103,13 @@ public class Faculdade implements Serializable {
         return gerenciamentoDeAlunos.existeAluno(matricula);
     }
 
-    // Gerenciamento de disciplinas ---------------------------------------------->
+    // Gerenciamento de disciplinas ----------------------------------------------> ok
     public void cadastrarDisciplina(String nomeDisciplina, String codigo, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, DisciplinaInvalidaException, NomeDaDisciplinaInvalidoException {
         gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, codigo, cargaHoraria);
     }
 
     public String listarDisciplinas() throws DisciplinaNaoEncontradaException {
-        return gerenciamentoDeDisciplinas.listaDisciplinas();
+        return gerenciamentoDeDisciplinas.listarDisciplinas();
     }
 
     public void associarProfessorADisciplina(String nome, String matricula) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
@@ -125,7 +124,7 @@ public class Faculdade implements Serializable {
         return gerenciamentoDeDisciplinas.existeDisciplina(nome);
     }
 
-    // Gerenciamento de Professores ---------------------------------------------->
+    // Gerenciamento de Professores ----------------------------------------------> ok
     public void adicionarProfessor(String nome, String telefone, String email) throws Exception {
         gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email);
     }
