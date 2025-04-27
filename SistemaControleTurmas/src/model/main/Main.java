@@ -184,7 +184,7 @@ public class Main {
     }
 
     // Método de cadastro da disciplina -------------------------------------------> Falta o tratamento de exceções
-    public void cadastrarDisciplina() throws DisciplinaJaCadastradaException, IOException, CargaHorariaInvalidaException, DisciplinaInvalidaException{
+    public void cadastrarDisciplina() throws DisciplinaJaCadastradaException, IOException, CargaHorariaInvalidaException, DisciplinaInvalidaException, NomeDaDisciplinaInvalidoException {
         // Recebendo os dados da disciplina e cadastrando
         System.out.println("Informe o nome da disciplina: ");
         String disciplina = sc.nextLine();
