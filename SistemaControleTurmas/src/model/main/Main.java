@@ -30,7 +30,6 @@ public class Main {
         faculdade = faculdade.carregaControleDeTurmas();
 
         boolean repetir = true;
-
         while (repetir) {
             final String MENU_PRINCIPAL =
                     "===========| Sistema de controle de turmas |===========\n" +
@@ -47,9 +46,11 @@ public class Main {
                             "[11] Configurar Turma\n" +
                             "[12] Cadastrar notas\n" +
                             "[13] Inativar um aluno\n" +
-                            "[14] Encerrar Turmas\n" +
-                            "[15] Gerar relatório de turma\n" +
-                            "[16] Gerar relatório da faculdade\n" +
+                            "[14] Remover aluno de turma\n" +
+                            "[15] Encerrar Turmas\n" +
+                            "[16] Gerar relatório de turma\n" +
+                            "[17] Gerar relatório da faculdade\n" +
+                            "[18] Calcular nota final dos alunos\n" +
                             "[0] Sair\n";
 
             System.out.println(MENU_PRINCIPAL);
@@ -71,7 +72,6 @@ public class Main {
                 }
             }
 
-            //inicializando continuar p saber se usuario deseja repetir ação apos erro
             boolean tentarNovamente = true;
 
             // Escolhas (chamada das operações)
@@ -225,11 +225,24 @@ public class Main {
                     break;
 
                 case 14:
-                    encerrarTurmas();
+                    while(tentarNovamente) {
+                        try {
+                            removerAlunoDeTurma();
+                            System.out.println("Aluno removido da turma com sucesso!");
+                            tentarNovamente = false;
+                        } catch (AlunoNaoEncontradoException e) {
+                            System.out.println("Falha ao remover aluno de turma: " +e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
+                    }
                     break;
 
                 case 15:
-                    gerarRelatorioDeTurma();
+                    encerrarTurmas();
                     break;
 
                 case 16:
@@ -249,6 +262,10 @@ public class Main {
                     break;
 
                 case 17:
+                    gerarRelatorioDeTurma();
+                    break;
+
+                case 18:
                     calcularNotaFinalAlunos();
                     break;
 
@@ -262,7 +279,6 @@ public class Main {
     // Método de cadastro aluno --------------------------------------------------->  Falta o tratamento de exceções
     public void cadastrarAluno() throws Exception {
         //Recebendo dados do aluno e cadastrando no sistema
-
         System.out.println("Informe o nome do aluno: ");
         String nome = sc.nextLine();
 
@@ -288,6 +304,11 @@ public class Main {
         System.out.println("Informe o codigo para a disciplina: ");
         String codigo = sc.nextLine();
 
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da disciplina não pode estar vazio.");
+            return;
+        }
+
         System.out.println("Informe a carga horária: ");
         int cargaHoraria = sc.nextInt();
         sc.nextLine();
@@ -308,7 +329,7 @@ public class Main {
         String escolha = sc.nextLine().toLowerCase();
 
         boolean comDisciplinas = false;
-        if (escolha.equalsIgnoreCase("s")) {
+        if (escolha.equals("s")) {
             try {
                 System.out.println("Quantidade de disciplinas que deseja adicionar: ");
                 int quantidade = sc.nextInt();
@@ -443,7 +464,7 @@ public class Main {
         }
     }
 
-    // Método para inativar aluno da turma --------------------------------------------->
+    // Método para inativar aluno da faculdade --------------------------------------------->
     public void inativarAluno() throws AlunoNaoEncontradoException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
@@ -454,6 +475,26 @@ public class Main {
         }
 
         faculdade.desativaAluno(matricula);
+    }
+
+    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException {
+        System.out.println("Informe o código da turma: ");
+        String codigo = sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido o código da turma não pode estar vazio.");
+            return;
+        }
+
+        System.out.println("Informe a matrícula do aluno: ");
+        String matricula = sc.nextLine();
+
+        if (matricula == null || matricula.trim().isEmpty()) {
+            System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
+            return;
+        }
+
+        faculdade.removerAluno(matricula);
     }
 
     public void calcularNotaFinalAlunos() {
