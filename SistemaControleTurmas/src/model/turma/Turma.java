@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /*  ================| Só altere em caso de urgência! |====================
  *  ----------------------Classe 100% concluída-----------------------> OK
@@ -107,6 +108,18 @@ public class Turma implements Serializable {
 
     public void setCodigoTurma(String codigoTurma) {
         this.codigoTurma = codigoTurma;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Turma turma = (Turma) o;
+        return numeroUnidades == turma.numeroUnidades && Objects.equals(disciplina, turma.disciplina) && Objects.equals(professor, turma.professor) && Objects.equals(tipoDeMedia, turma.tipoDeMedia) && Objects.equals(notasAluno, turma.notasAluno) && Objects.equals(matriculasProfessores, turma.matriculasProfessores) && Objects.equals(alunos, turma.alunos) && Objects.equals(codigoTurma, turma.codigoTurma);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(disciplina, professor, numeroUnidades, tipoDeMedia, notasAluno, matriculasProfessores, alunos, codigoTurma);
     }
 
     @Override

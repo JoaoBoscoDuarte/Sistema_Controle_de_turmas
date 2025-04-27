@@ -1,19 +1,16 @@
 package model.servicos;
 
-import model.disciplina.Disciplina;
 import model.exceptions.*;
 import model.pessoa.Aluno;
 import model.pessoa.Professor;
 import model.turma.Nota;
 import model.turma.Turma;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GerenciamentoDeTurmas implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     private List<Turma> turmas;
     private GerenciamentoDeAlunos aluno;
@@ -91,10 +88,6 @@ public class GerenciamentoDeTurmas implements Serializable {
         }
     }
 
-    public void adicionarNota() {
-
-    }
-
     // Método para remover aluno pela matrícula
     public void removerAluno(String matricula) throws AlunoNaoEncontradoException {
         for (Turma turma : turmas) {
@@ -106,15 +99,16 @@ public class GerenciamentoDeTurmas implements Serializable {
     }
 
     // Método para listar todas as turmas -----------------------------------> OK
-    public StringBuilder listarTurmas() {
+    public String listarTurmas() throws TurmaInvalidaException {
         if (turmas.isEmpty()) {
-            return new StringBuilder("Nenhuma turma cadastrada.");
+            throw new TurmaInvalidaException("Nenhuma turma cadastrada.");
         }
 
-        StringBuilder exibir =  new StringBuilder();
+        String exibir = "";
         for (Turma t : turmas) {
-            exibir.append(t).append("\n");
+            exibir += (t).toString();
         }
+
         return exibir;
     }
 
@@ -161,21 +155,31 @@ public class GerenciamentoDeTurmas implements Serializable {
         return media >= 7 ? "APROVADO" : "REPROVADO";
     }
 
-    // Método para calcular a média de um aluno -----------------------------> OK
-    public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException, TurmaInvalidaException {
+    // Método para calcular a média dos alunos -----------------------------> OK
+    public double calculaMedia(List<Double> notas, String codigo) throws TurmaInvalidaException {
+        List<Double> notasAluno = notas;
         Turma turma = buscarTurma(codigo);
 
-        for (Nota n : turma.getNotasAluno()) {
-            if (n.getMatricula().equals(matricula)) {
-                if (turma.getTipoDeMedia() == null) {
-                    throw new TipoDeMediaNaoDefinidaException("Tipo de média não foi definido.");
-                }
-                return turma.getTipoDeMedia().calcularMedia(n.getNotas());
+        return turma.getTipoDeMedia().calcularMedia(notasAluno);
+    }
 
-            }
+    // Método para exibir em tela o relatorio final das notas dos alunos de uma turma
+    public String exibirRelatorioFinalemTela(String codigo) throws TurmaInvalidaException, AlunoNaoEncontradoException {
+        Turma turma = buscarTurma(codigo);
+
+        if (turma == null) {
+            throw new TurmaInvalidaException("Turma não encontrada");
         }
 
-        throw new AlunoNaoEncontradoException("Aluno não encontrado na turma.");
+        String exibir = "";
+        for (Nota n : turma.getNotasAluno()) {
+            exibir += "|Nome: " + aluno.retornaNomeAluno(n.getMatricula()) + "\n" +
+                    "|Notas: " + n.getNotas() + "\n" +
+                    "|Media: " + calculaMedia(n.getNotas(), codigo) + "\n" +
+                    "|Situação: " + verificarAprovacao(calculaMedia(n.getNotas(), codigo));
+        }
+
+        return exibir;
     }
 
     public List<Turma> getTurmas() {

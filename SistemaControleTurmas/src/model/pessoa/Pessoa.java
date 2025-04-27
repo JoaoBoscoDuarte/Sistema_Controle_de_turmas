@@ -100,10 +100,6 @@ public abstract class Pessoa implements Serializable {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
     // Métodos básicos ----------------------------------------------> OK
     @Override
     public boolean equals(Object o) {

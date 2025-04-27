@@ -13,7 +13,6 @@ import java.util.List;
  */
 
 public class GerenciamentoDeProfessores implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     private final List<Professor> LISTA_DE_PROFESSORES = new ArrayList<>();
 
@@ -29,11 +28,16 @@ public class GerenciamentoDeProfessores implements Serializable {
     }
 
     // Listar Professores
-    public StringBuilder listarProfessores() {
-        StringBuilder exibir = new StringBuilder();
-        for (Professor p : LISTA_DE_PROFESSORES){
-            exibir.append(p).append("\n");
+    public String listarProfessores() throws ProfessorNaoEncontradoException{
+        if (LISTA_DE_PROFESSORES.isEmpty()) {
+            throw new ProfessorNaoEncontradoException("Lista de professores vazia");
         }
+
+        String exibir = "";
+        for (Professor p : LISTA_DE_PROFESSORES){
+            exibir += p.toString();
+        }
+
         return exibir;
     }
 
