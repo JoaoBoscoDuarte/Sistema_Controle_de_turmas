@@ -22,22 +22,26 @@ public class GerenciamentoDeDisciplinas implements Serializable {
     }
 
     // Método que cadastra uma nova disciplina ---------------------------------------------> OK
-    public void cadastraDisciplina(String nome, int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, NomeDaDisciplinaInvalidoException, DisciplinaInvalidaException {
+    public void cadastraDisciplina(String nome,String codigo,int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, NomeDaDisciplinaInvalidoException, DisciplinaInvalidaException {
         validaNomeDisciplina(nome);
+
+        if(existeDisciplinaComMesmoCodigo(codigo)){
+            throw new DisciplinaJaCadastradaException("Já existe uma disciplina com esse codigo.");
+        }
 
         if (cargaHoraria <= 0) {
             throw new CargaHorariaInvalidaException("Carga horária deve ser maior que zero.");
-        }
-
-        if (existeDisciplinaComMesmoNome(nome)) {
-            throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nome + "'.");
         }
 
         if (nome == null) {
             throw new NomeDaDisciplinaInvalidoException("O nome da disciplina não pode ser vazil");
         }
 
-        this.disciplinas.add(new Disciplina(nome, cargaHoraria));
+        if (existeDisciplinaComMesmoNome(nome)) {
+            throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nome + "'.");
+        }
+
+        this.disciplinas.add(new Disciplina(nome,codigo,cargaHoraria));
     }
 
     // Método que verifica se existe disciplina com o mesmo nome ---------------------------> OK
@@ -49,6 +53,18 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         }
         return false;
     }
+
+    // Método que verifica se existe disciplina com o mesmo codigo ---------------------------> OK
+    private boolean existeDisciplinaComMesmoCodigo(String codigo) {
+        for (Disciplina d : disciplinas) {
+            if (d.getNomeDisciplina().equals(codigo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     // Método que lista todas as disciplinas  ----------------------------------------------> OK
     public StringBuilder listaDisciplinas() {

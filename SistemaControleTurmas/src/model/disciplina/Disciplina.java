@@ -18,9 +18,9 @@ public class Disciplina implements Serializable {
     private List<String> professorAssociado = new ArrayList<>();
     private static int contador = 1;
 
-    public Disciplina(String nome, int cargaHoraria) {
+    public Disciplina(String nome,String codigo, int cargaHoraria) {
         this.nome = nome;
-        this.codigo = gerarCodigoDisciplina();
+        this.codigo = codigo;
         this.cargaHoraria = cargaHoraria;
     }
 
@@ -51,10 +51,6 @@ public class Disciplina implements Serializable {
 
     public void setProfessorAssociado(List<String> professorAssociado) {
         this.professorAssociado = professorAssociado;
-    }
-
-    public String gerarCodigoDisciplina() {
-        return LocalDate.now().getYear() + String.format("%04d" , contador++);
     }
 
     public String getCodigo() {
