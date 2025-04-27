@@ -375,6 +375,11 @@ public class Main {
         System.out.println("Informe o id do professor: ");
         String idProfessor = sc.nextLine();
 
+        if (idProfessor == null || idProfessor.trim().isEmpty()) {
+            System.out.println("Inválido. O código da disciplina não pode estar vazio.");
+            return;
+        }
+
         faculdade.criarTurma(nomeDisciplina, idProfessor);
         System.out.println("Turma criada com sucesso.");
 
@@ -386,7 +391,7 @@ public class Main {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
 
-        if (matricula.trim().isEmpty()) {
+        if (matricula == null || matricula.trim().isEmpty()) {
             System.out.println("Inválido. O número da matrícula do aluno não pode estar vazia.");
             return;
         }
@@ -394,7 +399,7 @@ public class Main {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
-        if (codigo.trim().isEmpty()) {
+        if (codigo == null || codigo.trim().isEmpty()) {
             System.out.println("Inválido. O código da turma não pode estar vazio.");
             return;
         }
@@ -439,6 +444,11 @@ public class Main {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da turma não pode estar vazio.");
+            return;
+        }
+
         System.out.println("Informe a unidade avaliativa: ");
         int unidade = sc.nextInt();
 
@@ -469,7 +479,7 @@ public class Main {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
 
-        if (matricula.trim().isEmpty()) {
+        if (matricula == null || matricula.trim().isEmpty()) {
             System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
             return;
         }
@@ -510,6 +520,11 @@ public class Main {
     public void gerarRelatorioDeTurma() throws TurmaInvalidaException, IOException {
         System.out.println("Insira o código da turma que deseja gerar o relatório: ");
         String codigo = sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da turma não pode estar vazio.");
+            return;
+        }
 
         faculdade.gerarRelatorioDaTurma(codigo);
         System.out.println("Relatorio gerado com sucesso!\n");
