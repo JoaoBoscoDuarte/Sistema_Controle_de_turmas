@@ -13,14 +13,21 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/*  ================| Só altere em caso de urgência! |====================
+ *  --------------------Classe 100% concluída-------------------------> OK
+ *  Não alterar essa classe pelo amor de deus.
+ */
+
 public class GerenciamentoDeArquivos implements Serializable {
     private static final String ARQUIVO_CONTROLE = "controleTurmas.ser";
     private static final String DIRETORIO_ARQUIVOS = "SistemaControleTurmas//src//data";
     private static final String DIRETORIO_RELATORIOS = DIRETORIO_ARQUIVOS + File.separator + "relatorios";
     private static final String NOME_RELATORIO = "relatorio_controle_turmas.txt";
+    private GerenciamentoDeTurmas gerenciamentoDeTurmas;
 
-    public GerenciamentoDeArquivos() {
+    public GerenciamentoDeArquivos(GerenciamentoDeTurmas gerenciamentoDeTurmas) {
         criarDiretorios();
+        this.gerenciamentoDeTurmas = gerenciamentoDeTurmas;
     }
 
     // Permite que os diretórios padrões dos arquivos sempre existam ------------------------------------------>
@@ -109,9 +116,10 @@ public class GerenciamentoDeArquivos implements Serializable {
     }
 
     // Gera o relatório de uma turma -----------------------------------------------> OK
-    public void gerarRelatorioTurmaTxt(GerenciamentoDeTurmas turmas, String codigo) throws TurmaInvalidaException, IOException {
+    public void gerarRelatorioTurmaTxt(String codigo) throws TurmaInvalidaException, IOException {
         Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, "relatorio_" + codigo + ".txt");
-        Turma turma = turmas.buscarTurma(codigo);
+
+        Turma turma = gerenciamentoDeTurmas.buscarTurma(codigo);
 
         if (turma == null) {
             throw new TurmaInvalidaException("Turma não encontrada");
