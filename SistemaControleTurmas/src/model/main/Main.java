@@ -65,7 +65,7 @@ public class Main {
                     entradaValida = true;
 
                 } catch (NumberFormatException e) {
-                    System.out.println("Erro: Escolha aceita apenas números inteiros");
+                    System.err.println("Erro: Escolha aceita apenas números inteiros");
                     System.out.println(MENU_PRINCIPAL);
                 }
             }
@@ -80,54 +80,45 @@ public class Main {
                 case 1:
                     try {
                         cadastrarAluno();
+                        System.out.println("Aluno cadastrado com sucesso!");
                     } catch (PessoaInvalidaException e) {
-                        System.out.println("Falha ao cadastrar aluno: " + e.getMessage());
+                        System.err.println("Falha ao cadastrar aluno: " + e.getMessage());
                     }
                     break;
 
                 case 2:
                     try {
                         cadastrarDisciplina();
-                    } catch (DisciplinaJaCadastradaException e) {
-                        System.out.println("Falha ao cadastrar disciplina: " + e.getMessage());
-                    } catch (DisciplinaInvalidaException e) {
-                        System.out.println("Falha no nome da disciplina: " + e.getMessage());
-                    } catch (CargaHorariaInvalidaException e) {
-                        System.out.println("Falha quanto a carga horária informada: " + e.getMessage());
-                    } catch (NomeDaDisciplinaInvalidoException e) {
-                        System.out.println("O nome da disciplina não pode ser vazio");
+                        System.out.println("Disciplina cadastrada com sucesso!");
+                    } catch (DisciplinaJaCadastradaException | DisciplinaInvalidaException | CargaHorariaInvalidaException | NomeDaDisciplinaInvalidoException e) {
+                        System.err.println("Falha ao cadastrar disciplina: " + e.getMessage());
                     }
                     break;
 
                 case 3:
                     try {
                         cadastrarProfessor();
+                        System.out.println("Professor cadastrado com sucesso!");
                     } catch (PessoaInvalidaException e) {
-                        System.out.println("Falha ao tentar cadastrar professor: " + e.getMessage());
+                        System.err.println("Falha ao tentar cadastrar professor: " + e.getMessage());
                     }
                     break;
 
                 case 4:
                     try {
                         criarTurma();
-                    } catch (ProfessorNaoEncontradoException e) {
-                        System.out.println("Falha ao criar turma: " + e.getMessage());
-                    } catch (DisciplinaNaoEncontradaException e) {
-                        System.out.println("Falha ao criar turma: " + e.getMessage());
-                    } catch (IOException e) {
-                        System.out.println("Falha de IO ao criar turma: " + e.getMessage());
+                        System.out.println("Turma criada com sucesso!");
+                    } catch (ProfessorNaoEncontradoException |DisciplinaNaoEncontradaException | IOException e) {
+                        System.err.println("Falha ao criar turma: " + e.getMessage());
                     }
                     break;
 
                 case 5:
                     try {
                         matricularAlunoEmTurma();
-                    } catch (TurmaInvalidaException e) {
-                        System.out.println("Falha ao matricular aluno em turma: " + e.getMessage());
-                    } catch (AlunoNaoEncontradoException e) {
-                        System.out.println("Falha ao tentar matricular aluno em turma: " + e.getMessage());
-                    } catch (IOException e) {
-                        System.out.println("Erro de IO ao matricular aluno: " + e.getMessage());
+                        System.out.println("Aluno matriculado em turma com sucesso!");
+                    } catch (TurmaInvalidaException | AlunoNaoEncontradoException | IOException e) {
+                        System.err.println("Falha ao matricular aluno em turma: " + e.getMessage());
                     }
                     break;
 
@@ -158,18 +149,18 @@ public class Main {
                 case 12:
                     try {
                         cadastrarNotas();
-                    } catch (AlunoNaoEncontradoException e) {
-                        System.out.println("Falha ao cadastrar nota: " + e.getMessage());
-                    } catch (TurmaInvalidaException e) {
-                        System.out.println("Falha ao cadastrar nota: " + e.getMessage());
+                        System.out.println("Notas cadastradas com suceso!");
+                    } catch (AlunoNaoEncontradoException | TurmaInvalidaException e) {
+                        System.err.println("Falha ao cadastrar nota: " + e.getMessage());
                     }
                     break;
 
                 case 13:
                     try {
                         inativarAluno();
+                        System.out.println("Aluno desativado com sucesso!");
                     } catch (AlunoNaoEncontradoException e) {
-                        System.out.println("Falha ao desativar aluno: " + e.getMessage());
+                        System.err.println("Falha ao desativar aluno: " + e.getMessage());
                     }
                     break;
 
@@ -185,7 +176,7 @@ public class Main {
                     try {
                         gerarRelatorioDaFaculdade();
                     } catch (IOException e) {
-                        System.out.println("Erro ao gerar relatório da faculdade: " + e.getMessage());
+                        System.err.println("Erro ao gerar relatório da faculdade: " + e.getMessage());
                     }
                     break;
 
@@ -216,8 +207,6 @@ public class Main {
         String curso = sc.nextLine();
 
         faculdade.adicionarAluno(nome, telefone, email, curso);
-        System.out.println("Aluno cadastrado.");
-
         faculdade.salvaControleDeTurmas();
     }
 
@@ -227,13 +216,14 @@ public class Main {
         System.out.println("Informe o nome da disciplina: ");
         String disciplina = sc.nextLine();
 
+        System.out.println("Informe o codigo para a disciplina: ");
+        String codigo = sc.nextLine();
+
         System.out.println("Informe a carga horária: ");
         int cargaHoraria = sc.nextInt();
         sc.nextLine();
 
-        faculdade.cadastrarDisciplina(disciplina, cargaHoraria);
-        System.out.println("Disciplina cadastrada.");
-
+        faculdade.cadastrarDisciplina(disciplina, codigo ,cargaHoraria);
         faculdade.salvaControleDeTurmas();
     }
 
@@ -374,12 +364,12 @@ public class Main {
         // Para cada aluno da turma, solicita a nota para a unidade
         for (Nota nota : turma.getNotasAluno()) {
             System.out.println("Informe a nota do aluno " + nota.getMatricula() + " para a unidade " + unidade + ": ");
-            Double notaAluno = sc.nextDouble();
+            double notaAluno = sc.nextDouble();
             try {
                 faculdade.cadastrarNotasUnidade(codigo, unidade, notaAluno);
 
             } catch (IntervaloDeNotaException | IntervaloDeUnidadeException e) {
-                System.out.println(e.getMessage());
+                System.err.println(e.getMessage());
             }
         }
     }
@@ -395,7 +385,6 @@ public class Main {
         }
 
         faculdade.desativaAluno(matricula);
-        System.out.println("Aluno desativado.");
     }
 
     public void calcularNotaFinalAlunos() {
