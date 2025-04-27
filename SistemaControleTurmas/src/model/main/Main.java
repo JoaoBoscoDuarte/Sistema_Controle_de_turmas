@@ -242,7 +242,20 @@ public class Main {
                     break;
 
                 case 15:
-                    encerrarTurmas();
+                    while (tentarNovamente) {
+                        try {
+                            encerrarTurmas();
+                            System.out.println("Turma encerrada com sucesso!");
+                            tentarNovamente = false;
+                        } catch (ProfessorNaoEncontradoException | TurmaInvalidaException | IntervaloDeNotaException e) {
+                            System.out.println("Falha ao encerrar turma: " +e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
+                    }
                     break;
 
                 case 16:
@@ -435,8 +448,8 @@ public class Main {
         System.out.println("Turmas da faculdade: " + faculdade.listarTurmas());
     }
 
-
     public void configurarTurma() {
+
     }
 
     // Cadastra a nota dos alunos ---------------------------------------------------->
@@ -536,6 +549,23 @@ public class Main {
         System.out.println("Relatório da turma gerado com sucesso!\n");
     }
 
-    public void encerrarTurmas() {
+    public void encerrarTurmas() throws ProfessorNaoEncontradoException, TurmaInvalidaException, IntervaloDeNotaException {
+        System.out.println("Informe o código da turma: ");
+        String codigo = sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido. O código da turma não pode estar vazio.");
+            return;
+        }
+
+        System.out.println("Informe o id do professor: ");
+        String idProfessor = sc.nextLine();
+
+        if (idProfessor == null || idProfessor.trim().isEmpty()) {
+            System.out.println("Inválido. O id do professor não pode estar vazio.");
+            return;
+        }
+
+        faculdade.encerrarTurma(idProfessor, codigo);
     }
 }

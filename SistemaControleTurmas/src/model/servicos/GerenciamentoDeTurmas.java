@@ -6,6 +6,7 @@ import model.pessoa.Aluno;
 import model.pessoa.Professor;
 import model.turma.Nota;
 import model.turma.Turma;
+import model.turma.media.TiposDeMediaIF;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ public class GerenciamentoDeTurmas implements Serializable {
     private GerenciamentoDeProfessores professor;
     private GerenciamentoDeDisciplinas disciplina;
     private GerenciamentoDeArquivos arquivos;
+    private boolean ativo;
 
     public GerenciamentoDeTurmas(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeArquivos arquivos) {
         this.turmas = new ArrayList<>();
@@ -27,6 +29,15 @@ public class GerenciamentoDeTurmas implements Serializable {
         this.professor = professor;
         this.disciplina = disciplina;
         this.arquivos = arquivos;
+        this.ativo = true;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     // Método par cria turma ------------------------------------------------------------> OK
@@ -65,7 +76,6 @@ public class GerenciamentoDeTurmas implements Serializable {
         Turma turma = buscarTurma(codigo);
         if (1 < unidades) {
             turma.setNumeroUnidades(unidades);
-
         } else {
             throw new IntervaloDeUnidadeException("Número de unidades inválido.");
         }
@@ -144,7 +154,6 @@ public class GerenciamentoDeTurmas implements Serializable {
                 return t;
             }
         }
-
         throw new TurmaInvalidaException("A turma não existe.");
     }
 
@@ -173,11 +182,30 @@ public class GerenciamentoDeTurmas implements Serializable {
                     throw new TipoDeMediaNaoDefinidaException("Tipo de média não foi definido.");
                 }
                 return turma.getTipoDeMedia().calcularMedia(n.getNotas());
-
             }
         }
-
         throw new AlunoNaoEncontradoException("Aluno não encontrado na turma.");
+    }
+
+    public void encerrarTurma(String matricula, String codigo) throws TurmaInvalidaException, ProfessorNaoEncontradoException, IntervaloDeNotaException {
+        Turma turma = buscarTurma(codigo);
+        if (turma == null) {
+            throw new TurmaInvalidaException("Turma não encontrada.");
+        }
+
+        Professor professorDaTurma = turma.getProfessor();
+        if (!professorDaTurma.getMatricula().equals(matricula)) {
+            throw new ProfessorNaoEncontradoException("A turma não pertence a este professor.");
+        }
+
+        for (Nota nota : turma.getNotasAluno()) {
+            for (Double n : nota.getNotas()) {
+                if (n == null) {
+                    throw new IntervaloDeNotaException("Ainda existem notas não cadastradas para esta turma.");
+                }
+            }
+        }
+        turma.setAtivo(false);
     }
 
     public List<Turma> getTurmas() {
