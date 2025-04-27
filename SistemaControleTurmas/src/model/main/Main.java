@@ -338,8 +338,8 @@ public class Main {
     }
 
     // Método que gera os relatŕoios da turma ------------------------------------------->  Falta o tratamento de exceções
-    public void gerarRelatorioDeTurma(String codigo) throws IOException {
-        faculdade.gerarRelatorioDaTurma(codigo);
+    public void gerarRelatorioDeTurma() throws IOException {
+        faculdade.gerarRelatorioDaTurma();
         System.out.println("Relatório da turma gerado com sucesso!\n");
     }
 
