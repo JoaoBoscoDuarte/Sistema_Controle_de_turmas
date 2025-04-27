@@ -608,7 +608,7 @@ public class Main {
         faculdade.removerAluno(matricula);
     }
 
-    public void calcularNotaFinalAlunos() {
+    public void calcularNotaFinalAlunos() throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
         System.out.println("Insira o código da turma que deseja calcular a nota dos alunos: ");
         String codigo = sc.nextLine();
 
