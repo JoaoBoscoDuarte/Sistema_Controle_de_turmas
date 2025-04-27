@@ -30,6 +30,7 @@ public class Main {
         faculdade = faculdade.carregaControleDeTurmas();
 
         boolean repetir = true;
+
         while (repetir) {
             final String MENU_PRINCIPAL =
                     "===========| Sistema de controle de turmas |===========\n" +
@@ -70,6 +71,9 @@ public class Main {
                 }
             }
 
+            //inicializando continuar p saber se usuario deseja repetir ação apos erro
+            boolean tentarNovamente = true;
+
             // Escolhas (chamada das operações)
             switch (escolha) {
                 case 0:
@@ -78,47 +82,87 @@ public class Main {
                     break;
 
                 case 1:
-                    try {
-                        cadastrarAluno();
-                        System.out.println("Aluno cadastrado com sucesso!");
-                    } catch (PessoaInvalidaException e) {
-                        System.err.println("Falha ao cadastrar aluno: " + e.getMessage());
+                    while (tentarNovamente) {
+                        try {
+                            cadastrarAluno();
+                            System.out.println("Aluno cadastrado com sucesso!");
+                            tentarNovamente = false;
+                        } catch (PessoaInvalidaException e) {
+                            System.out.println("Falha ao cadastrar aluno: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
                     }
                     break;
 
                 case 2:
-                    try {
-                        cadastrarDisciplina();
-                        System.out.println("Disciplina cadastrada com sucesso!");
-                    } catch (DisciplinaJaCadastradaException | DisciplinaInvalidaException | CargaHorariaInvalidaException | NomeDaDisciplinaInvalidoException e) {
-                        System.err.println("Falha ao cadastrar disciplina: " + e.getMessage());
+                    while (tentarNovamente) {
+                        try {
+                            cadastrarDisciplina();
+                            System.out.println("Disciplina cadastrada com sucesso!");
+                            tentarNovamente = false;
+                        } catch (DisciplinaJaCadastradaException | DisciplinaInvalidaException | CargaHorariaInvalidaException | NomeDaDisciplinaInvalidoException e) {
+                            System.err.println("Falha ao cadastrar disciplina: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
                     }
                     break;
 
                 case 3:
-                    try {
-                        cadastrarProfessor();
-                        System.out.println("Professor cadastrado com sucesso!");
-                    } catch (PessoaInvalidaException e) {
-                        System.err.println("Falha ao tentar cadastrar professor: " + e.getMessage());
+                    while (tentarNovamente) {
+                        try {
+                            cadastrarProfessor();
+                            System.out.println("Professor cadastrado com sucesso!");
+                            tentarNovamente = false;
+                        } catch (PessoaInvalidaException e) {
+                            System.err.println("Falha ao cadastrar professor: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
                     }
                     break;
 
                 case 4:
-                    try {
-                        criarTurma();
-                        System.out.println("Turma criada com sucesso!");
-                    } catch (ProfessorNaoEncontradoException |DisciplinaNaoEncontradaException | IOException e) {
-                        System.err.println("Falha ao criar turma: " + e.getMessage());
+                    while (tentarNovamente) {
+                        try {
+                            criarTurma();
+                            System.out.println("Turma criada com sucesso!");
+                            tentarNovamente = false;
+                        } catch (ProfessorNaoEncontradoException |DisciplinaNaoEncontradaException | IOException e) {
+                            System.err.println("Falha ao criar turma: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
                     }
                     break;
 
                 case 5:
-                    try {
-                        matricularAlunoEmTurma();
-                        System.out.println("Aluno matriculado em turma com sucesso!");
-                    } catch (TurmaInvalidaException | AlunoNaoEncontradoException | IOException e) {
-                        System.err.println("Falha ao matricular aluno em turma: " + e.getMessage());
+                    while (tentarNovamente) {
+                        try {
+                            matricularAlunoEmTurma();
+                            System.out.println("Aluno matriculado em turma com sucesso!");
+                            tentarNovamente = false;
+                        } catch (TurmaInvalidaException | AlunoNaoEncontradoException | IOException e) {
+                            System.err.println("Falha ao matricular aluno em turma: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
                     }
                     break;
 
@@ -147,20 +191,36 @@ public class Main {
                     break;
 
                 case 12:
-                    try {
-                        cadastrarNotas();
-                        System.out.println("Notas cadastradas com suceso!");
-                    } catch (AlunoNaoEncontradoException | TurmaInvalidaException e) {
-                        System.err.println("Falha ao cadastrar nota: " + e.getMessage());
+                    while (tentarNovamente) {
+                        try {
+                            cadastrarNotas();
+                            System.out.println("Notas cadastradas com suceso!");
+                            tentarNovamente = false;
+                        } catch (AlunoNaoEncontradoException | TurmaInvalidaException e) {
+                            System.err.println("Falha ao cadastrar nota: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
                     }
                     break;
 
                 case 13:
-                    try {
-                        inativarAluno();
-                        System.out.println("Aluno desativado com sucesso!");
-                    } catch (AlunoNaoEncontradoException e) {
-                        System.err.println("Falha ao desativar aluno: " + e.getMessage());
+                    while (tentarNovamente) {
+                        try {
+                            inativarAluno();
+                            System.out.println("Aluno desativado com sucesso!");
+                            tentarNovamente = false;
+                        } catch (AlunoNaoEncontradoException e) {
+                            System.err.println("Falha ao desativar aluno: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
                     }
                     break;
 
@@ -173,10 +233,18 @@ public class Main {
                     break;
 
                 case 16:
-                    try {
-                        gerarRelatorioDaFaculdade();
-                    } catch (IOException e) {
-                        System.err.println("Erro ao gerar relatório da faculdade: " + e.getMessage());
+                    while (tentarNovamente) {
+                        try {
+                            gerarRelatorioDaFaculdade();
+                            tentarNovamente = false;
+                        } catch (IOException e) {
+                            System.err.println("Falha ao gerar relatório da faculdade: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
                     }
                     break;
 
@@ -194,6 +262,7 @@ public class Main {
     // Método de cadastro aluno --------------------------------------------------->  Falta o tratamento de exceções
     public void cadastrarAluno() throws Exception {
         //Recebendo dados do aluno e cadastrando no sistema
+
         System.out.println("Informe o nome do aluno: ");
         String nome = sc.nextLine();
 
@@ -239,7 +308,7 @@ public class Main {
         String escolha = sc.nextLine().toLowerCase();
 
         boolean comDisciplinas = false;
-        if (escolha.equals("s")) {
+        if (escolha.equalsIgnoreCase("s")) {
             try {
                 System.out.println("Quantidade de disciplinas que deseja adicionar: ");
                 int quantidade = sc.nextInt();
