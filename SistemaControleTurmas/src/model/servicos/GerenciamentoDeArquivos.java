@@ -1,10 +1,12 @@
 package model.servicos;
 
 import model.disciplina.Disciplina;
+import model.exceptions.AlunoNaoEncontradoException;
 import model.exceptions.TurmaInvalidaException;
 import model.faculdade.Faculdade;
 import model.pessoa.Aluno;
 import model.pessoa.Professor;
+import model.turma.Nota;
 import model.turma.Turma;
 
 import java.io.*;
@@ -24,10 +26,12 @@ public class GerenciamentoDeArquivos implements Serializable {
     private static final String DIRETORIO_RELATORIOS = DIRETORIO_ARQUIVOS + File.separator + "relatorios";
     private static final String NOME_RELATORIO = "relatorio_controle_turmas.txt";
     private GerenciamentoDeTurmas gerenciamentoDeTurmas;
+    private GerenciamentoDeAlunos gerenciamentoDeAlunos;
 
-    public GerenciamentoDeArquivos(GerenciamentoDeTurmas gerenciamentoDeTurmas) {
+    public GerenciamentoDeArquivos(GerenciamentoDeTurmas gerenciamentoDeTurmas, GerenciamentoDeAlunos gerenciamentoDeAlunos) {
         criarDiretorios();
         this.gerenciamentoDeTurmas = gerenciamentoDeTurmas;
+        this.gerenciamentoDeAlunos = gerenciamentoDeAlunos;
     }
 
     // Permite que os diretórios padrões dos arquivos sempre existam ------------------------------------------>
@@ -131,5 +135,31 @@ public class GerenciamentoDeArquivos implements Serializable {
             writer.write("|=================================================================================|\n\n");
             writer.write(turma.toString());
         }
+    }
+
+    // Gerar Relatorio com nota final de turma
+    public void gerarRelatorioNotaFinalTurma(String codigo) throws TurmaInvalidaException, IOException, AlunoNaoEncontradoException {
+        Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, "NotasFinaisAluno" + codigo + ".txt");
+
+        Turma turma = gerenciamentoDeTurmas.buscarTurma(codigo);
+
+        if (turma == null) {
+            throw new TurmaInvalidaException("Turma não encontrada");
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoRelatorio.toFile()))) {
+            writer.write("RELATÓRIO FINAL DA TURMA " + codigo + "\n");
+            writer.write("Gerado em: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd//MM//yyyy HH:mm:ss")));
+            writer.write("|=================================================================================|\n\n");
+
+            for (Nota n : turma.getNotasAluno()) {
+                writer.write("|Nome: " + gerenciamentoDeAlunos.retornaNomeAluno(n.getMatricula()));
+                writer.write("|Notas: " + n.getNotas());
+                writer.write("|Media: " + gerenciamentoDeTurmas.calculaMedia(n.getNotas(), codigo));
+                writer.write("|Situação: " + gerenciamentoDeTurmas.verificarAprovacao(gerenciamentoDeTurmas.calculaMedia(n.getNotas(), codigo)));
+            }
+        }
+
+        System.out.println("Relatorio criado em: " + caminhoRelatorio);
     }
 }

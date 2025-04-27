@@ -41,7 +41,11 @@ public class Aluno extends Pessoa implements Serializable {
         if (!super.equals(o)) return false;
         Aluno aluno = (Aluno) o;
         return Objects.equals(curso, aluno.curso);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), curso);
     }
 
     @Override

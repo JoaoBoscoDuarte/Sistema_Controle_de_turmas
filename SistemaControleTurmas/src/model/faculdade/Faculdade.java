@@ -27,7 +27,7 @@ public class Faculdade implements Serializable {
         this.gerenciamentoDeProfessores = new GerenciamentoDeProfessores();
         this.gerenciamentoDeDisciplinas = new GerenciamentoDeDisciplinas(gerenciamentoDeProfessores);
         this.gerenciamentoDeTurmas = new GerenciamentoDeTurmas(gerenciamentoDeAlunos, gerenciamentoDeProfessores, gerenciamentoDeDisciplinas, gerenciamentoDeArquivos);
-        this.gerenciamentoDeArquivos = new GerenciamentoDeArquivos(gerenciamentoDeTurmas);
+        this.gerenciamentoDeArquivos = new GerenciamentoDeArquivos(gerenciamentoDeTurmas, gerenciamentoDeAlunos);
     }
 
     // Gerenciamento de turmas --------------------------------------------------->
@@ -51,10 +51,6 @@ public class Faculdade implements Serializable {
         gerenciamentoDeTurmas.removerAluno(matricula);
     }
 
-    public StringBuilder listarTurmas() {
-        return gerenciamentoDeTurmas.listarTurmas();
-    }
-
     public double calcularMedia(String matricula, String codigo) throws AlunoNaoEncontradoException, TipoDeMediaNaoDefinidaException, TurmaInvalidaException {
         return gerenciamentoDeTurmas.calcularMedia(matricula, codigo);
     }
@@ -75,6 +71,14 @@ public class Faculdade implements Serializable {
        return gerenciamentoDeTurmas.listaAlunoDeTurma(codigo);
     }
 
+    public String listarTurmas() throws TurmaInvalidaException {
+        return gerenciamentoDeTurmas.listarTurmas();
+    }
+
+    public String exibirRelatorioFinalEmTela(String codigo) throws TurmaInvalidaException, AlunoNaoEncontradoException {
+        return gerenciamentoDeTurmas.exibirRelatorioFinalemTela(codigo);
+    }
+  
     public void encerrarTurma(String matricula, String codigo) throws TurmaInvalidaException, ProfessorNaoEncontradoException, IntervaloDeNotaException {
         gerenciamentoDeTurmas.encerrarTurma(matricula, codigo);
     }
@@ -82,10 +86,6 @@ public class Faculdade implements Serializable {
     // Gerenciamento de Alunos --------------------------------------------------->
     public void adicionarAluno(String nome, String telefone, String email, String curso) throws PessoaInvalidaException {
         gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email, curso);
-    }
-
-    public String listarAlunos() {
-        return gerenciamentoDeAlunos.listarAlunos();
     }
 
     public String consultarDadosAluno(String matricula) throws AlunoNaoEncontradoException {
@@ -96,7 +96,7 @@ public class Faculdade implements Serializable {
         gerenciamentoDeAlunos.desativaAluno(matricula);
     }
 
-    public String listarAlunosDaFaculdade() {
+    public String listarAlunosDaFaculdade() throws AlunoNaoEncontradoException {
         return gerenciamentoDeAlunos.listarAlunosDaFaculdade();
     }
 
@@ -109,7 +109,7 @@ public class Faculdade implements Serializable {
         gerenciamentoDeDisciplinas.cadastraDisciplina(nomeDisciplina, codigo, cargaHoraria);
     }
 
-    public StringBuilder listarDisciplinas() {
+    public String listarDisciplinas() throws DisciplinaNaoEncontradaException {
         return gerenciamentoDeDisciplinas.listaDisciplinas();
     }
 
@@ -134,7 +134,7 @@ public class Faculdade implements Serializable {
         gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email, disciplinasDoProfessor);
     }
 
-    public StringBuilder listarProfessores() {
+    public String listarProfessores() throws ProfessorNaoEncontradoException {
         return gerenciamentoDeProfessores.listarProfessores();
     }
 
@@ -157,5 +157,9 @@ public class Faculdade implements Serializable {
 
     public void gerarRelatorioDaTurma(String codigo) throws IOException, TurmaInvalidaException {
         gerenciamentoDeArquivos.gerarRelatorioTurmaTxt(codigo);
+    }
+
+    public void gerarRelatorioNotaFinalTurma(String codigo) throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
+        gerenciamentoDeArquivos.gerarRelatorioNotaFinalTurma(codigo);
     }
 }
