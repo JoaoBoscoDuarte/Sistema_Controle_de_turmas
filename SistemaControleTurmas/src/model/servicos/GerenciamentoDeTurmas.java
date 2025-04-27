@@ -110,11 +110,6 @@ public class GerenciamentoDeTurmas implements Serializable {
         throw new AlunoNaoEncontradoException("Aluno não encontrado em nenhuma turma.");
     }
 
-    // Método para gerar o relatório da turma
-    public void gerarRelatorioDaTurma(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeTurmas turmas) throws IOException {
-        arquivos.gerarRelatorioTxt(aluno, professor, disciplina, turmas);
-    }
-
     // Método para listar todas as turmas -----------------------------------> OK
     public StringBuilder listarTurmas() {
         if (turmas.isEmpty()) {

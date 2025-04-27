@@ -15,8 +15,6 @@ import java.util.List;
  */
 
 public class Turma implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     private Disciplina disciplina;
     private Professor professor;
     private int numeroUnidades;

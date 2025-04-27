@@ -1,6 +1,7 @@
 package model.servicos;
 
 import model.disciplina.Disciplina;
+import model.exceptions.TurmaInvalidaException;
 import model.faculdade.Faculdade;
 import model.pessoa.Aluno;
 import model.pessoa.Professor;
@@ -22,6 +23,7 @@ public class GerenciamentoDeArquivos implements Serializable {
         criarDiretorios();
     }
 
+    // Permite que os diretórios padrões dos arquivos sempre existam ------------------------------------------>
     private void criarDiretorios() {
         new File(DIRETORIO_ARQUIVOS).mkdirs();
         new File(DIRETORIO_RELATORIOS).mkdirs();
@@ -29,31 +31,41 @@ public class GerenciamentoDeArquivos implements Serializable {
 
     public void salvarControleTurmas(Faculdade faculdade) throws IOException {
         Path caminhoArquivo = Paths.get(DIRETORIO_ARQUIVOS, ARQUIVO_CONTROLE);
-        try (ObjectOutputStream oos = new ObjectOutputStream(
-                new FileOutputStream(caminhoArquivo.toFile()))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(caminhoArquivo.toFile()))) {
             oos.writeObject(faculdade);
+            System.out.println("Dados salvos com sucesso em: " + caminhoArquivo.toAbsolutePath());
+
+        } catch (Exception e) {
+            System.err.println("Erro ao salvar dados: " + e.getMessage());
         }
     }
 
     public Faculdade carregarControleTurmas() throws IOException, ClassNotFoundException {
         Path caminhoArquivo = Paths.get(DIRETORIO_ARQUIVOS, ARQUIVO_CONTROLE);
-        try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream(caminhoArquivo.toFile()))) {
+
+        if (!caminhoArquivo.toFile().exists()) {
+            return new Faculdade(); // Se o arquivo não existir ainda, retorna uma Faculdade nova
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(caminhoArquivo.toFile()))) {
             return (Faculdade) ois.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro ao carregar dados: " + e.getMessage());
+            throw e;
         }
     }
 
-    // Modifique para receber a Faculdade como parâmetro
-    public void gerarRelatorioTxt(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeTurmas turmas) throws IOException {
+
+    // Gera o relatório de toda a faculdade -----------------------------------------------------> Ok
+    public void gerarRelatorioFaculdadeTxt(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeTurmas turmas) throws IOException {
         Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, NOME_RELATORIO);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoRelatorio.toFile()))) {
-            // Cabeçalho inicial
             writer.write("RELATÓRIO: SISTEMA DE CONTROLE DE TURMAS\n");
             writer.write("Gerado em: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + "\n");
             writer.write("|=================================================================================|\n\n");
 
-            // PARTE 1: Alunos
             writer.write("1. ALUNOS ATIVOS\n");
             if (aluno.getListaAlunos().isEmpty()) {
                 writer.write("Sem alunos cadastrados\n");
@@ -64,7 +76,6 @@ public class GerenciamentoDeArquivos implements Serializable {
             }
             writer.write("|=================================================================================|\n\n");
 
-            // PARTE 2: Professores
             writer.write("2. PROFESSORES ATIVOS\n");
             if (professor.getListaProfessores().isEmpty()) {
                 writer.write("Sem professores cadastrados\n");
@@ -75,7 +86,6 @@ public class GerenciamentoDeArquivos implements Serializable {
             }
             writer.write("|=================================================================================|\n\n");
 
-            // PARTE 3: Disciplinas
             writer.write("3. DISCIPLINAS\n");
             if (disciplina.getDisciplinas().isEmpty()) {
                 writer.write("Sem disciplinas cadastradas\n");
@@ -86,7 +96,6 @@ public class GerenciamentoDeArquivos implements Serializable {
             }
             writer.write("|=================================================================================|\n\n");
 
-            // PARTE 4: Turmas
             writer.write("4. TURMAS\n");
             if (turmas.getTurmas().isEmpty()) {
                 writer.write("Sem turmas cadastradas\n");
@@ -96,6 +105,23 @@ public class GerenciamentoDeArquivos implements Serializable {
                 }
             }
             writer.write("|=================================================================================|\n\n");
+        }
+    }
+
+    // Gera o relatório de uma turma -----------------------------------------------> OK
+    public void gerarRelatorioTurmaTxt(GerenciamentoDeTurmas turmas, String codigo) throws TurmaInvalidaException, IOException {
+        Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, "relatorio_" + codigo + ".txt");
+        Turma turma = turmas.buscarTurma(codigo);
+
+        if (turma == null) {
+            throw new TurmaInvalidaException("Turma não encontrada");
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoRelatorio.toFile()))) {
+            writer.write("RELATÓRIO DA TURMA: " + codigo + "\n");
+            writer.write("Gerado em: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + "\n");
+            writer.write("|=================================================================================|\n\n");
+            writer.write(turma.toString());
         }
     }
 }

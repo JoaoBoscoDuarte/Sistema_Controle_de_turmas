@@ -1,11 +1,10 @@
 package model.turma;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Nota {
-    private static final long serialVersionUID = 1L;
-
+public class Nota implements Serializable{
     private final String matricula;
     private final List<Double> notas;
 

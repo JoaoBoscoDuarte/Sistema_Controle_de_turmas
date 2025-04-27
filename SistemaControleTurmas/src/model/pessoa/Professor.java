@@ -11,8 +11,6 @@ import java.util.Objects;
  */
 
 public class Professor extends Pessoa{
-    private static final long serialVersionUID = 1L;
-
     private List<Disciplina> disciplinasMinistradas;
 
     public Professor(String nome, String telefone, String email) throws Exception {

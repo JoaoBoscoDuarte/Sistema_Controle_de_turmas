@@ -71,4 +71,13 @@ public class GerenciamentoDeAlunos implements Serializable {
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");
     }
+
+    public String listarAlunosDaFaculdade() {
+        String exibir = "";
+        for (Aluno a : listaAlunos) {
+            exibir += a.toString();
+        }
+
+        return exibir;
+    }
 }

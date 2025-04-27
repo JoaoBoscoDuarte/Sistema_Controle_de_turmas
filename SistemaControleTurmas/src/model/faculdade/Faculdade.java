@@ -13,11 +13,11 @@ import java.util.List;
 public class Faculdade implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    GerenciamentoDeAlunos gerenciamentoDeAlunos;
-    GerenciamentoDeProfessores gerenciamentoDeProfessores;
-    GerenciamentoDeArquivos gerenciamentoDeArquivos;
-    GerenciamentoDeDisciplinas gerenciamentoDeDisciplinas;
-    GerenciamentoDeTurmas gerenciamentoDeTurmas;
+    private GerenciamentoDeAlunos gerenciamentoDeAlunos;
+    private GerenciamentoDeProfessores gerenciamentoDeProfessores;
+    private GerenciamentoDeArquivos gerenciamentoDeArquivos;
+    private GerenciamentoDeDisciplinas gerenciamentoDeDisciplinas;
+    private GerenciamentoDeTurmas gerenciamentoDeTurmas;
 
 
     public Faculdade() {
@@ -49,10 +49,6 @@ public class Faculdade implements Serializable {
         gerenciamentoDeTurmas.removerAluno(matricula);
     }
 
-    public void gerarRelatorioDaTurma() throws IOException {
-        gerenciamentoDeTurmas.gerarRelatorioDaTurma(gerenciamentoDeAlunos, gerenciamentoDeProfessores, gerenciamentoDeDisciplinas, gerenciamentoDeTurmas);
-    }
-
     public StringBuilder listarTurmas() {
         return gerenciamentoDeTurmas.listarTurmas();
     }
@@ -82,6 +78,10 @@ public class Faculdade implements Serializable {
         gerenciamentoDeAlunos.desativaAluno(matricula);
     }
 
+    public String listarAlunosDaFaculdade() {
+        return gerenciamentoDeAlunos.listarAlunosDaFaculdade();
+    }
+
     public boolean existeAluno(String matricula) {
         return gerenciamentoDeAlunos.existeAluno(matricula);
     }
@@ -104,7 +104,7 @@ public class Faculdade implements Serializable {
     }
 
     public boolean existeDisciplina(String nome) {
-        return existeDisciplina(nome);
+        return gerenciamentoDeDisciplinas.existeDisciplina(nome);
     }
 
     // Gerenciamento de Professores ---------------------------------------------->
@@ -124,29 +124,20 @@ public class Faculdade implements Serializable {
         return gerenciamentoDeProfessores.buscaProfessor(matricula);
     }
 
-    // Getters para os serviços --------------------------------------------------> OK
-    public GerenciamentoDeAlunos getGerenciamentoAlunos() {
-        return gerenciamentoDeAlunos;
+    // Arquivos ---------------------------------------------------------------> OK
+    public Faculdade carregaControleDeTurmas() throws IOException, ClassNotFoundException {
+        return gerenciamentoDeArquivos.carregarControleTurmas();
     }
 
-    public GerenciamentoDeProfessores getGerenciamentoProfessores() {
-        return gerenciamentoDeProfessores;
+    public void salvaControleDeTurmas() throws IOException {
+        gerenciamentoDeArquivos.salvarControleTurmas(this);
     }
 
-    public GerenciamentoDeDisciplinas getGerenciamentoDisciplinas() {
-        return gerenciamentoDeDisciplinas;
+    public void gerarRelatorioDaFaculdade() throws IOException {
+        gerenciamentoDeArquivos.gerarRelatorioFaculdadeTxt(gerenciamentoDeAlunos, gerenciamentoDeProfessores, gerenciamentoDeDisciplinas, gerenciamentoDeTurmas);
     }
 
-    public GerenciamentoDeTurmas getGerenciamentoTurmas() {
-        return gerenciamentoDeTurmas;
-    }
-
-    // Faculdade ---------------------------------------------------------------> OK
-    public void carregaControleDeTurmas() throws IOException, ClassNotFoundException {
-        gerenciamentoDeArquivos.carregarControleTurmas();
-    }
-
-    public void salvaControleDeTurmas(Faculdade faculdade) throws IOException {
-        gerenciamentoDeArquivos.salvarControleTurmas(faculdade);
+    public void gerarRelatorioDaTurma(GerenciamentoDeTurmas turmas, String codigo) throws IOException {
+        gerenciamentoDeArquivos.gerarRelatorioTurmaTxt(turmas, codigo);
     }
 }
