@@ -4,19 +4,17 @@ import model.disciplina.Disciplina;
 import model.exceptions.*;
 import model.faculdade.Faculdade;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-
     public Faculdade faculdade;
     private Scanner sc;
 
     public Main() {
-        faculdade = new Faculdade();
+        this.faculdade = new Faculdade();
         this.sc = new Scanner(System.in);
     }
 
@@ -26,7 +24,6 @@ public class Main {
     }
 
     public void executar() throws Exception {
-        faculdade = faculdade.carregaControleDeTurmas();
 
         boolean repetir = true;
         while (repetir) {
@@ -38,16 +35,11 @@ public class Main {
                             "[4] Criar Turma\n" +
                             "[5] Matricular Aluno em uma Turma\n" +
                             "[6] Listar Alunos de uma Turma\n" +
-                            "[7] Listar Alunos da faculdade\n" +
-                            "[8] Listar Professores\n" +
-                            "[9] Listar Disciplinas\n" +
-                            "[10] Listar Turmas\n" +
-                            "[11] Configurar Turma\n" +
-                            "[12] Cadastrar notas\n" +
-                            "[13] Inativar um aluno\n" +
-                            "[14] Encerrar Turmas\n" +
-                            "[15] Gerar relatório de turma\n" +
-                            "[16] Gerar relatório da faculdade\n" +
+                            "[7] Configurar Turma\n" +
+                            "[8] Cadastrar notas\n" +
+                            "[9] Inativar um aluno\n" +
+                            "[10] Gerar relatório de turma\n" +
+                            "[11] Encerrar Turmas\n" +
                             "[0] Sair\n";
 
             System.out.println(MENU_PRINCIPAL);
@@ -73,10 +65,11 @@ public class Main {
             switch (escolha) {
                 case 0:
                     repetir = false;
-                    faculdade.salvaControleDeTurmas();
+                    faculdade.salvaControleDeTurmas(faculdade);
                     break;
 
                 case 1:
+                    //exceçoes cadastro aluno
                     try {
                         cadastrarAluno();
                     } catch (PessoaInvalidaException e) {
@@ -85,48 +78,51 @@ public class Main {
                     break;
 
                 case 2:
+                    // Caso de uso concluído ---------------------------------------------------> OK
                     try {
                         cadastrarDisciplina();
-                    } catch (DisciplinaJaCadastradaException e) {
+
+                    } catch (DisciplinaJaCadastradaException e){
                         System.out.println("Falha ao cadastrar disciplina: " + e.getMessage());
+
                     } catch (DisciplinaInvalidaException e) {
                         System.out.println("Falha no nome da disciplina: " + e.getMessage());
+
                     } catch (CargaHorariaInvalidaException e) {
                         System.out.println("Falha quanto a carga horária informada: " + e.getMessage());
+
                     } catch (NomeDaDisciplinaInvalidoException e) {
                         System.out.println("O nome da disciplina não pode ser vazio");
                     }
+
                     break;
 
                 case 3:
+                    // Tratanado exceções referentes ao cadastramento de professor
                     try {
                         cadastrarProfessor();
-                    } catch (PessoaInvalidaException e) {
+                    } catch (PessoaInvalidaException e){
                         System.out.println("Falha ao tentar cadastrar professor: " + e.getMessage());
                     }
                     break;
 
                 case 4:
+                    //Recebendo dados e criando turma, fazendo tratamento de exceções
                     try {
                         criarTurma();
-                    } catch (ProfessorNaoEncontradoException e) {
+                    } catch (Exception e){
                         System.out.println("Falha ao criar turma: " + e.getMessage());
-                    } catch (DisciplinaNaoEncontradaException e) {
-                        System.out.println("Falha ao criar turma: " + e.getMessage());
-                    } catch (IOException e) {
-                        System.out.println("Falha de IO ao criar turma: " + e.getMessage());
                     }
                     break;
 
                 case 5:
+                    // Tratando exceções ao matricular aluno em turma
                     try {
                         matricularAlunoEmTurma();
                     } catch (TurmaInvalidaException e) {
-                        System.out.println("Falha ao matricular aluno em turma: " + e.getMessage());
+                        System.out.println("Falha ao matricular aluno em turma: " +e.getMessage());
                     } catch (AlunoNaoEncontradoException e) {
-                        System.out.println("Falha ao tentar matricular aluno em turma: " + e.getMessage());
-                    } catch (IOException e) {
-                        System.out.println("Erro de IO ao matricular aluno: " + e.getMessage());
+                        System.out.println("Falha ao tentar matricular aluno em turma: " +e.getMessage());
                     }
                     break;
 
@@ -135,57 +131,33 @@ public class Main {
                     break;
 
                 case 7:
-                    listarAlunosDaFaculdade();
-                    break;
-
-                case 8:
-                    listarProfessores();
-                    break;
-
-                case 9:
-                    listarDisciplinas();
-                    break;
-
-                case 10:
-                    listarTurmas();
-                    break;
-
-                case 11:
                     configurarTurma();
                     break;
 
-                case 12:
+                case 8:
+                    // Tratando exceções referente ao cadastramento de notas
                     try {
                         cadastrarNotas();
-                    } catch (AlunoNaoEncontradoException e) {
-                        System.out.println("Falha ao cadastrar nota: " + e.getMessage());
-                    } catch (TurmaInvalidaException e) {
+                    } catch (AlunoNaoEncontradoException e){
                         System.out.println("Falha ao cadastrar nota: " + e.getMessage());
                     }
                     break;
 
-                case 13:
+                case 9:
+                    // Tratando exceções da inativação de alunos
                     try {
                         inativarAluno();
                     } catch (AlunoNaoEncontradoException e) {
-                        System.out.println("Falha ao desativar aluno: " + e.getMessage());
+                        System.out.println("Falha ao desativar aluno: " +e.getMessage());
                     }
                     break;
 
-                case 14:
+                case 10:
+                    gerarRelatorioDeTurma();
+                    break;
+
+                case 11:
                     encerrarTurmas();
-                    break;
-
-                case 15:
-                    try {
-                        gerarRelatorioDaFaculdade();
-                    } catch (IOException e) {
-                        System.out.println("Erro ao gerar relatório da faculdade: " + e.getMessage());
-                    }
-                    break;
-
-                case 16:
-                    calcularNotaFinalAlunos();
                     break;
 
                 default:
@@ -213,7 +185,7 @@ public class Main {
         faculdade.adicionarAluno(nome, telefone, email, curso);
         System.out.println("Aluno cadastrado.");
 
-        faculdade.salvaControleDeTurmas();
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
     // Método de cadastro da disciplina -------------------------------------------> Falta o tratamento de exceções
@@ -229,12 +201,12 @@ public class Main {
         faculdade.cadastrarDisciplina(disciplina, cargaHoraria);
         System.out.println("Disciplina cadastrada.");
 
-        faculdade.salvaControleDeTurmas();
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
     // Método de cadastro de professor ------------------------------------------->  Falta o tratamento de exceções
     public void cadastrarProfessor() throws Exception {
-        List<Disciplina> disciplinasDoProfessor = new ArrayList<>();
+        List<Disciplina>  disciplinasDoProfessor = new ArrayList<>();
         // Recebendo dados do professor e cadastrando no sistema
         System.out.println("Informe o nome do professor: ");
         String nome = sc.nextLine();
@@ -279,7 +251,7 @@ public class Main {
             System.out.println("Professor cadastrado.");
         }
 
-        faculdade.salvaControleDeTurmas();
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
     // Método para criar uma turma ------------------------------------------->  Falta o tratamento de exceções
@@ -293,7 +265,7 @@ public class Main {
         faculdade.criarTurma(nomeDisciplina, idProfessor);
         System.out.println("Turma criada com sucesso.");
 
-        faculdade.salvaControleDeTurmas();
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
     // Método para matricular um aluno a uma turma ------------------------------------------->  Falta o tratamento de exceções
@@ -317,7 +289,7 @@ public class Main {
         faculdade.adicionarAlunoATurma(matricula, codigo);
         System.out.println("Aluno matriculado a turma.");
 
-        faculdade.salvaControleDeTurmas();
+        faculdade.salvaControleDeTurmas(faculdade);
     }
 
     // Método de listagem de alunos de uma turma ------------------------------------------->  Falta o tratamento de exceções
@@ -326,20 +298,9 @@ public class Main {
         System.out.println("Alunos da turma: \n" + faculdade.listarAlunos());
     }
 
-    public void listarAlunosDaFaculdade() {
-        System.out.println(faculdade.listarAlunosDaFaculdade());
-    }
-
-    public void listarProfessores() {
-
-    }
-
-    public void listarDisciplinas() {
-
-    }
-
-    public void listarTurmas() {
-
+    // Método de listagem de alunos da faculdade
+    public void listarAlunosdDaFaculdade() {
+        System.out.println("Precisa listar os alunos da faculdade");
     }
 
     public void configurarTurma() {
@@ -376,18 +337,12 @@ public class Main {
         System.out.println("Aluno desativado.");
     }
 
-    public void calcularNotaFinalAlunos() {
-
-    }
-
     // Método que gera os relatŕoios da turma ------------------------------------------->  Falta o tratamento de exceções
-    public void gerarRelatorioDaFaculdade() throws IOException {
-        faculdade.gerarRelatorioDaFaculdade();
+    public void gerarRelatorioDeTurma() throws IOException {
+        faculdade.gerarRelatorioDaTurma();
         System.out.println("Relatório da turma gerado com sucesso!\n");
     }
 
     public void encerrarTurmas() {
     }
-
-
 }

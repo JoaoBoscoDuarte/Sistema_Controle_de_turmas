@@ -78,7 +78,7 @@ public class GerenciamentoDeTurmas implements Serializable {
 
         // Verifica se a nota é válida
         if (nota < 0 || nota > 10) {
-            throw new IntervaloDeNotaException("Nota deve estar entre 0 e 10");
+            throw new IntervaloDeNotaException("Nota deve estar entre 0 e 10.");
         }
 
         // Verifica se a unidade é válida

@@ -60,4 +60,13 @@ class GerenciamentoDeAlunosTest {
         gerenciamento.desativaAluno(aluno.getMatricula());
         assertFalse(aluno.isAtivo());
     }
+
+    @Test
+    void buscaAluno () throws Exception {
+        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
+        Aluno aluno = gerenciamento.getListaAlunos().get(0);
+        Aluno alunoEncontrado = gerenciamento.buscaAluno(aluno.getMatricula());
+        assertNotNull(alunoEncontrado);
+        assertEquals(aluno.getMatricula(), alunoEncontrado.getMatricula());
+    }
 }
