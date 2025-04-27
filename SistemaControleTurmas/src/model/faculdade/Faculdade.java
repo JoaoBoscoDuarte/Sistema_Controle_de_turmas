@@ -70,6 +70,10 @@ public class Faculdade implements Serializable {
         return gerenciamentoDeTurmas.buscarTurma(codigo);
     }
 
+    public String listarAlunosDeTurma(String codigo) throws TurmaInvalidaException {
+       return gerenciamentoDeTurmas.listaAlunoDeTurma(codigo);
+    }
+
     // Gerenciamento de Alunos --------------------------------------------------->
     public void adicionarAluno(String nome, String telefone, String email, String curso) throws PessoaInvalidaException {
         gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email, curso);
