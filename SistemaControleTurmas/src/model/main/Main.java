@@ -443,6 +443,7 @@ public class Main {
         String curso = sc.nextLine();
 
         faculdade.adicionarAluno(nome, telefone, email, curso);
+        System.out.println("Aluno cadastrado.");
         faculdade.salvaControleDeTurmas();
     }
 
@@ -461,6 +462,7 @@ public class Main {
         sc.nextLine();
 
         faculdade.cadastrarDisciplina(disciplina, codigo ,cargaHoraria);
+        System.out.println("Disciplina cadastrada");
         faculdade.salvaControleDeTurmas();
     }
 
