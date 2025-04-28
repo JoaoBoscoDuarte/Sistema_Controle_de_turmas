@@ -44,8 +44,8 @@ public class Faculdade implements Serializable {
         gerenciamentoDeTurmas.atribuirUnidades(unidades, codigo);
     }
 
-    public void cadastrarNotasUnidade (String codigo, int unidade, Double nota) throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException {
-        gerenciamentoDeTurmas.cadastrarNotasUnidade(codigo, unidade, nota);
+    public void cadastrarNotasUnidade (String codigo, int unidade, String matricula, double nota) throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException {
+        gerenciamentoDeTurmas.cadastrarNotasUnidade(codigo, unidade, matricula, nota);
     }
 
     public void removerAluno(String matricula) throws AlunoNaoEncontradoException {

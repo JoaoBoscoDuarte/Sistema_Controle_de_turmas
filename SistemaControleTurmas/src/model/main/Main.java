@@ -49,7 +49,7 @@ public class Main {
                             "[9] Listar Disciplinas\n" +                 //OK
                             "[10] Listar Turmas\n" +                     //OK
                             "[11] Configurar Turma\n" +                  //OK
-                            "[12] Cadastrar notas\n" +
+                            "[12] Cadastrar notas\n" +                   //OK
                             "[13] Inativar um aluno\n" +
                             "[14] Encerrar Turmas\n" +
                             "[15] Gerar relatório de turma\n" +          //OK
@@ -90,7 +90,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             cadastrarAluno();
-                            System.out.println("Aluno cadastrado com sucesso!");
                             tentarNovamente = false;
 
                         } catch (PessoaInvalidaException e) {
@@ -110,7 +109,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             cadastrarDisciplina();
-                            System.out.println("Disciplina cadastrada com sucesso!");
                             tentarNovamente = false;
 
                         } catch (DisciplinaJaCadastradaException | DisciplinaInvalidaException | CargaHorariaInvalidaException | NomeDaDisciplinaInvalidoException e) {
@@ -130,7 +128,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             cadastrarProfessor();
-                            System.out.println("Professor cadastrado com sucesso!");
                             tentarNovamente = false;
 
                         } catch (PessoaInvalidaException e) {
@@ -150,7 +147,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             criarTurma();
-                            System.out.println("Turma criada com sucesso!");
                             tentarNovamente = false;
 
                         } catch (ProfessorNaoEncontradoException |DisciplinaNaoEncontradaException | DisciplinaInvalidaException | IOException e) {
@@ -170,7 +166,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             matricularAlunoEmTurma();
-                            System.out.println("Aluno matriculado em turma com sucesso!");
                             tentarNovamente = false;
 
                         } catch (TurmaInvalidaException | AlunoNaoEncontradoException | IOException e) {
@@ -286,7 +281,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             configurarTurma();
-                            System.out.println("Turma configurada.");
                             tentarNovamente = false;
 
                         } catch (IntervaloDeUnidadeException | TurmaInvalidaException e) {
@@ -306,10 +300,9 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             cadastrarNotas();
-                            System.out.println("Notas cadastradas com suceso!");
                             tentarNovamente = false;
 
-                        } catch (AlunoNaoEncontradoException | TurmaInvalidaException e) {
+                        } catch (AlunoNaoEncontradoException | TurmaInvalidaException | IntervaloDeNotaException e) {
                             System.err.println("Falha ao cadastrar nota: " + e.getMessage());
 
                             System.out.println("Deseja tentar novamente? [s]/[n]");
@@ -326,7 +319,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             inativarAluno();
-                            System.out.println("Aluno desativado com sucesso!");
                             tentarNovamente = false;
 
                         } catch (AlunoNaoEncontradoException e) {
@@ -346,7 +338,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             encerrarTurmas();
-                            System.out.println("Turma encerrada com sucesso!");
                             tentarNovamente = false;
 
                         } catch (TurmaInvalidaException | ProfessorNaoEncontradoException | IntervaloDeNotaException e) {
@@ -624,7 +615,7 @@ public class Main {
         System.out.println("Turmas da faculdade: \n" + faculdade.listarTurmas());
     }
 
-    // Cadastra um aluno (cria aluno) -------------------------------------------------------> OK
+    // configura a turma (adiciona quantidade de unidades e muda o tipo de média) ----------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void configurarTurma() throws IntervaloDeUnidadeException, TurmaInvalidaException, IOException {
         System.out.println("Insira o código da turma: ");
@@ -675,7 +666,8 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
-    // Cadastra a nota dos alunos ----------------------------------------------------> OK
+    // Cadastra a nota dos alunos de uma turma ---------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException {
         // Recebe código da turma e verifica se válida
         System.out.println("Informe o código da turma: ");
@@ -694,15 +686,20 @@ public class Main {
         System.out.println("Informe a unidade avaliativa: ");
         int unidade = sc.nextInt();
         sc.nextLine();
-        if (unidade > turma.getNumeroUnidades()) {
+        if (turma.getNumeroUnidades() == 0) {
+            throw new IntervaloDeUnidadeException("Número de unidades avaliativas não foi definido");
+
+        } else if (unidade > turma.getNumeroUnidades()) {
             throw new IntervaloDeUnidadeException("Unidade avaliativa deve ser entre 1 e " + turma.getNumeroUnidades());
         }
 
         // Para cada aluno da turma -> solicita a nota da unidade especificada
         for (Nota nota : turma.getNotasAluno()) {
             System.out.println("Informe a nota do aluno " + faculdade.buscarAluno(nota.getMatricula()).getNome() + "(" + nota.getMatricula() + ")" + " para a unidade " + unidade + ": ");
-            double notaAluno = sc.nextDouble();
-            faculdade.cadastrarNotasUnidade(codigo, unidade, notaAluno);
+            String notaTexto = sc.nextLine();
+            notaTexto = notaTexto.replace(",", ".");
+            double notaAluno = Double.parseDouble(notaTexto);
+            faculdade.cadastrarNotasUnidade(codigo, unidade, nota.getMatricula(), notaAluno);
         }
     }
 

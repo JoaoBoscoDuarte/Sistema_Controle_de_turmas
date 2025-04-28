@@ -10,7 +10,16 @@ public class Nota implements Serializable{
 
     public Nota(String matricula, int numeroUnidades) {
         this.matricula = matricula;
-        this.notas = new ArrayList<>(numeroUnidades); // pode iniciar com capacidade
+        this.notas = preencherLista(numeroUnidades); // pode iniciar com capacidade
+    }
+
+    public List<Double> preencherLista(int numeroUnidades) {
+        List<Double> listaNotas = new ArrayList<>();
+        for (int i = 0; i < numeroUnidades; i++) {
+            listaNotas.add(0.0);
+        }
+
+        return listaNotas;
     }
 
     public String getMatricula() { return matricula; }

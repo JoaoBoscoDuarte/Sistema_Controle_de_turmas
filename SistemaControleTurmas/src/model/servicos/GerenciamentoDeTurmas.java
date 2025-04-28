@@ -61,7 +61,7 @@ public class GerenciamentoDeTurmas implements Serializable {
         excecoesTurma(codigo);
         Turma turma = buscarTurma(codigo);
 
-        // Adiciona o aluno ao mapa e inicializa a lista das notas dele
+        // Adiciona o aluno e inicializa a lista das notas dele
         if (aluno.getListaAlunos().contains(aluno.buscaAluno(matricula))) {
             Nota nota = new Nota(matricula, turma.getNumeroUnidades());
             turma.getNotasAluno().add(nota);
@@ -79,7 +79,7 @@ public class GerenciamentoDeTurmas implements Serializable {
     }
 
     // Método para cadastra notas as unidades
-    public void cadastrarNotasUnidade(String codigo, int unidade, Double nota) throws IntervaloDeNotaException, IntervaloDeUnidadeException, TurmaInvalidaException, AlunoNaoEncontradoException {
+    public void cadastrarNotasUnidade(String codigo, int unidade, String matricula, double nota) throws IntervaloDeNotaException, IntervaloDeUnidadeException, TurmaInvalidaException, AlunoNaoEncontradoException {
         // Encontra a turma
         Turma turma = buscarTurma(codigo);
 
@@ -88,9 +88,19 @@ public class GerenciamentoDeTurmas implements Serializable {
             throw new IntervaloDeNotaException("Nota deve estar entre 0 e 10.");
         }
 
+        Nota notaAluno = null;
         for (Nota n : turma.getNotasAluno()) {
-            n.getNotas().set(unidade, nota);
+            if (n.getMatricula().equals(matricula)) {
+                notaAluno = n;
+                break;
+            }
         }
+
+        if (notaAluno == null) {
+            throw new AlunoNaoEncontradoException("Aluno com matrícula " + matricula + " não encontrado.");
+        }
+
+        notaAluno.getNotas().set(unidade - 1, nota);
     }
 
     // Método para remover aluno pela matrícula
