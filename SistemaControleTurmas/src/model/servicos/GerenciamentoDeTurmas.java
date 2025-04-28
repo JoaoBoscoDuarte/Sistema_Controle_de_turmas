@@ -7,6 +7,9 @@ import model.turma.Nota;
 import model.turma.Turma;
 import model.turma.media.TiposDeMediaIF;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ public class GerenciamentoDeTurmas implements Serializable {
     private GerenciamentoDeDisciplinas disciplina;
     private GerenciamentoDeArquivos arquivos;
     private boolean ativo;
+    private static final long serialVersionUID = -8085615511559339433L;
 
     public GerenciamentoDeTurmas(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeArquivos arquivos) {
         this.turmas = new ArrayList<>();
@@ -240,6 +244,22 @@ public class GerenciamentoDeTurmas implements Serializable {
             }
         }
         turma.setAtivo(false);
+
+        removerTurma(turma);
+
+        salvarTurmas();
+    }
+
+    public void removerTurma(Turma turmaParaRemover) {
+        turmas.removeIf(turma -> turma.getCodigoTurma().equalsIgnoreCase(turmaParaRemover.getCodigoTurma()));
+    }
+
+    public void salvarTurmas() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("turmas.dat"))) {
+            oos.writeObject(turmas);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Turma> getTurmas() {
