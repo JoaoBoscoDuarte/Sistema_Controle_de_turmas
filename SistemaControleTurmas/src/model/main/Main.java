@@ -93,7 +93,8 @@ public class Main {
                             tentarNovamente = false;
 
                         } catch (PessoaInvalidaException e) {
-                            System.out.println("Falha ao cadastrar aluno: " + e.getMessage());
+                            System.err.println("Falha ao cadastrar aluno: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -113,6 +114,7 @@ public class Main {
 
                         } catch (DisciplinaJaCadastradaException | DisciplinaInvalidaException | CargaHorariaInvalidaException | NomeDaDisciplinaInvalidoException e) {
                             System.err.println("Falha ao cadastrar disciplina: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -127,10 +129,12 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             cadastrarProfessor();
+                            System.out.println("Professor cadastrado com sucesso!");
                             tentarNovamente = false;
 
                         } catch (PessoaInvalidaException e) {
                             System.err.println("Falha ao cadastrar professor: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -145,10 +149,12 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             criarTurma();
+                            System.out.println("Turma criada com sucesso!");
                             tentarNovamente = false;
 
-                        } catch (ProfessorNaoEncontradoException |DisciplinaNaoEncontradaException | IOException e) {
+                        } catch (ProfessorNaoEncontradoException |DisciplinaNaoEncontradaException | DisciplinaInvalidaException | IOException e) {
                             System.err.println("Falha ao criar turma: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -168,6 +174,7 @@ public class Main {
 
                         } catch (TurmaInvalidaException | AlunoNaoEncontradoException | IOException e) {
                             System.err.println("Falha ao matricular aluno em turma: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -185,7 +192,8 @@ public class Main {
                             tentarNovamente = false;
 
                         } catch (TurmaInvalidaException e) {
-                            System.out.println("Falha ao listar alunos da turma: " + e.getMessage());
+                            System.err.println("Falha ao listar alunos da turma: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -203,7 +211,8 @@ public class Main {
                             tentarNovamente = false;
 
                         } catch (AlunoNaoEncontradoException e) {
-                            System.out.println("Falha ao listar da faculdade: " + e.getMessage());
+                            System.err.println("Falha ao listar da faculdade: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -221,7 +230,8 @@ public class Main {
                             tentarNovamente = false;
 
                         } catch (ProfessorNaoEncontradoException e) {
-                            System.out.println("Falha ao listar professores: " + e.getMessage());
+                            System.err.println("Falha ao listar professores: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -239,7 +249,8 @@ public class Main {
                             tentarNovamente = false;
 
                         } catch (DisciplinaNaoEncontradaException e) {
-                            System.out.println("Falha listar Disciplinas: " + e.getMessage());
+                            System.err.println("Falha listar Disciplinas: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -257,7 +268,8 @@ public class Main {
                             tentarNovamente = false;
 
                         } catch (TurmaInvalidaException e) {
-                            System.out.println("Falha listar a turma: " + e.getMessage());
+                            System.err.println("Falha listar a turma: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -273,10 +285,12 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             configurarTurma();
+                            System.out.println("Turma configurada.");
                             tentarNovamente = false;
 
                         } catch (IntervaloDeUnidadeException | TurmaInvalidaException e) {
                             System.err.println("Falha ao configurar turma: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -296,6 +310,7 @@ public class Main {
 
                         } catch (AlunoNaoEncontradoException | TurmaInvalidaException e) {
                             System.err.println("Falha ao cadastrar nota: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -315,6 +330,7 @@ public class Main {
 
                         } catch (AlunoNaoEncontradoException e) {
                             System.err.println("Falha ao desativar aluno: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -326,14 +342,15 @@ public class Main {
                     break;
 
                 case 14:
-                    while(tentarNovamente) {
+                    while (tentarNovamente) {
                         try {
                             encerrarTurmas();
                             System.out.println("Turma encerrada com sucesso!");
                             tentarNovamente = false;
 
                         } catch (TurmaInvalidaException | ProfessorNaoEncontradoException | IntervaloDeNotaException e) {
-                            System.out.println("Falha ao remover encerrar turma: " + e.getMessage());
+                            System.err.println("Falha ao encerrar turma: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -345,15 +362,20 @@ public class Main {
                     break;
 
                 case 15:
-                    while(tentarNovamente) {
+                    while (tentarNovamente) {
                         try {
                             gerarRelatorioDeTurma();
                             tentarNovamente = false;
 
                         } catch (TurmaInvalidaException | IOException e) {
                             System.err.println("Falha ao gerar relatório da turma: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
-                            String opcao = sc.nextLine();      
+                            String opcao = sc.nextLine();
+
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
                         }
                     }
                     break;
@@ -366,6 +388,7 @@ public class Main {
 
                         } catch (IOException e) {
                             System.err.println("Falha ao gerar relatório da faculdade: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -384,6 +407,7 @@ public class Main {
 
                         } catch (TurmaInvalidaException | AlunoNaoEncontradoException | IOException e) {
                             System.err.println("Falha ao calcular nora final do eluno: " + e.getMessage());
+
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
 
@@ -507,8 +531,7 @@ public class Main {
         String idProfessor = sc.nextLine();
 
         if (idProfessor == null || idProfessor.trim().isEmpty()) {
-            System.out.println("Inválido. O código da disciplina não pode estar vazio.");
-            return;
+            throw new ProfessorNaoEncontradoException("O id do professor não pode estar vazio.");
         }
 
         faculdade.criarTurma(nomeDisciplina, idProfessor);
@@ -539,16 +562,14 @@ public class Main {
         String matricula = sc.nextLine();
 
         if (matricula == null || matricula.trim().isEmpty()) {
-            System.out.println("Inválido. O número da matrícula do aluno não pode estar vazia.");
-            return;
+            throw new AlunoNaoEncontradoException("O número da matrícula do aluno não pode estar vazio.");
         }
 
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
         if (codigo == null || codigo.trim().isEmpty()) {
-            System.out.println("Inválido. O código da turma não pode estar vazio.");
-            return;
+            throw new TurmaInvalidaException("O código da turma não pode estar vazio.");
         }
 
         faculdade.adicionarAlunoATurma(matricula, codigo);
@@ -562,7 +583,10 @@ public class Main {
     public void listarAlunosDeUmaTurma() throws TurmaInvalidaException {
         System.out.println("Insira o código da turma que deseja listar os alunos: ");
         String codigo = sc.nextLine();
-        sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            throw new TurmaInvalidaException("O código da turma não pode ser vazio.");
+        }
 
         System.out.println("Alunos da turma: \n" + faculdade.listarAlunosDeTurma(codigo));
     }
@@ -594,6 +618,10 @@ public class Main {
     public void configurarTurma() throws IntervaloDeUnidadeException, TurmaInvalidaException {
         System.out.println("Insira o código da turma: ");
         String codigo = sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            throw new TurmaInvalidaException("O código da turma não pode estar vazio.");
+        }
 
         System.out.println("Insira a quantidade de unidades avaliativas: ");
         int qtdUnidesAvaliativas = sc.nextInt();
@@ -639,8 +667,7 @@ public class Main {
         String codigo = sc.nextLine();
 
         if (codigo == null || codigo.trim().isEmpty()) {
-            System.out.println("Inválido. O código da turma não pode estar vazio.");
-            return;
+            throw new TurmaInvalidaException ("O código da turma não pode estar vazio.");
         }
 
         System.out.println("Informe a unidade avaliativa: ");
@@ -674,8 +701,7 @@ public class Main {
         String matricula = sc.nextLine();
 
         if (matricula == null || matricula.trim().isEmpty()) {
-            System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
-            return;
+            throw new AlunoNaoEncontradoException("O número da matrícula do aluno não pode estar vazio.");
         }
 
         faculdade.desativaAluno(matricula);
@@ -705,6 +731,10 @@ public class Main {
         System.out.println("Insira o código da turma que deseja calcular a nota dos alunos: ");
         String codigo = sc.nextLine();
 
+        if (codigo == null || codigo.trim().isEmpty()) {
+            throw new TurmaInvalidaException("O código da turma não pode estar vazio.");
+        }
+
         System.out.println(faculdade.exibirRelatorioFinalEmTela(codigo));
         faculdade.gerarRelatorioNotaFinalTurma(codigo);
     }
@@ -716,8 +746,7 @@ public class Main {
         String codigo = sc.nextLine();
 
         if (codigo == null || codigo.trim().isEmpty()) {
-            System.out.println("Inválido. O código da turma não pode estar vazio.");
-            return;
+            throw new TurmaInvalidaException("O código da turma não pode estar vazio.");
         }
 
         faculdade.gerarRelatorioDaTurma(codigo);
@@ -735,8 +764,16 @@ public class Main {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
+        if (codigo == null || codigo.trim().isEmpty()) {
+            throw new TurmaInvalidaException("O código da turma não pode estar vazio.");
+        }
+
         System.out.println("Informe o id do professor: ");
         String idProfessor = sc.nextLine();
+
+        if (idProfessor == null || idProfessor.trim().isEmpty()) {
+            throw new ProfessorNaoEncontradoException("O id do professor não pode estar vazio.");
+        }
 
         faculdade.encerrarTurma(idProfessor, codigo);
     }
