@@ -280,6 +280,7 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             configurarTurma();
+                            System.out.println("Turma configurada com sucesso!");
                             tentarNovamente = false;
 
                         } catch (IntervaloDeUnidadeException | TurmaInvalidaException e) {
