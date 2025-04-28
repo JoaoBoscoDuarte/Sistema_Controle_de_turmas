@@ -4,12 +4,15 @@ import model.exceptions.PessoaInvalidaException;
 import model.pessoa.Aluno;
 import model.exceptions.AlunoNaoEncontradoException;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /*  ================| Só altere em caso de urgência! |====================
- *  ----------------------Classe 100% concluída-----------------------> OK
+ *  ----------------------Classe 100% concluída-------------------------> OK
  */
 
 public class GerenciamentoDeAlunos implements Serializable {
@@ -44,14 +47,31 @@ public class GerenciamentoDeAlunos implements Serializable {
         return false;
     }
 
-    public void desativaAluno (String matricula) throws AlunoNaoEncontradoException {
+    public void desativaAluno(String matricula) throws AlunoNaoEncontradoException {
         for (Aluno aluno : listaAlunos) {
             if (aluno.getMatricula().equalsIgnoreCase(matricula) && aluno.isAtivo()) {
                 aluno.invalidar();
+
+                removerAluno(aluno);
+
+                salvarAlunos();
+
                 return;
             }
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");
+    }
+
+    public void removerAluno(Aluno alunoParaRemover) {
+        listaAlunos.removeIf(aluno -> aluno.getMatricula().equalsIgnoreCase(alunoParaRemover.getMatricula()));
+    }
+
+    public void salvarAlunos() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("alunos.dat"))) {
+            oos.writeObject(listaAlunos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public Aluno buscaAluno(String matricula) throws AlunoNaoEncontradoException{
