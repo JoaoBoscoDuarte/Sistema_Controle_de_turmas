@@ -26,6 +26,7 @@ public class Turma implements Serializable {
     private TiposDeMediaIF tipoDeMedia;
     private boolean unidadesAvalaitivasMudada = false;
     private GerenciamentoDeAlunos gerenciamentoDeAlunos;
+    private boolean ativo = true;
 
     private List<Nota> notasAluno;
     private List<String> matriculasProfessores;
@@ -139,6 +140,14 @@ public class Turma implements Serializable {
         return exibir;
     }
 
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -161,7 +170,4 @@ public class Turma implements Serializable {
                 "| Codigo da turma: " + getCodigoTurma() + " | \n";
     }
 
-    public void setAtivo(boolean b) {
-
-    }
 }
