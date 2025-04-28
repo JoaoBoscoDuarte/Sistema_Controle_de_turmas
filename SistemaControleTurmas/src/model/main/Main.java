@@ -38,14 +38,14 @@ public class Main {
             final String MENU_PRINCIPAL =
                     "===========| Sistema de controle de turmas |===========\n" +
                             "[1] Cadastrar Aluno\n" +                    //OK
-                            "[2] Cadastrar Disciplina\n" +
+                            "[2] Cadastrar Disciplina\n" +               //OK
                             "[3] Cadastrar Professor\n" +
                             "[4] Criar Turma\n" +
                             "[5] Matricular Aluno em uma Turma\n" +
                             "[6] Listar Alunos de uma Turma\n" +
                             "[7] Listar Alunos da faculdade\n" +         //OK
                             "[8] Listar Professores\n" +
-                            "[9] Listar Disciplinas\n" +
+                            "[9] Listar Disciplinas\n" +                 //OK
                             "[10] Listar Turmas\n" +
                             "[11] Configurar Turma\n" +
                             "[12] Cadastrar notas\n" +
@@ -234,6 +234,7 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             listarDisciplinas();
+                            tentarNovamente = false;
 
                         } catch (DisciplinaNaoEncontradaException e) {
                             System.out.println("Falha listar Disciplinas: " + e.getMessage());
@@ -395,7 +396,7 @@ public class Main {
         }
     }
 
-    // Cadastra um aluno (cria aluno) -------------------------------------------> OK
+    // Cadastra um aluno (cria aluno) --------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarAluno() throws Exception {
         //Recebendo dados do aluno e cadastrando no sistema
@@ -547,7 +548,7 @@ public class Main {
 
     // Método para listar as disciplinas da faculdade -------------------------------------------> OK
     public void listarDisciplinas() throws DisciplinaNaoEncontradaException {
-        System.out.println("Disciplinas: " + faculdade.listarDisciplinas());
+        System.out.println("Disciplinas da faculdade: \n" + faculdade.listarDisciplinas());
     }
 
     // Método para listar todas as turmas da faculdade -------------------------------------------> OK

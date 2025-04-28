@@ -3,7 +3,6 @@ package model.disciplina;
 import model.exceptions.DisciplinaInvalidaException;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,12 +25,12 @@ public class Disciplina implements Serializable {
             throw new DisciplinaInvalidaException("Nome da disciplina não pode ser nulo");
         }
 
-        if (codigo == null) {
-            throw new DisciplinaInvalidaException("Codigo para a disciplina não pode ser inválido");
+        if (codigo == null || codigo.trim().isEmpty()) {
+            throw new DisciplinaInvalidaException("Codigo para a disciplina não pode ser nullo ou vazio");
         }
 
         this.nome = nome;
-        this.codigo = codigo;
+        this.codigo = codigo.replaceAll("\\s+", "").toUpperCase();
         this.cargaHoraria = cargaHoraria;
     }
 
@@ -83,10 +82,9 @@ public class Disciplina implements Serializable {
 
     @Override
     public String toString() {
-        return "DISCIPLINA: \n" +
-                "| Nome: " + getNomeDisciplina() + " | \n" +
+        return "| Nome: " + getNomeDisciplina() + " | \n" +
                 "| Carga horária: " + getCargaHoraria() + " | \n" +
                 "| Codigo: " + getCodigo() + " | \n" +
-                "| Professores associados: " + String.join(", ", professorAssociado) + " |";
+                "| Professores associados: " + String.join(", ", professorAssociado) + " |\n";
     }
 }
