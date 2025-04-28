@@ -67,17 +67,17 @@ public class GerenciamentoDeDisciplinas implements Serializable {
 
 
     // Método que lista todas as disciplinas  ----------------------------------------------> OK
-    public String listaDisciplinas() throws DisciplinaNaoEncontradaException{
-        if (listaDisciplinas().isEmpty()) {
+    public String listarDisciplinas() throws DisciplinaNaoEncontradaException{
+        if (listarDisciplinas().isEmpty()) {
             throw new DisciplinaNaoEncontradaException("Lista de disciplinas vazia");
         }
 
-        String exibir = "";
+        StringBuilder exibir = new StringBuilder();
         for (Disciplina d : disciplinas) {
-            exibir += d.toString();
+            exibir.append(d.toString());
         }
 
-        return exibir;
+        return exibir.toString();
     }
 
     // Método que associa professor a disciplina -------------------------------------------> OK
