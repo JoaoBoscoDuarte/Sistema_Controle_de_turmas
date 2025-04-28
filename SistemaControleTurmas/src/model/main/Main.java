@@ -37,24 +37,24 @@ public class Main {
         while (repetir) {
             final String MENU_PRINCIPAL =
                     "===========| Sistema de controle de turmas |===========\n" +
-                            "[1] Cadastrar Aluno\n" +                 // OK
-                            "[2] Cadastrar Disciplina\n" +            // OK
-                            "[3] Cadastrar Professor\n" +             // OK
-                            "[4] Criar Turma\n" +                     // OK
-                            "[5] Matricular Aluno em uma Turma\n" +   // OK
-                            "[6] Listar Alunos de uma Turma\n" +      // OK
-                            "[7] Listar Alunos da faculdade\n" +      // OK
-                            "[8] Listar Professores\n" +              // OK
-                            "[9] Listar Disciplinas\n" +              // OK
-                            "[10] Listar Turmas\n" +                  // OK
+                            "[1] Cadastrar Aluno\n" +                    //OK
+                            "[2] Cadastrar Disciplina\n" +
+                            "[3] Cadastrar Professor\n" +
+                            "[4] Criar Turma\n" +
+                            "[5] Matricular Aluno em uma Turma\n" +
+                            "[6] Listar Alunos de uma Turma\n" +
+                            "[7] Listar Alunos da faculdade\n" +         //OK
+                            "[8] Listar Professores\n" +
+                            "[9] Listar Disciplinas\n" +
+                            "[10] Listar Turmas\n" +
                             "[11] Configurar Turma\n" +
-                            "[12] Cadastrar notas\n" +                // OK
-                            "[13] Inativar um aluno\n" +              // OK
-                            "[14] Encerrar Turmas\n" +                // OK
-                            "[15] Gerar relatório de turma\n" +       // OK
-                            "[16] Gerar relatório da faculdade\n" +   // OK
-                            "[17] Calcular nota final do aluno\n" +   // OK
-                            "[0] Sair\n";                             // OK
+                            "[12] Cadastrar notas\n" +
+                            "[13] Inativar um aluno\n" +
+                            "[14] Encerrar Turmas\n" +
+                            "[15] Gerar relatório de turma\n" +
+                            "[16] Gerar relatório da faculdade\n" +
+                            "[17] Calcular nota final do aluno\n" +
+                            "[0] Sair\n";
 
             System.out.println(MENU_PRINCIPAL);
 
@@ -199,6 +199,7 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             listarAlunosDaFaculdade();
+                            tentarNovamente = false;
 
                         } catch (AlunoNaoEncontradoException e) {
                             System.out.println("Falha ao listar da faculdade: " + e.getMessage());
@@ -394,7 +395,8 @@ public class Main {
         }
     }
 
-    // Método de cadastro aluno --------------------------------------------------->  OK
+    // Cadastra um aluno (cria aluno) -------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarAluno() throws Exception {
         //Recebendo dados do aluno e cadastrando no sistema
         System.out.println("Informe o nome do aluno: ");
@@ -413,7 +415,8 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
-    // Método de cadastro da disciplina -------------------------------------------> OK
+    // Cadastra disciplina (cria disciplina) -------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarDisciplina() throws DisciplinaJaCadastradaException, IOException, NomeDaDisciplinaInvalidoException, CargaHorariaInvalidaException, DisciplinaInvalidaException {
         // Recebendo os dados da disciplina e cadastrando
         System.out.println("Informe o nome da disciplina: ");
@@ -421,11 +424,6 @@ public class Main {
 
         System.out.println("Informe o codigo para a disciplina: ");
         String codigo = sc.nextLine();
-
-        if (codigo == null || codigo.trim().isEmpty()) {
-            System.out.println("Inválido. O código da disciplina não pode estar vazio.");
-            return;
-        }
 
         System.out.println("Informe a carga horária: ");
         int cargaHoraria = sc.nextInt();
@@ -536,7 +534,8 @@ public class Main {
         System.out.println("Alunos da turma: \n" + faculdade.listarAlunosDeTurma(codigo));
     }
 
-    // Método para listar os alunso da faculdade -------------------------------------------> OK
+    // Lista todos os alunos da faculdade -------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarAlunosDaFaculdade() throws AlunoNaoEncontradoException {
         System.out.println("Alunos da faculdade: \n" + faculdade.listarAlunosDaFaculdade());
     }

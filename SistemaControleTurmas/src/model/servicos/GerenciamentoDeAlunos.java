@@ -69,12 +69,12 @@ public class GerenciamentoDeAlunos implements Serializable {
             throw new AlunoNaoEncontradoException("A lista de alunos está vazia");
         }
 
-        StringBuilder exibir = new StringBuilder();
+        String exibir = "";
         for (Aluno a : listaAlunos) {
-            exibir.append(a.toString()).append("\n");
+            exibir += a.toString() + "\n";
         }
 
-        return exibir.toString();
+        return exibir;
     }
 
     public String retornaNomeAluno(String matricula) throws AlunoNaoEncontradoException {

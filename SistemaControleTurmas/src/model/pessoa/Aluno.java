@@ -50,8 +50,7 @@ public class Aluno extends Pessoa implements Serializable {
 
     @Override
     public String toString() {
-        return "ALUNO: " +
-                "| Nome: " + getNome() + " | \n" +
+        return "| Nome: " + getNome() + " | \n" +
                 "| Telefone: " + getTelefone() + " | \n" +
                 "| Email: " + getEmail() + " | \n" +
                 "| Matricula: " + getMatricula() + " | \n" +

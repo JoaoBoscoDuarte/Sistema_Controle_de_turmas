@@ -1,5 +1,7 @@
 package model.disciplina;
 
+import model.exceptions.DisciplinaInvalidaException;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,7 +20,16 @@ public class Disciplina implements Serializable {
     private List<String> professorAssociado = new ArrayList<>();
     private static int contador = 1;
 
-    public Disciplina(String nome,String codigo, int cargaHoraria) {
+    public Disciplina(String nome,String codigo, int cargaHoraria) throws DisciplinaInvalidaException {
+
+        if (nome == null) {
+            throw new DisciplinaInvalidaException("Nome da disciplina não pode ser nulo");
+        }
+
+        if (codigo == null) {
+            throw new DisciplinaInvalidaException("Codigo para a disciplina não pode ser inválido");
+        }
+
         this.nome = nome;
         this.codigo = codigo;
         this.cargaHoraria = cargaHoraria;
