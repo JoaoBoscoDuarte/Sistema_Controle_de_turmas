@@ -69,6 +69,7 @@ public class GerenciamentoDeAlunos implements Serializable {
     public void salvarAlunos() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("alunos.dat"))) {
             oos.writeObject(listaAlunos);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -57,7 +57,7 @@ public class Main {
                             "[15] Gerar relatório de turma\n" +          //OK
                             "[16] Gerar relatório da faculdade\n" +      //OK
                             "[17] Calcular nota final dos alunos\n" +
-                            "[18] Remover aluno de uma turma\n" +
+                            "[18] Remover aluno de uma turma\n" +        //OK
                             "[0] Sair\n";                                //OK
 
             System.out.println(MENU_PRINCIPAL);
@@ -411,15 +411,25 @@ public class Main {
                         }
                     } 
                     break;
+
                 case 18:
                     while (tentarNovamente) {
                         try {
                             removerAlunoDeTurma();
                             tentarNovamente = false;
+
                         } catch (AlunoNaoEncontradoException e) {
                             System.out.println("Falha ao remover aluno da turma: " + e.getMessage());
+
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
                         }
                     }
+                    break;
 
                 default:
                     System.out.println("Opção inválida. Tente novamente.\n");
@@ -677,7 +687,7 @@ public class Main {
 
     // Cadastra a nota dos alunos de uma turma ----------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
-    public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException {
+    public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException, IOException {
         // Recebe código da turma e verifica se válida
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
@@ -710,10 +720,12 @@ public class Main {
             double notaAluno = Double.parseDouble(notaTexto);
             faculdade.cadastrarNotasUnidade(codigo, unidade, nota.getMatricula(), notaAluno);
         }
+
+        faculdade.salvaControleDeTurmas();
     }
 
     // Método para inativar aluno da faculdade ----------------------------------------------------> OK
-    public void inativarAluno() throws AlunoNaoEncontradoException {
+    public void inativarAluno() throws AlunoNaoEncontradoException, IOException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
 
@@ -722,10 +734,12 @@ public class Main {
         }
 
         faculdade.desativaAluno(matricula);
+        faculdade.salvaControleDeTurmas();
     }
 
-    //Remove o aluno de uma turma especifica (Remover aluno) -----------> Fazer verificação
-    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException {
+    // Cadastra a nota dos alunos de uma turma ----------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
+    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException, IOException {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
@@ -742,6 +756,7 @@ public class Main {
         }
 
         faculdade.removerAluno(matricula);
+        faculdade.salvaControleDeTurmas();
     }
 
     public void calcularNotaFinalAlunos() throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
@@ -754,6 +769,7 @@ public class Main {
 
         System.out.println(faculdade.exibirRelatorioFinalEmTela(codigo));
         faculdade.gerarRelatorioNotaFinalTurma(codigo);
+        faculdade.salvaControleDeTurmas();
     }
 
     // gerar relatorio de uma turma específica (cria aluno) ----------------------------------------> OK
@@ -777,7 +793,7 @@ public class Main {
         System.out.println("Relatório da faculdade gerado com sucesso!\n");
     }
 
-    public void encerrarTurmas() throws ProfessorNaoEncontradoException, TurmaInvalidaException, IntervaloDeNotaException {
+    public void encerrarTurmas() throws ProfessorNaoEncontradoException, TurmaInvalidaException, IntervaloDeNotaException, IOException {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
@@ -793,5 +809,6 @@ public class Main {
         }
 
         faculdade.encerrarTurma(idProfessor, codigo);
+        faculdade.salvaControleDeTurmas();
     }
 }

@@ -104,7 +104,7 @@ public class GerenciamentoDeArquivos implements Serializable {
         if (arquivoContador.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(arquivoContador))) {
                 int contador = Integer.parseInt(reader.readLine());
-                Pessoa.setContaMatricula(contador);
+                Turma.setContador(contador);
             }
         }
     }

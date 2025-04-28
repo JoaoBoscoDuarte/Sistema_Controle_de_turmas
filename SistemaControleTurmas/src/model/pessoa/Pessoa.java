@@ -16,7 +16,7 @@ public abstract class Pessoa implements Serializable {
     private String email;
     private boolean ativo = true;
     private final String matricula;
-    private static transient int contaMatricula = 1;
+    private static int contaMatricula = 1;
 
     public Pessoa(String nome, String telefone, String email) throws PessoaInvalidaException {
         this.nome = nome;

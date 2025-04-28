@@ -186,7 +186,7 @@ public class GerenciamentoDeTurmas implements Serializable {
         return turma.getTipoDeMedia().calcularMedia(notas);
     }
 
-    //Método para condifgurar turma (definir tipo de media e quantidade de unidades avaliativas)
+    //Método para configurar turma (definir tipo de media e quantidade de unidades avaliativas)
     public void configurarTurma(String codigo, int qtdUnidadesAvaliativas, TiposDeMediaIF tiposDeMediaIF) throws TurmaInvalidaException, IntervaloDeUnidadeException {
         Turma turma = buscarTurma(codigo);
 
@@ -243,10 +243,9 @@ public class GerenciamentoDeTurmas implements Serializable {
                 }
             }
         }
+
         turma.setAtivo(false);
-
         removerTurma(turma);
-
         salvarTurmas();
     }
 
