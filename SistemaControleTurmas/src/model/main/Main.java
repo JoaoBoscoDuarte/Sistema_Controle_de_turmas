@@ -5,6 +5,10 @@ import model.exceptions.*;
 import model.faculdade.Faculdade;
 import model.turma.Nota;
 import model.turma.Turma;
+import model.turma.media.MediaDescartaMenorNota;
+import model.turma.media.MediaSimples;
+import model.turma.media.MediaUltimaValeMais;
+import model.turma.media.TiposDeMediaIF;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +50,7 @@ public class Main {
                             "[11] Configurar Turma\n" +
                             "[12] Cadastrar notas\n" +                // OK
                             "[13] Inativar um aluno\n" +              // OK
-                            "[14] Encerrar Turmas\n" +
+                            "[14] Encerrar Turmas\n" +                // OK
                             "[15] Gerar relatório de turma\n" +       // OK
                             "[16] Gerar relatório da faculdade\n" +   // OK
                             "[17] Calcular nota final do aluno\n" +   // OK
@@ -261,7 +265,21 @@ public class Main {
                     break;
 
                 case 11:
-                    configurarTurma();
+                    while (tentarNovamente) {
+                        try {
+                            configurarTurma();
+                            tentarNovamente = false;
+
+                        } catch (IntervaloDeUnidadeException | TurmaInvalidaException e) {
+                            System.err.println("Falha ao configurar turma: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
+                    }
                     break;
 
                 case 12:
@@ -305,13 +323,15 @@ public class Main {
                 case 14:
                     while(tentarNovamente) {
                         try {
-                            removerAlunoDeTurma();
-                            System.out.println("Aluno removido da turma com sucesso!");
+                            encerrarTurmas();
+                            System.out.println("Turma encerrada com sucesso!");
                             tentarNovamente = false;
-                        } catch (AlunoNaoEncontradoException e) {
-                            System.out.println("Falha ao remover aluno de turma: " +e.getMessage());
+
+                        } catch (TurmaInvalidaException | ProfessorNaoEncontradoException | IntervaloDeNotaException e) {
+                            System.out.println("Falha ao remover encerrar turma: " + e.getMessage());
                             System.out.println("Deseja tentar novamente? [s]/[n]");
                             String opcao = sc.nextLine();
+
                             if (!opcao.equalsIgnoreCase("s")) {
                                 tentarNovamente = false;
                             }
@@ -320,7 +340,7 @@ public class Main {
                     break;
 
                 case 15:
-                    while (tentarNovamente) {
+                    while(tentarNovamente) {
                         try {
                             gerarRelatorioDeTurma();
 
@@ -536,11 +556,49 @@ public class Main {
         System.out.println("Turmas da faculdade: " + faculdade.listarTurmas());
     }
 
-    public void configurarTurma() {
+    public void configurarTurma() throws IntervaloDeUnidadeException, TurmaInvalidaException {
+        System.out.println("Insira o código da turma: ");
+        String codigo = sc.nextLine();
 
+        System.out.println("Insira a quantidade de unidades avaliativas: ");
+        int qtdUnidesAvaliativas = sc.nextInt();
+
+        final String MENU_CONFIGURACAO = "Escolha o tipo de média: \n" +
+                                        "[1] Média simples\n" +
+                                        "[2] Média ultima nota vale mais\n" +
+                                        "[3] Média descarta a menor nota\n" +
+                                        "[0] Sair\n";
+
+        System.out.println(MENU_CONFIGURACAO);
+        TiposDeMediaIF tiposDeMediaIF = null;
+        int escolha = sc.nextInt();
+        sc.nextLine();
+
+        switch (escolha) {
+            case 1:
+                tiposDeMediaIF = new MediaSimples();
+                break;
+
+            case 2:
+                tiposDeMediaIF = new MediaUltimaValeMais();
+                break;
+
+            case 3:
+                tiposDeMediaIF = new MediaDescartaMenorNota();
+                break;
+
+            case 0:
+                return;
+
+            default:
+                System.out.println("Opção inválida");
+                break;
+        }
+
+        faculdade.configurarTurma(codigo, qtdUnidesAvaliativas, tiposDeMediaIF);
     }
 
-    // Cadastra a nota dos alunos ---------------------------------------------------->
+    // Cadastra a nota dos alunos ----------------------------------------------------> OK
     public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
@@ -575,7 +633,7 @@ public class Main {
         }
     }
 
-    // Método para inativar aluno da faculdade --------------------------------------------->
+    // Método para inativar aluno da faculdade ---------------------------------------------> OK
     public void inativarAluno() throws AlunoNaoEncontradoException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
@@ -588,25 +646,25 @@ public class Main {
         faculdade.desativaAluno(matricula);
     }
 
-    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException {
-        System.out.println("Informe o código da turma: ");
-        String codigo = sc.nextLine();
-
-        if (codigo == null || codigo.trim().isEmpty()) {
-            System.out.println("Inválido o código da turma não pode estar vazio.");
-            return;
-        }
-
-        System.out.println("Informe a matrícula do aluno: ");
-        String matricula = sc.nextLine();
-
-        if (matricula == null || matricula.trim().isEmpty()) {
-            System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
-            return;
-        }
-
-        faculdade.removerAluno(matricula);
-    }
+//    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException {
+//        System.out.println("Informe o código da turma: ");
+//        String codigo = sc.nextLine();
+//
+//        if (codigo == null || codigo.trim().isEmpty()) {
+//            System.out.println("Inválido o código da turma não pode estar vazio.");
+//            return;
+//        }
+//
+//        System.out.println("Informe a matrícula do aluno: ");
+//        String matricula = sc.nextLine();
+//
+//        if (matricula == null || matricula.trim().isEmpty()) {
+//            System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
+//            return;
+//        }
+//
+//        faculdade.removerAluno(matricula);
+//    }
 
     public void calcularNotaFinalAlunos() throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
         System.out.println("Insira o código da turma que deseja calcular a nota dos alunos: ");
@@ -616,7 +674,7 @@ public class Main {
         faculdade.gerarRelatorioNotaFinalTurma(codigo);
     }
 
-    // Método que gera os relatŕoios da turma ------------------------------------------->  Falta o tratamento de exceções
+    // Método que gera os relatŕoios da turma -------------------------------------------> OK
     public void gerarRelatorioDeTurma() throws TurmaInvalidaException, IOException {
         System.out.println("Insira o código da turma que deseja gerar o relatório: ");
         String codigo = sc.nextLine();
@@ -630,7 +688,7 @@ public class Main {
         System.out.println("Relatorio gerado com sucesso!\n");
     }
 
-    // Método que gera os relatŕoios da turma ------------------------------------------->  Falta o tratamento de exceções
+    // Método que gera os relatŕoios da turma -------------------------------------------> OK
     public void gerarRelatorioDaFaculdade() throws IOException {
         faculdade.gerarRelatorioDaFaculdade();
         System.out.println("Relatório da turma gerado com sucesso!\n");
@@ -640,18 +698,8 @@ public class Main {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
-        if (codigo == null || codigo.trim().isEmpty()) {
-            System.out.println("Inválido. O código da turma não pode estar vazio.");
-            return;
-        }
-
         System.out.println("Informe o id do professor: ");
         String idProfessor = sc.nextLine();
-
-        if (idProfessor == null || idProfessor.trim().isEmpty()) {
-            System.out.println("Inválido. O id do professor não pode estar vazio.");
-            return;
-        }
 
         faculdade.encerrarTurma(idProfessor, codigo);
     }

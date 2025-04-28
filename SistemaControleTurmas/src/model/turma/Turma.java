@@ -21,6 +21,7 @@ public class Turma implements Serializable {
     private Professor professor;
     private int numeroUnidades;
     private TiposDeMediaIF tipoDeMedia;
+    private boolean unidadesAvalaitivasMudada = false;
 
     // Temos uma lista Nota | Nota é uma classe que guarda uma matrícula (referente a uma aluno) e suas notas
     // Logo, temos Nota (aponta para um aluno único) e NotasAluno (aponta para todas as notas dos alunos)
@@ -100,6 +101,14 @@ public class Turma implements Serializable {
 
     public void setMatriculasProfessores(List<String> matriculasProfessores) {
         this.matriculasProfessores = matriculasProfessores;
+    }
+
+    public boolean isUnidadesAvalaitivasMudada() {
+        return unidadesAvalaitivasMudada;
+    }
+
+    public void setUnidadesAvalaitivasMudada(boolean unidadesAvalaitivasMudada) {
+        this.unidadesAvalaitivasMudada = unidadesAvalaitivasMudada;
     }
 
     public String getCodigoTurma() {

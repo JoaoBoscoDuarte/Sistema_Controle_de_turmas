@@ -5,6 +5,7 @@ import model.exceptions.*;
 import model.pessoa.Professor;
 import model.servicos.*;
 import model.turma.Turma;
+import model.turma.media.TiposDeMediaIF;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -80,6 +81,10 @@ public class Faculdade implements Serializable {
   
     public void encerrarTurma(String matricula, String codigo) throws TurmaInvalidaException, ProfessorNaoEncontradoException, IntervaloDeNotaException {
         gerenciamentoDeTurmas.encerrarTurma(matricula, codigo);
+    }
+
+    public void configurarTurma(String codigo, int qtdUnidadesAvaliativas, TiposDeMediaIF tiposDeMediaIF) throws IntervaloDeUnidadeException, TurmaInvalidaException {
+        gerenciamentoDeTurmas.configurarTurma(codigo, qtdUnidadesAvaliativas, tiposDeMediaIF);
     }
 
     // Gerenciamento de Alunos ---------------------------------------------------> ok

@@ -172,6 +172,26 @@ public class GerenciamentoDeTurmas implements Serializable {
         return turma.getTipoDeMedia().calcularMedia(notas);
     }
 
+    //Método para condifgurar turma (definir tipo de media e quantidade de unidades avaliativas)
+    public void configurarTurma(String codigo, int qtdUnidadesAvaliativas, TiposDeMediaIF tiposDeMediaIF) throws TurmaInvalidaException, IntervaloDeUnidadeException {
+        Turma turma = buscarTurma(codigo);
+
+        if (qtdUnidadesAvaliativas < 2) {
+            throw new IntervaloDeUnidadeException("Quantidade de unidades avaliativas não pode ser menor que 2");
+        }
+
+        if (turma.isUnidadesAvalaitivasMudada()) {
+            turma.setTipoDeMedia(tiposDeMediaIF);
+            System.out.println("A quantidade de unidades avaliativas já foi definida. Apenas tipo de média foi atualizado");
+
+        } else {
+            turma.setTipoDeMedia(tiposDeMediaIF);
+            turma.setNumeroUnidades(qtdUnidadesAvaliativas);
+            System.out.println("Quantidade de unidades avaliativas e tipo de média definidos.");
+            turma.setUnidadesAvalaitivasMudada(true);
+        }
+    }
+
     // Método para exibir em tela o relatorio final das notas dos alunos de uma turma
     public String exibirRelatorioFinalemTela(String codigo) throws TurmaInvalidaException, AlunoNaoEncontradoException {
         Turma turma = buscarTurma(codigo);
