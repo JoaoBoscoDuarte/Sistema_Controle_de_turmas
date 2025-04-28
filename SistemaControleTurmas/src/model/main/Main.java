@@ -5,6 +5,10 @@ import model.exceptions.*;
 import model.faculdade.Faculdade;
 import model.turma.Nota;
 import model.turma.Turma;
+import model.turma.media.MediaDescartaMenorNota;
+import model.turma.media.MediaSimples;
+import model.turma.media.MediaUltimaValeMais;
+import model.turma.media.TiposDeMediaIF;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -273,7 +277,21 @@ public class Main {
                     break;
 
                 case 11:
-                    configurarTurma();
+                    while (tentarNovamente) {
+                        try {
+                            configurarTurma();
+                            tentarNovamente = false;
+
+                        } catch (IntervaloDeUnidadeException | TurmaInvalidaException e) {
+                            System.err.println("Falha ao configurar turma: " + e.getMessage());
+                            System.out.println("Deseja tentar novamente? [s]/[n]");
+                            String opcao = sc.nextLine();
+
+                            if (!opcao.equalsIgnoreCase("s")) {
+                                tentarNovamente = false;
+                            }
+                        }
+                    }
                     break;
 
                 case 12:
@@ -572,8 +590,46 @@ public class Main {
         System.out.println("Turmas da faculdade: \n" + faculdade.listarTurmas());
     }
 
-    public void configurarTurma() {
+    public void configurarTurma() throws IntervaloDeUnidadeException, TurmaInvalidaException {
+        System.out.println("Insira o código da turma: ");
+        String codigo = sc.nextLine();
 
+        System.out.println("Insira a quantidade de unidades avaliativas: ");
+        int qtdUnidesAvaliativas = sc.nextInt();
+
+        final String MENU_CONFIGURACAO = "Escolha o tipo de média: \n" +
+                "[1] Média simples\n" +
+                "[2] Média ultima nota vale mais\n" +
+                "[3] Média descarta a menor nota\n" +
+                "[0] Sair\n";
+
+        System.out.println(MENU_CONFIGURACAO);
+        TiposDeMediaIF tiposDeMediaIF = null;
+        int escolha = sc.nextInt();
+        sc.nextLine();
+
+        switch (escolha) {
+            case 1:
+                tiposDeMediaIF = new MediaSimples();
+                break;
+
+            case 2:
+                tiposDeMediaIF = new MediaUltimaValeMais();
+                break;
+
+            case 3:
+                tiposDeMediaIF = new MediaDescartaMenorNota();
+                break;
+
+            case 0:
+                return;
+
+            default:
+                System.out.println("Opção inválida");
+                break;
+        }
+
+        faculdade.configurarTurma(codigo, qtdUnidesAvaliativas, tiposDeMediaIF);
     }
 
     // Cadastra a nota dos alunos ---------------------------------------------------->
