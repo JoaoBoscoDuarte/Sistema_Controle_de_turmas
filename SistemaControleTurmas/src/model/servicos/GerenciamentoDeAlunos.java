@@ -50,29 +50,11 @@ public class GerenciamentoDeAlunos implements Serializable {
     public void desativaAluno(String matricula) throws AlunoNaoEncontradoException {
         for (Aluno aluno : listaAlunos) {
             if (aluno.getMatricula().equalsIgnoreCase(matricula) && aluno.isAtivo()) {
-                aluno.invalidar();
-
-                removerAluno(aluno);
-
-                salvarAlunos();
-
+                aluno.setAtivo(false);
                 return;
             }
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");
-    }
-
-    public void removerAluno(Aluno alunoParaRemover) {
-        listaAlunos.removeIf(aluno -> aluno.getMatricula().equalsIgnoreCase(alunoParaRemover.getMatricula()));
-    }
-
-    public void salvarAlunos() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("alunos.dat"))) {
-            oos.writeObject(listaAlunos);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public Aluno buscaAluno(String matricula) throws AlunoNaoEncontradoException{
@@ -92,7 +74,9 @@ public class GerenciamentoDeAlunos implements Serializable {
 
         String exibir = "";
         for (Aluno a : listaAlunos) {
-            exibir += a.toString() + "\n";
+            if (a.isAtivo()) {
+                exibir += a.toString() + "\n";
+            }
         }
 
         return exibir;

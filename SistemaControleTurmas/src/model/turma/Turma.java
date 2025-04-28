@@ -131,7 +131,6 @@ public class Turma implements Serializable {
 
         } else if (getTipoDeMedia().getClass().equals(MediaSimples.class)) {
             return MEDIA_SIMPLES;
-
         }
 
         return ULTIMA_VALE_MAIS;
@@ -140,7 +139,9 @@ public class Turma implements Serializable {
     public String exibirAlunosAssociados() throws AlunoNaoEncontradoException {
         String exibir = "";
         for (Nota n : getNotasAluno()) {
-            exibir += gerenciamentoDeAlunos.buscaAluno(n.getMatricula()).getNome() + " (" + n.getMatricula() + "), ";
+            if (gerenciamentoDeAlunos.buscaAluno(n.getMatricula()).isAtivo()) {
+                exibir += gerenciamentoDeAlunos.buscaAluno(n.getMatricula()).getNome() + " (" + n.getMatricula() + "), ";
+            }
         }
 
         return exibir;
@@ -175,6 +176,7 @@ public class Turma implements Serializable {
                     "| Tipo de Média: " + exibirTipoDeMedia() + " | \n" +
                     "| Alunos associados: " + exibirAlunosAssociados() + " | \n" +
                     "| Codigo da turma: " + getCodigoTurma() + " | \n";
+
         } catch (AlunoNaoEncontradoException e) {
             throw new RuntimeException(e);
         }

@@ -124,14 +124,15 @@ public class GerenciamentoDeTurmas implements Serializable {
         if (turmas.isEmpty()) {
             throw new TurmaInvalidaException("Nenhuma turma cadastrada.");
         }
-        StringBuilder exibir = new StringBuilder();
+
+        String exibir = "";
         for (Turma t : turmas) {
             if (t.isAtivo()){
-                exibir.append(t).append("\n");
+                exibir += t.toString();
             }
         }
 
-        return exibir.toString();
+        return exibir;
     }
 
     // Método que condensa as exceções de turma -----------------------------> OK
@@ -166,7 +167,7 @@ public class GerenciamentoDeTurmas implements Serializable {
         String listar = "";
         for (Nota n: buscarTurma(codigo).getNotasAluno()) {
             for (Aluno a : aluno.getListaAlunos()) {
-                if (a.getMatricula().equals(n.getMatricula())) {
+                if (a.getMatricula().equals(n.getMatricula()) && a.isAtivo()) {
                     listar += a.toString();
                 }
             }
@@ -245,20 +246,6 @@ public class GerenciamentoDeTurmas implements Serializable {
         }
 
         turma.setAtivo(false);
-        removerTurma(turma);
-        salvarTurmas();
-    }
-
-    public void removerTurma(Turma turmaParaRemover) {
-        turmas.removeIf(turma -> turma.getCodigoTurma().equalsIgnoreCase(turmaParaRemover.getCodigoTurma()));
-    }
-
-    public void salvarTurmas() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("turmas.dat"))) {
-            oos.writeObject(turmas);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public List<Turma> getTurmas() {

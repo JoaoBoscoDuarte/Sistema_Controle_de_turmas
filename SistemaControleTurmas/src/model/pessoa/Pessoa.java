@@ -62,10 +62,6 @@ public abstract class Pessoa implements Serializable {
         return ativo;
     }
 
-    public void invalidar() {
-        this.ativo = false;
-    }
-
     // Getters e setters --------------------------------------------> OK
     public String getNome() {
         return nome;

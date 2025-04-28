@@ -121,9 +121,12 @@ public class GerenciamentoDeArquivos implements Serializable {
             writer.write("1. ALUNOS ATIVOS\n");
             if (aluno.getListaAlunos().isEmpty()) {
                 writer.write("Sem alunos cadastrados\n");
+
             } else {
                 for (Aluno a : aluno.getListaAlunos()) {
-                    writer.write(a.toString() + "\n");
+                    if (a.isAtivo()) {
+                        writer.write(a.toString() + "\n");
+                    }
                 }
             }
             writer.write("|=================================================================================|\n\n");
@@ -131,6 +134,7 @@ public class GerenciamentoDeArquivos implements Serializable {
             writer.write("2. PROFESSORES ATIVOS\n");
             if (professor.getListaProfessores().isEmpty()) {
                 writer.write("Sem professores cadastrados\n");
+
             } else {
                 for (Professor p : professor.getListaProfessores()) {
                     writer.write(p.toString() + "\n");
@@ -141,6 +145,7 @@ public class GerenciamentoDeArquivos implements Serializable {
             writer.write("3. DISCIPLINAS\n");
             if (disciplina.getDisciplinas().isEmpty()) {
                 writer.write("Sem disciplinas cadastradas\n");
+
             } else {
                 for (Disciplina d : disciplina.getDisciplinas()) {
                     writer.write(d.toString() + "\n");
@@ -151,9 +156,12 @@ public class GerenciamentoDeArquivos implements Serializable {
             writer.write("4. TURMAS\n");
             if (turmas.getTurmas().isEmpty()) {
                 writer.write("Sem turmas cadastradas\n");
+
             } else {
                 for (Turma t : turmas.getTurmas()) {
-                    writer.write(t.toString() + "\n");
+                    if (t.isAtivo()) {
+                        writer.write(t.toString() + "\n");
+                    }
                 }
             }
             writer.write("|=================================================================================|\n\n");

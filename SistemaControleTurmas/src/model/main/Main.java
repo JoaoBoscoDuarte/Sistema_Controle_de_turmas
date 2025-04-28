@@ -274,7 +274,6 @@ public class Main {
                             if (!opcao.equalsIgnoreCase("s")) {
                                 tentarNovamente = false;
                             }
-
                         }
                     }
                     break;
@@ -724,7 +723,7 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
-    // Método para inativar aluno da faculdade ----------------------------------------------------> OK
+    // Método para inativar aluno da faculdade ----------------------------------------------------> Precisa confirmação
     public void inativarAluno() throws AlunoNaoEncontradoException, IOException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
