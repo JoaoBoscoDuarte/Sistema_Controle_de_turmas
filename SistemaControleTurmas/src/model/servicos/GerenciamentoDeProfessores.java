@@ -17,14 +17,26 @@ public class GerenciamentoDeProfessores implements Serializable {
     private final List<Professor> LISTA_DE_PROFESSORES = new ArrayList<>();
 
     // Adiciona professor
-    public void adicionarProfessor(String nome, String telefone, String email) throws Exception {
+    public String adicionarProfessor(String nome, String telefone, String email) throws Exception {
         Professor professor = new Professor(nome, telefone, email);
         LISTA_DE_PROFESSORES.add(professor);
+        return retornaMatriculaProfessorPeloObj(professor);
     }
 
-    public void adicionarProfessor(String nome, String telefone , String email, List<Disciplina> disciplinaDoProfessor) throws Exception {
+    public String adicionarProfessor(String nome, String telefone , String email, List<Disciplina> disciplinaDoProfessor) throws Exception {
         Professor professor = new Professor(nome, telefone, email, disciplinaDoProfessor);
         LISTA_DE_PROFESSORES.add(professor);
+        return retornaMatriculaProfessorPeloObj(professor);
+    }
+
+    public String retornaMatriculaProfessorPeloObj(Professor professor) throws ProfessorNaoEncontradoException {
+        for (Professor p : LISTA_DE_PROFESSORES) {
+            if (p.equals(professor)) {
+                return p.getMatricula();
+            }
+        }
+
+        throw new ProfessorNaoEncontradoException("O professor não existe");
     }
 
     // Listar Professores
@@ -33,12 +45,12 @@ public class GerenciamentoDeProfessores implements Serializable {
             throw new ProfessorNaoEncontradoException("Lista de professores vazia");
         }
 
-        StringBuilder exibir = new StringBuilder();
+        String exibir = "";
         for (Professor p : LISTA_DE_PROFESSORES){
-            exibir.append(p.toString());
+            exibir += p.toString() + "\n";
         }
 
-        return exibir.toString();
+        return exibir;
     }
 
     public boolean existeProfessor(String matricula) throws ProfessorNaoEncontradoException{

@@ -41,13 +41,13 @@ public class GerenciamentoDeDisciplinas implements Serializable {
             throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nome + "'.");
         }
 
-        this.disciplinas.add(new Disciplina(nome,codigo,cargaHoraria));
+        this.disciplinas.add(new Disciplina(nome, codigo, cargaHoraria));
     }
 
     // Método que verifica se existe disciplina com o mesmo nome ---------------------------> OK
     private boolean existeDisciplinaComMesmoNome(String nome) {
         for (Disciplina d : disciplinas) {
-            if (d.getNomeDisciplina().equals(nome)) {
+            if (d.getNomeDisciplina().toUpperCase().replaceAll("\\s+", "").equals(nome.toLowerCase().replaceAll("\\s+", ""))) {
                 return true;
             }
         }
@@ -57,7 +57,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
     // Método que verifica se existe disciplina com o mesmo codigo ---------------------------> OK
     private boolean existeDisciplinaComMesmoCodigo(String codigo) {
         for (Disciplina d : disciplinas) {
-            if (d.getNomeDisciplina().equals(codigo)) {
+            if (d.getCodigo().equalsIgnoreCase(codigo)) {
                 return true;
             }
         }
@@ -77,20 +77,19 @@ public class GerenciamentoDeDisciplinas implements Serializable {
             exibir += d.toString() + "\n";
         }
 
-        return exibir.toString();
+        return exibir;
     }
 
     // Método que associa professor a disciplina -------------------------------------------> OK
-    public void associarProfessorADisciplina(String nome, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
-        validaNomeDisciplina(nome);
-
+    public void associarProfessorADisciplina(List<Disciplina> disciplinas, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
         if (!gerenciadorProfessores.existeProfessor(matricula)) {
             throw new ProfessorNaoEncontradoException("Professor não existe");
         }
 
         // Verifica se a disciplina existe e associa ela ao professor
-        Disciplina disciplina = buscaDisciplina(nome);
-        disciplina.getProfessoresAssociados().add(matricula);
+        for (Disciplina d : disciplinas) {
+            d.getProfessoresAssociados().add(gerenciadorProfessores.buscaProfessor(matricula));
+        }
     }
 
     // Método que busca e retorna a disciplina caso exista ---------------------------------> OK
@@ -107,7 +106,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
     // Método que verifica se a disciplina existe ------------------------------------------> OK
     public boolean existeDisciplina(String nomeDisciplina) {
         for (Disciplina d : disciplinas) {
-            if (d.getNomeDisciplina().equals(nomeDisciplina)) {
+            if (d.getNomeDisciplina().toLowerCase().replaceAll("\\s+", "").equals(nomeDisciplina.toLowerCase().replaceAll("\\s+", ""))) {
                 return true;
             }
         }

@@ -1,12 +1,13 @@
 package model.turma.media;
 
+import java.io.Serializable;
 import java.util.List;
 
 /*  ================| Só altere em caso de urgência! |====================
  *  ----------------------Classe 100% concluída-----------------------> OK
  */
 
-public class MediaUltimaValeMais implements TiposDeMediaIF {
+public class MediaUltimaValeMais implements TiposDeMediaIF, Serializable {
 
     @Override
     public double calcularMedia(List<Double> notas) {

@@ -117,8 +117,8 @@ public class Faculdade implements Serializable {
         return gerenciamentoDeDisciplinas.listarDisciplinas();
     }
 
-    public void associarProfessorADisciplina(String nome, String matricula) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
-        gerenciamentoDeDisciplinas.associarProfessorADisciplina(nome, matricula);
+    public void associarProfessorADisciplina(List<Disciplina> disciplinas, String matricula) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
+        gerenciamentoDeDisciplinas.associarProfessorADisciplina(disciplinas, matricula);
     }
 
     public Disciplina buscaDisciplina(String nomeDisciplina) throws DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
@@ -130,12 +130,12 @@ public class Faculdade implements Serializable {
     }
 
     // Gerenciamento de Professores ----------------------------------------------> ok
-    public void adicionarProfessor(String nome, String telefone, String email) throws Exception {
-        gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email);
+    public String adicionarProfessor(String nome, String telefone, String email) throws Exception {
+        return gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email);
     }
 
-    public void adicionarProfessor(String nome, String telefone, String email, List<Disciplina> disciplinasDoProfessor) throws Exception {
-        gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email, disciplinasDoProfessor);
+    public String adicionarProfessor(String nome, String telefone, String email, List<Disciplina> disciplinasDoProfessor) throws Exception {
+        return gerenciamentoDeProfessores.adicionarProfessor(nome, telefone, email, disciplinasDoProfessor);
     }
 
     public String listarProfessores() throws ProfessorNaoEncontradoException {

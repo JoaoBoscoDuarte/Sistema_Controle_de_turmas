@@ -1,6 +1,7 @@
 package model.disciplina;
 
 import model.exceptions.DisciplinaInvalidaException;
+import model.pessoa.Professor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Disciplina implements Serializable {
     private int cargaHoraria;
     private String codigo;
 
-    private List<String> professorAssociado = new ArrayList<>();
+    private List<Professor> professorAssociado = new ArrayList<>();
     private static int contador = 1;
 
     public Disciplina(String nome,String codigo, int cargaHoraria) throws DisciplinaInvalidaException {
@@ -32,10 +33,6 @@ public class Disciplina implements Serializable {
         this.nome = nome;
         this.codigo = codigo.replaceAll("\\s+", "").toUpperCase();
         this.cargaHoraria = cargaHoraria;
-    }
-
-    public void adicionarProfessorAssociado(String codigoProfessor) {
-        this.professorAssociado.add(codigoProfessor);
     }
 
     // Getters e setters --------------------------------------------> OK
@@ -55,16 +52,21 @@ public class Disciplina implements Serializable {
         this.cargaHoraria = cargaHoraria;
     }
 
-    public List<String> getProfessoresAssociados() {
+    public List<Professor> getProfessoresAssociados() {
         return professorAssociado;
-    }
-
-    public void setProfessorAssociado(List<String> professorAssociado) {
-        this.professorAssociado = professorAssociado;
     }
 
     public String getCodigo() {
         return codigo;
+    }
+
+    public String exibirProfessoresAssociados() {
+        String exibir = "";
+        for (Professor p : professorAssociado) {
+            exibir += p.getNome() + " |";
+        }
+
+        return exibir;
     }
 
     // Métodos básicos ----------------------------------------------> OK
@@ -77,7 +79,7 @@ public class Disciplina implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, codigo, cargaHoraria, professorAssociado);
+        return Objects.hash(nome, cargaHoraria, codigo, professorAssociado);
     }
 
     @Override
@@ -85,6 +87,6 @@ public class Disciplina implements Serializable {
         return "| Nome: " + getNomeDisciplina() + " | \n" +
                 "| Carga horária: " + getCargaHoraria() + " | \n" +
                 "| Codigo: " + getCodigo() + " | \n" +
-                "| Professores associados: " + String.join(", ", professorAssociado) + " |\n";
+                "| Professores associados: " + exibirProfessoresAssociados() + " |\n";
     }
 }

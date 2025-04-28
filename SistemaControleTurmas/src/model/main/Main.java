@@ -3,6 +3,7 @@ package model.main;
 import model.disciplina.Disciplina;
 import model.exceptions.*;
 import model.faculdade.Faculdade;
+import model.pessoa.Professor;
 import model.turma.Nota;
 import model.turma.Turma;
 import model.turma.media.MediaDescartaMenorNota;
@@ -39,22 +40,22 @@ public class Main {
                     "===========| Sistema de controle de turmas |===========\n" +
                             "[1] Cadastrar Aluno\n" +                    //OK
                             "[2] Cadastrar Disciplina\n" +               //OK
-                            "[3] Cadastrar Professor\n" +
-                            "[4] Criar Turma\n" +
-                            "[5] Matricular Aluno em uma Turma\n" +
-                            "[6] Listar Alunos de uma Turma\n" +
+                            "[3] Cadastrar Professor\n" +                //OK
+                            "[4] Criar Turma\n" +                        //OK
+                            "[5] Matricular Aluno em uma Turma\n" +      //OK
+                            "[6] Listar Alunos de uma Turma\n" +         //OK
                             "[7] Listar Alunos da faculdade\n" +         //OK
-                            "[8] Listar Professores\n" +
+                            "[8] Listar Professores\n" +                 //OK
                             "[9] Listar Disciplinas\n" +                 //OK
-                            "[10] Listar Turmas\n" +
+                            "[10] Listar Turmas\n" +                     //OK
                             "[11] Configurar Turma\n" +
                             "[12] Cadastrar notas\n" +
                             "[13] Inativar um aluno\n" +
                             "[14] Encerrar Turmas\n" +
                             "[15] Gerar relatório de turma\n" +
-                            "[16] Gerar relatório da faculdade\n" +
+                            "[16] Gerar relatório da faculdade\n" +      //OK
                             "[17] Calcular nota final do aluno\n" +
-                            "[0] Sair\n";
+                            "[0] Sair\n";                                //OK
 
             System.out.println(MENU_PRINCIPAL);
 
@@ -126,7 +127,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             cadastrarProfessor();
-                            System.out.println("Professor cadastrado com sucesso!");
                             tentarNovamente = false;
 
                         } catch (PessoaInvalidaException e) {
@@ -145,7 +145,6 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             criarTurma();
-                            System.out.println("Turma criada com sucesso!");
                             tentarNovamente = false;
 
                         } catch (ProfessorNaoEncontradoException |DisciplinaNaoEncontradaException | IOException e) {
@@ -183,6 +182,8 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             listarAlunosDeUmaTurma();
+                            tentarNovamente = false;
+
                         } catch (TurmaInvalidaException e) {
                             System.out.println("Falha ao listar alunos da turma: " + e.getMessage());
                             System.out.println("Deseja tentar novamente? [s]/[n]");
@@ -217,6 +218,7 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             listarProfessores();
+                            tentarNovamente = false;
 
                         } catch (ProfessorNaoEncontradoException e) {
                             System.out.println("Falha ao listar professores: " + e.getMessage());
@@ -252,6 +254,7 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             listarTurmas();
+                            tentarNovamente = false;
 
                         } catch (TurmaInvalidaException e) {
                             System.out.println("Falha listar a turma: " + e.getMessage());
@@ -345,6 +348,7 @@ public class Main {
                     while(tentarNovamente) {
                         try {
                             gerarRelatorioDeTurma();
+                            tentarNovamente = false;
 
                         } catch (TurmaInvalidaException | IOException e) {
                             System.err.println("Falha ao gerar relatório da turma: " + e.getMessage());
@@ -376,6 +380,7 @@ public class Main {
                     while (tentarNovamente) {
                         try {
                             calcularNotaFinalAlunos();
+                            tentarNovamente = false;
 
                         } catch (TurmaInvalidaException | AlunoNaoEncontradoException | IOException e) {
                             System.err.println("Falha ao calcular nora final do eluno: " + e.getMessage());
@@ -396,7 +401,7 @@ public class Main {
         }
     }
 
-    // Cadastra um aluno (cria aluno) --------------------------------------------------> OK
+    // Cadastra um aluno (cria aluno) -------------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarAluno() throws Exception {
         //Recebendo dados do aluno e cadastrando no sistema
@@ -416,7 +421,7 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
-    // Cadastra disciplina (cria disciplina) -------------------------------------------> OK
+    // Cadastra disciplina (cria disciplina) ------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarDisciplina() throws DisciplinaJaCadastradaException, IOException, NomeDaDisciplinaInvalidoException, CargaHorariaInvalidaException, DisciplinaInvalidaException {
         // Recebendo os dados da disciplina e cadastrando
@@ -434,38 +439,11 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
-    // Método de cadastro de professor ------------------------------------------->  OK
     public void cadastrarProfessor() throws Exception {
         List<Disciplina> disciplinasDoProfessor = new ArrayList<>();
         // Recebendo dados do professor e cadastrando no sistema
         System.out.println("Informe o nome do professor: ");
         String nome = sc.nextLine();
-
-        // Aqui o usuário pode escolher se quer passar todas as disciplinas do professor na criação (conforme o caso de uso)
-        System.out.println("Gostaria de adicionar as disciplinas do professor agora? [s]/[n]");
-        String escolha = sc.nextLine().toLowerCase();
-
-        boolean comDisciplinas = false;
-        if (escolha.equals("s")) {
-            try {
-                System.out.println("Quantidade de disciplinas que deseja adicionar: ");
-                int quantidade = sc.nextInt();
-                sc.nextLine();
-
-                for (int i = 0; i < quantidade; i++) {
-                    System.out.println("Insira o nome da disciplina: ");
-                    String nomeDisciplina = sc.nextLine();
-
-                    if (faculdade.existeDisciplina(nomeDisciplina)) {
-                        disciplinasDoProfessor.add(faculdade.buscaDisciplina(nomeDisciplina));
-                    }
-                }
-
-                comDisciplinas = true;
-            } catch (DisciplinaNaoEncontradaException e) {
-                throw new DisciplinaNaoEncontradaException("Disciplina não existe");
-            }
-        }
 
         System.out.println("Informe o telefone do professor: ");
         String telefone = sc.nextLine();
@@ -473,18 +451,52 @@ public class Main {
         System.out.println("Informe o e-mail do professor: ");
         String email = sc.nextLine();
 
-        if (comDisciplinas) {
-            faculdade.adicionarProfessor(nome, telefone, email, disciplinasDoProfessor);
+        // Aqui o usuário pode escolher se quer passar todas as disciplinas do professor na criação (conforme o caso de uso)
+        System.out.println("Gostaria de adicionar as disciplinas do professor agora? [s]/[n]");
+        String escolha = sc.nextLine().toLowerCase();
 
-        } else {
-            faculdade.adicionarProfessor(nome, telefone, email);
-            System.out.println("Professor cadastrado.");
+        boolean comDisciplinas = false;
+        String nomeDisciplina = null;
+        switch (escolha) {
+            case "s":
+                System.out.println("Quantidade de disciplinas que deseja adicionar: ");
+                int quantidade = sc.nextInt();
+                sc.nextLine();
+
+                // Preencher a lista com todas as disciplinas associadas
+                for (int i = 0; i < quantidade; i++) {
+                    System.out.println("Insira o nome da disciplina: ");
+                    nomeDisciplina = sc.nextLine();
+
+                    if (faculdade.existeDisciplina(nomeDisciplina)) {
+                        disciplinasDoProfessor.add(faculdade.buscaDisciplina(nomeDisciplina));  // Adiciona o objeto da disciplina na lista temporária de disciplinas do professor
+
+                    } else {
+                        throw new DisciplinaInvalidaException("Disciplina inexistente");
+                    }
+                }
+
+                String matricula = faculdade.adicionarProfessor(nome, telefone, email, disciplinasDoProfessor);
+                faculdade.associarProfessorADisciplina(disciplinasDoProfessor, matricula);
+                System.out.println("Professor cadastrado.");
+                break;
+
+            case "n":
+                faculdade.adicionarProfessor(nome, telefone, email);
+                System.out.println("Professor cadastrado.");
+                break;
+
+            default:
+                System.out.println("Opção inválida");
+                break;
         }
 
         faculdade.salvaControleDeTurmas();
+
     }
 
-    // Método para criar uma turma ------------------------------------------->  OK
+    // Cadastra turma (cria turma), se o prefessor não for associado a disciplina ele é associado --> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void criarTurma() throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, IOException, DisciplinaInvalidaException {
         System.out.println("Informe o nome da disciplina: ");
         String nomeDisciplina = sc.nextLine();
@@ -498,12 +510,28 @@ public class Main {
         }
 
         faculdade.criarTurma(nomeDisciplina, idProfessor);
-        System.out.println("Turma criada com sucesso.");
 
+        Professor professor = faculdade.buscaProfessor(idProfessor);
+        Disciplina disciplina = faculdade.buscaDisciplina(nomeDisciplina);
+
+        boolean jaMinistra = false;
+        for (Disciplina d : professor.getDisciplinasMinistradas()) {
+            if (d.getNomeDisciplina().equalsIgnoreCase(nomeDisciplina)) {
+                jaMinistra = true;
+                break;
+            }
+        }
+
+        if (!jaMinistra) {
+            professor.getDisciplinasMinistradas().add(disciplina);
+        }
+
+        System.out.println("Turma criada com sucesso.");
         faculdade.salvaControleDeTurmas();
     }
 
-    // Método para matricular um aluno a uma turma ------------------------------------------->  OK
+    // Cadastra aluno em uma turma -----------------------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void matricularAlunoEmTurma() throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
@@ -527,10 +555,12 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
-    // Método de listagem de alunos de uma turma ------------------------------------------->  OK
+    // Lista alunos de uma turma específica  -------------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarAlunosDeUmaTurma() throws TurmaInvalidaException {
         System.out.println("Insira o código da turma que deseja listar os alunos: ");
         String codigo = sc.nextLine();
+        sc.nextLine();
 
         System.out.println("Alunos da turma: \n" + faculdade.listarAlunosDeTurma(codigo));
     }
@@ -541,19 +571,22 @@ public class Main {
         System.out.println("Alunos da faculdade: \n" + faculdade.listarAlunosDaFaculdade());
     }
 
-    //Método para listar os professores da faculdade -------------------------------------------> OK
+    // Lista os professores ---------------------------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarProfessores() throws ProfessorNaoEncontradoException{
-        System.out.println("Professores da faculdade: " + faculdade.listarProfessores());
+        System.out.println("Professores da faculdade: \n" + faculdade.listarProfessores());
     }
 
-    // Método para listar as disciplinas da faculdade -------------------------------------------> OK
+    // Lista todas as disciplinas da faculdade  -------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarDisciplinas() throws DisciplinaNaoEncontradaException {
         System.out.println("Disciplinas da faculdade: \n" + faculdade.listarDisciplinas());
     }
 
-    // Método para listar todas as turmas da faculdade -------------------------------------------> OK
+    // Listar todas as turmas da faculdade ------------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarTurmas() throws TurmaInvalidaException {
-        System.out.println("Turmas da faculdade: " + faculdade.listarTurmas());
+        System.out.println("Turmas da faculdade: \n" + faculdade.listarTurmas());
     }
 
     public void configurarTurma() throws IntervaloDeUnidadeException, TurmaInvalidaException {
@@ -688,7 +721,8 @@ public class Main {
         System.out.println("Relatorio gerado com sucesso!\n");
     }
 
-    // Método que gera os relatŕoios da turma -------------------------------------------> OK
+    // Gera o relatório de toda a faculdade ------------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void gerarRelatorioDaFaculdade() throws IOException {
         faculdade.gerarRelatorioDaFaculdade();
         System.out.println("Relatório da turma gerado com sucesso!\n");

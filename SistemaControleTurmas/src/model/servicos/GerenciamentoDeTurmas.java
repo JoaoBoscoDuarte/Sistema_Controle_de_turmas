@@ -47,7 +47,7 @@ public class GerenciamentoDeTurmas implements Serializable {
             throw new ProfessorNaoEncontradoException("Professor não existe.");
         }
 
-        turmas.add(new Turma(disciplina.buscaDisciplina(nome), professor.buscaProfessor(matricula)));
+        turmas.add(new Turma(disciplina.buscaDisciplina(nome), professor.buscaProfessor(matricula), aluno));
 
         //Adiciona a disciplina na lista do professor (caso ele não tenha a disciplina cadastrada antes
         Professor professorDaTurma = professor.buscaProfessor(matricula);
@@ -116,12 +116,12 @@ public class GerenciamentoDeTurmas implements Serializable {
             throw new TurmaInvalidaException("Nenhuma turma cadastrada.");
         }
 
-        StringBuilder exibir = new StringBuilder();
+        String exibir = "";
         for (Turma t : turmas) {
-            exibir.append(t).append("\n");
+            exibir += t.toString() + "\n";
         }
 
-        return exibir.toString();
+        return exibir;
     }
 
     // Método que condensa as exceções de turma -----------------------------> OK
@@ -153,12 +153,16 @@ public class GerenciamentoDeTurmas implements Serializable {
 
     // Método para listar os alunos de uma turma -----------------------------> OK
     public String listaAlunoDeTurma(String codigo) throws TurmaInvalidaException {
-        Turma t = buscarTurma(codigo);
-        StringBuilder listar = new StringBuilder();
-        for (Aluno a: t.getAlunos()){
-            listar.append(a).append("\n");
+        String listar = "";
+        for (Nota n: buscarTurma(codigo).getNotasAluno()) {
+            for (Aluno a : aluno.getListaAlunos()) {
+                if (a.getMatricula().equals(n.getMatricula())) {
+                    listar += a.toString();
+                }
+            }
         }
-        return listar.toString();
+
+        return listar;
     }
 
     // Método para verificar aprovação --------------------------------------> OK

@@ -1,8 +1,11 @@
 package model.turma;
 
 import model.disciplina.Disciplina;
+import model.exceptions.AlunoNaoEncontradoException;
 import model.pessoa.Aluno;
 import model.pessoa.Professor;
+import model.servicos.GerenciamentoDeAlunos;
+import model.turma.media.MediaDescartaMenorNota;
 import model.turma.media.MediaSimples;
 import model.turma.media.TiposDeMediaIF;
 
@@ -22,37 +25,27 @@ public class Turma implements Serializable {
     private int numeroUnidades;
     private TiposDeMediaIF tipoDeMedia;
     private boolean unidadesAvalaitivasMudada = false;
+    private GerenciamentoDeAlunos gerenciamentoDeAlunos;
 
-    // Temos uma lista Nota | Nota é uma classe que guarda uma matrícula (referente a uma aluno) e suas notas
-    // Logo, temos Nota (aponta para um aluno único) e NotasAluno (aponta para todas as notas dos alunos)
     private List<Nota> notasAluno;
     private List<String> matriculasProfessores;
-    private List<Aluno> alunos;
 
     private String codigoTurma;
-    private static int contador = 0;
+    private static int contador = 1;
 
-    public Turma(Disciplina disciplina, Professor professor) {
+    public Turma(Disciplina disciplina, Professor professor, GerenciamentoDeAlunos gerenciamentoDeAlunos) {
         this.disciplina = disciplina;
         this.professor = professor;
-        this.alunos = new ArrayList<>();
         this.notasAluno = new ArrayList<>();
         this.matriculasProfessores = new ArrayList<>();
         this.codigoTurma = geraCodigoTurma();
         this.tipoDeMedia = new MediaSimples();           // valor padrão
         this.numeroUnidades = 0;                         // Valor padrão
+        this.gerenciamentoDeAlunos = gerenciamentoDeAlunos;
     }
 
     public static String geraCodigoTurma() {
-        return LocalDate.now().getYear() + String.format("%02d" , contador++);
-    }
-
-    public List<Aluno> getAlunos() {
-        return alunos;
-    }
-
-    public void setAlunos(List<Aluno> alunos) {
-        this.alunos = alunos;
+        return LocalDate.now().getYear() + String.format("%04d" , contador++);
     }
 
     public Disciplina getDisciplina() {
@@ -119,26 +112,52 @@ public class Turma implements Serializable {
         this.codigoTurma = codigoTurma;
     }
 
+    public String exibirTipoDeMedia() {
+        final String MEDIA_SIMPLES = "Media simples";
+        final String ULTIMA_VALE_MAIS = "Media ultima nota vale mais";
+        final String MEDIA_DESCARTA_MENOR = "Media descarta a menor";
+
+        if (getTipoDeMedia().getClass().equals(MediaDescartaMenorNota.class)) {
+            return MEDIA_DESCARTA_MENOR;
+
+        } else if (getTipoDeMedia().getClass().equals(MediaSimples.class)) {
+            return MEDIA_SIMPLES;
+
+        }
+
+        return ULTIMA_VALE_MAIS;
+    }
+
+    public String exibirAlunosAssociados() {
+        String exibir = "";
+        for (Nota n : getNotasAluno()) {
+            //Aluno aluno = gerenciamentoDeAlunos.buscaAluno(n.getMatricula());
+            //exibir += aluno.toString() + "\n";
+            exibir += n.getMatricula();
+        }
+
+        return exibir;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Turma turma = (Turma) o;
-        return numeroUnidades == turma.numeroUnidades && Objects.equals(disciplina, turma.disciplina) && Objects.equals(professor, turma.professor) && Objects.equals(tipoDeMedia, turma.tipoDeMedia) && Objects.equals(notasAluno, turma.notasAluno) && Objects.equals(matriculasProfessores, turma.matriculasProfessores) && Objects.equals(alunos, turma.alunos) && Objects.equals(codigoTurma, turma.codigoTurma);
+        return numeroUnidades == turma.numeroUnidades && unidadesAvalaitivasMudada == turma.unidadesAvalaitivasMudada && Objects.equals(disciplina, turma.disciplina) && Objects.equals(professor, turma.professor) && Objects.equals(tipoDeMedia, turma.tipoDeMedia) && Objects.equals(gerenciamentoDeAlunos, turma.gerenciamentoDeAlunos) && Objects.equals(notasAluno, turma.notasAluno) && Objects.equals(matriculasProfessores, turma.matriculasProfessores) && Objects.equals(codigoTurma, turma.codigoTurma);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(disciplina, professor, numeroUnidades, tipoDeMedia, notasAluno, matriculasProfessores, alunos, codigoTurma);
+        return Objects.hash(disciplina, professor, numeroUnidades, tipoDeMedia, unidadesAvalaitivasMudada, gerenciamentoDeAlunos, notasAluno, matriculasProfessores, codigoTurma);
     }
 
     @Override
     public String toString() {
-        return "TURMA: " +
-                "| Disciplina associada: " + disciplina.getNomeDisciplina() + " | \n" +
+        return "| Disciplina associada: " + disciplina.getNomeDisciplina() + " | \n" +
                 "| Professor: " + professor.getNome() + " | \n" +
                 "| Nº Unidades Avaliativas: " + getNumeroUnidades() + " | \n" +
-                "| Tipo de Média: " + getTipoDeMedia() + " | \n" +
-                "| Alunos associados: " + getNotasAluno().toString() + " | \n" +
+                "| Tipo de Média: " + exibirTipoDeMedia() + " | \n" +
+                "| Alunos associados: " + exibirAlunosAssociados() + " | \n" +
                 "| Codigo da turma: " + getCodigoTurma() + " | \n";
     }
 
