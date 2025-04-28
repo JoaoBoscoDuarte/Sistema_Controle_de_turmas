@@ -110,13 +110,14 @@ public class GerenciamentoDeTurmas implements Serializable {
         if (turmas.isEmpty()) {
             throw new TurmaInvalidaException("Nenhuma turma cadastrada.");
         }
-
-        String exibir = "";
+        StringBuilder exibir = new StringBuilder();
         for (Turma t : turmas) {
-            exibir += t.toString() + "\n";
+            if (t.isAtivo()){
+                exibir.append(t).append("\n");
+            }
         }
 
-        return exibir;
+        return exibir.toString();
     }
 
     // Método que condensa as exceções de turma -----------------------------> OK
