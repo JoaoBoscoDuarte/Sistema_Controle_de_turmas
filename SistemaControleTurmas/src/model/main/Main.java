@@ -47,14 +47,14 @@ public class Main {
                             "[8] Listar Professores\n" +              // OK
                             "[9] Listar Disciplinas\n" +              // OK
                             "[10] Listar Turmas\n" +                  // OK
-                            "[11] Configurar Turma\n" +
+                            "[11] Configurar Turma\n" +               // Ok
                             "[12] Cadastrar notas\n" +                // OK
                             "[13] Inativar um aluno\n" +              // OK
-                            "[14] Remover aluno de uma turma\n" +
+                            "[14] Remover aluno de uma turma\n" +     // Ok
                             "[15] Gerar relatório de turma\n" +       // OK
                             "[16] Gerar relatório da faculdade\n" +   // OK
                             "[17] Calcular nota final do aluno\n" +   // OK
-                            "[18] Encerrar turmas\n" +
+                            "[18] Encerrar turmas\n" +                // Ok
                             "[0] Sair\n";                             // OK
 
             System.out.println(MENU_PRINCIPAL);
@@ -598,11 +598,13 @@ public class Main {
         System.out.println("Insira a quantidade de unidades avaliativas: ");
         int qtdUnidesAvaliativas = sc.nextInt();
 
-        final String MENU_CONFIGURACAO = "Escolha o tipo de média: \n" +
-                "[1] Média simples\n" +
-                "[2] Média ultima nota vale mais\n" +
-                "[3] Média descarta a menor nota\n" +
-                "[0] Sair\n";
+        final String MENU_CONFIGURACAO = """
+                Escolha o tipo de média:\s
+                [1] Média simples\s
+                [2] Média ultima nota vale mais\s
+                [3] Média descarta a menor nota\s
+                [0] Sair\s
+                """;
 
         System.out.println(MENU_CONFIGURACAO);
         TiposDeMediaIF tiposDeMediaIF = null;
