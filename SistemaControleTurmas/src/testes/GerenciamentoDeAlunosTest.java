@@ -1,5 +1,6 @@
 package testes;
 
+import model.exceptions.AlunoNaoEncontradoException;
 import model.exceptions.PessoaInvalidaException;
 import model.pessoa.Aluno;
 import model.servicos.GerenciamentoDeAlunos;
@@ -27,15 +28,6 @@ class GerenciamentoDeAlunosTest {
         gerenciamento.adicionaAluno("Joana", "00444555666", "darc@email", "SI");
         assertEquals(2,gerenciamento.getListaAlunos().size());
 
-    }
-
-    @Test
-    void listaAlunos() throws Exception {
-        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
-        gerenciamento.adicionaAluno("Beatriz", "44555666777", "bea@email", "Sistema");
-        String lista = gerenciamento.listarAlunos();
-        assertTrue(lista.contains("Beatriz"));
-        assertTrue(lista.contains("SI"));
     }
 
     @Test
@@ -68,5 +60,23 @@ class GerenciamentoDeAlunosTest {
         Aluno alunoEncontrado = gerenciamento.buscaAluno(aluno.getMatricula());
         assertNotNull(alunoEncontrado);
         assertEquals(aluno.getMatricula(), alunoEncontrado.getMatricula());
+    }
+
+    @Test
+    void listarAlunosDaFaculdade() throws PessoaInvalidaException, AlunoNaoEncontradoException {
+        gerenciamento.adicionaAluno("Anna", "44555666777", "anna@email", "Sistema");
+        gerenciamento.adicionaAluno("Bea", "00111222333", "beatriz@email", "SI");
+        String listaFaculdade = gerenciamento.listarAlunosDaFaculdade();
+        assertTrue(listaFaculdade.contains("Anna"));
+        assertTrue(listaFaculdade.contains("Bea"));
+        assertFalse(listaFaculdade.contains("Beatriz"));
+    }
+
+    @Test
+    void retornarNomeAluno() throws PessoaInvalidaException, AlunoNaoEncontradoException {
+        gerenciamento.adicionaAluno("Bea", "00111222333", "beatriz@email", "SI");
+
+        Aluno a = gerenciamento.getListaAlunos().get(0);
+        assertEquals("Bea", gerenciamento.retornaNomeAluno(a.getMatricula()));
     }
 }
