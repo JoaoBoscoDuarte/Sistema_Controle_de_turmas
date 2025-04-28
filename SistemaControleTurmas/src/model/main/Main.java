@@ -48,7 +48,7 @@ public class Main {
                             "[8] Listar Professores\n" +                 //OK
                             "[9] Listar Disciplinas\n" +                 //OK
                             "[10] Listar Turmas\n" +                     //OK
-                            "[11] Configurar Turma\n" +
+                            "[11] Configurar Turma\n" +                  //OK
                             "[12] Cadastrar notas\n" +
                             "[13] Inativar um aluno\n" +
                             "[14] Encerrar Turmas\n" +
@@ -624,7 +624,9 @@ public class Main {
         System.out.println("Turmas da faculdade: \n" + faculdade.listarTurmas());
     }
 
-    public void configurarTurma() throws IntervaloDeUnidadeException, TurmaInvalidaException {
+    // Cadastra um aluno (cria aluno) -------------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
+    public void configurarTurma() throws IntervaloDeUnidadeException, TurmaInvalidaException, IOException {
         System.out.println("Insira o código da turma: ");
         String codigo = sc.nextLine();
 
@@ -670,39 +672,37 @@ public class Main {
         }
 
         faculdade.configurarTurma(codigo, qtdUnidesAvaliativas, tiposDeMediaIF);
+        faculdade.salvaControleDeTurmas();
     }
 
     // Cadastra a nota dos alunos ----------------------------------------------------> OK
-    public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException {
+    public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException {
+        // Recebe código da turma e verifica se válida
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
-
         if (codigo == null || codigo.trim().isEmpty()) {
             throw new TurmaInvalidaException ("O código da turma não pode estar vazio.");
         }
 
-        System.out.println("Informe a unidade avaliativa: ");
-        int unidade = sc.nextInt();
+        Turma turma = faculdade.buscarTurma(codigo); // Usando a fachada para buscar a turma
 
-        // Usando a fachada para buscar a turma
-        Turma turma = faculdade.buscarTurma(codigo);
-
-        // Verifica se a turma tem alunos
-        if (turma.getNotasAluno().isEmpty()) {
-            System.out.println("Não há alunos matriculados nesta turma.");
-            return;
+        if (turma.getNotasAluno().isEmpty()) { // Verifica se a turma tem alunos
+            throw new AlunoNaoEncontradoException("Não há alunos matriculados nesta turma.");
         }
 
-        // Para cada aluno da turma, solicita a nota para a unidade
-        for (Nota nota : turma.getNotasAluno()) {
-            System.out.println("Informe a nota do aluno " + nota.getMatricula() + " para a unidade " + unidade + ": ");
-            double notaAluno = sc.nextDouble();
-            try {
-                faculdade.cadastrarNotasUnidade(codigo, unidade, notaAluno);
+        // recebe quantidade de unidades avaliativas e verifica se válida
+        System.out.println("Informe a unidade avaliativa: ");
+        int unidade = sc.nextInt();
+        sc.nextLine();
+        if (unidade > turma.getNumeroUnidades()) {
+            throw new IntervaloDeUnidadeException("Unidade avaliativa deve ser entre 1 e " + turma.getNumeroUnidades());
+        }
 
-            } catch (IntervaloDeNotaException | IntervaloDeUnidadeException e) {
-                System.err.println(e.getMessage());
-            }
+        // Para cada aluno da turma -> solicita a nota da unidade especificada
+        for (Nota nota : turma.getNotasAluno()) {
+            System.out.println("Informe a nota do aluno " + faculdade.buscarAluno(nota.getMatricula()).getNome() + "(" + nota.getMatricula() + ")" + " para a unidade " + unidade + ": ");
+            double notaAluno = sc.nextDouble();
+            faculdade.cadastrarNotasUnidade(codigo, unidade, notaAluno);
         }
     }
 

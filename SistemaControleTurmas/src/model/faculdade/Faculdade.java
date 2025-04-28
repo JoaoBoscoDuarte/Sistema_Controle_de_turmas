@@ -2,6 +2,7 @@ package model.faculdade;
 
 import model.disciplina.Disciplina;
 import model.exceptions.*;
+import model.pessoa.Aluno;
 import model.pessoa.Professor;
 import model.servicos.*;
 import model.turma.Turma;
@@ -106,6 +107,10 @@ public class Faculdade implements Serializable {
 
     public boolean existeAluno(String matricula) {
         return gerenciamentoDeAlunos.existeAluno(matricula);
+    }
+
+    public Aluno buscarAluno(String matricula) throws AlunoNaoEncontradoException {
+        return gerenciamentoDeAlunos.buscaAluno(matricula);
     }
 
     // Gerenciamento de disciplinas ----------------------------------------------> ok

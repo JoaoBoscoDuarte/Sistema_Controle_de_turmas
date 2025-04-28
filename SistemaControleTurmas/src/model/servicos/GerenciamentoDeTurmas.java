@@ -88,11 +88,6 @@ public class GerenciamentoDeTurmas implements Serializable {
             throw new IntervaloDeNotaException("Nota deve estar entre 0 e 10.");
         }
 
-        // Verifica se a unidade é válida
-        if (unidade < 1 || unidade > (turma.getNumeroUnidades())) {
-            throw new IntervaloDeUnidadeException("Unidade inválida. Deve estar entre 1 e " + turma.getNumeroUnidades());
-        }
-
         for (Nota n : turma.getNotasAluno()) {
             n.getNotas().set(unidade, nota);
         }
