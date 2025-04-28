@@ -55,6 +55,7 @@ public class Main {
                             "[15] Gerar relatório de turma\n" +          //OK
                             "[16] Gerar relatório da faculdade\n" +      //OK
                             "[17] Calcular nota final do aluno\n" +
+                            "[18] Remover aluno de uma turma\n" +
                             "[0] Sair\n";                                //OK
 
             System.out.println(MENU_PRINCIPAL);
@@ -417,6 +418,15 @@ public class Main {
                         }
                     } 
                     break;
+                case 18:
+                    while (tentarNovamente) {
+                        try {
+                            removerAlunoDeTurma();
+                            tentarNovamente = false;
+                        } catch (AlunoNaoEncontradoException e) {
+                            System.out.println("Falha ao remover aluno da turma: " + e.getMessage());
+                        }
+                    }
 
                 default:
                     System.out.println("Opção inválida. Tente novamente.\n");
@@ -481,8 +491,7 @@ public class Main {
         System.out.println("Gostaria de adicionar as disciplinas do professor agora? [s]/[n]");
         String escolha = sc.nextLine().toLowerCase();
 
-        boolean comDisciplinas = false;
-        String nomeDisciplina = null;
+        String nomeDisciplina;
         switch (escolha) {
             case "s":
                 System.out.println("Quantidade de disciplinas que deseja adicionar: ");
@@ -626,11 +635,13 @@ public class Main {
         System.out.println("Insira a quantidade de unidades avaliativas: ");
         int qtdUnidesAvaliativas = sc.nextInt();
 
-        final String MENU_CONFIGURACAO = "Escolha o tipo de média: \n" +
-                                        "[1] Média simples\n" +
-                                        "[2] Média ultima nota vale mais\n" +
-                                        "[3] Média descarta a menor nota\n" +
-                                        "[0] Sair\n";
+        final String MENU_CONFIGURACAO = """
+                Escolha o tipo de média:\s
+                [1] Média simples
+                [2] Média ultima nota vale mais
+                [3] Média descarta a menor nota
+                [0] Sair
+                """;
 
         System.out.println(MENU_CONFIGURACAO);
         TiposDeMediaIF tiposDeMediaIF = null;
@@ -707,25 +718,25 @@ public class Main {
         faculdade.desativaAluno(matricula);
     }
 
-//    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException {
-//        System.out.println("Informe o código da turma: ");
-//        String codigo = sc.nextLine();
-//
-//        if (codigo == null || codigo.trim().isEmpty()) {
-//            System.out.println("Inválido o código da turma não pode estar vazio.");
-//            return;
-//        }
-//
-//        System.out.println("Informe a matrícula do aluno: ");
-//        String matricula = sc.nextLine();
-//
-//        if (matricula == null || matricula.trim().isEmpty()) {
-//            System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
-//            return;
-//        }
-//
-//        faculdade.removerAluno(matricula);
-//    }
+    //Remove o aluno de uma turma especifica (Remover aluno) -----------> Fazer verificação
+    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException {
+        System.out.println("Informe o código da turma: ");
+        String codigo = sc.nextLine();
+
+        if (codigo == null || codigo.trim().isEmpty()) {
+            System.out.println("Inválido o código da turma não pode estar vazio.");
+            return;
+        }
+        System.out.println("Informe a matrícula do aluno: ");
+        String matricula = sc.nextLine();
+
+        if (matricula == null || matricula.trim().isEmpty()) {
+            System.out.println("Inválido. A matrícula do aluno não pode estar vazia.");
+            return;
+        }
+
+        faculdade.removerAluno(matricula);
+    }
 
     public void calcularNotaFinalAlunos() throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
         System.out.println("Insira o código da turma que deseja calcular a nota dos alunos: ");
