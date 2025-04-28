@@ -32,7 +32,7 @@ public class Turma implements Serializable {
     private List<String> matriculasProfessores;
 
     private String codigoTurma;
-    private static int contador = 1;
+    private static transient int contador = 1;
 
     public Turma(Disciplina disciplina, Professor professor, GerenciamentoDeAlunos gerenciamentoDeAlunos) {
         this.disciplina = disciplina;
@@ -113,6 +113,14 @@ public class Turma implements Serializable {
         this.codigoTurma = codigoTurma;
     }
 
+    public static int getContador() {
+        return contador;
+    }
+
+    public static void setContador(int contador) {
+        Turma.contador = contador;
+    }
+
     public String exibirTipoDeMedia() {
         final String MEDIA_SIMPLES = "Media simples";
         final String ULTIMA_VALE_MAIS = "Media ultima nota vale mais";
@@ -129,12 +137,10 @@ public class Turma implements Serializable {
         return ULTIMA_VALE_MAIS;
     }
 
-    public String exibirAlunosAssociados() {
+    public String exibirAlunosAssociados() throws AlunoNaoEncontradoException {
         String exibir = "";
         for (Nota n : getNotasAluno()) {
-            //Aluno aluno = gerenciamentoDeAlunos.buscaAluno(n.getMatricula());
-            //exibir += aluno.toString() + "\n";
-            exibir += n.getMatricula();
+            exibir += gerenciamentoDeAlunos.buscaAluno(n.getMatricula()).getNome() + " (" + n.getMatricula() + "), ";
         }
 
         return exibir;
@@ -162,12 +168,16 @@ public class Turma implements Serializable {
 
     @Override
     public String toString() {
-        return "| Disciplina associada: " + disciplina.getNomeDisciplina() + " | \n" +
-                "| Professor: " + professor.getNome() + " | \n" +
-                "| Nº Unidades Avaliativas: " + getNumeroUnidades() + " | \n" +
-                "| Tipo de Média: " + exibirTipoDeMedia() + " | \n" +
-                "| Alunos associados: " + exibirAlunosAssociados() + " | \n" +
-                "| Codigo da turma: " + getCodigoTurma() + " | \n";
+        try {
+            return "| Disciplina associada: " + disciplina.getNomeDisciplina() + " | \n" +
+                    "| Professor: " + professor.getNome() + " | \n" +
+                    "| Nº Unidades Avaliativas: " + getNumeroUnidades() + " | \n" +
+                    "| Tipo de Média: " + exibirTipoDeMedia() + " | \n" +
+                    "| Alunos associados: " + exibirAlunosAssociados() + " | \n" +
+                    "| Codigo da turma: " + getCodigoTurma() + " | \n";
+        } catch (AlunoNaoEncontradoException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -56,10 +56,4 @@ class PessoaTest {
         Aluno aluno = new Aluno("Anna", "00111222333", "anna@email", "SI");
         assertNotNull(aluno.getMatricula());
     }
-
-    @Test
-    void dataCriacaoNula() throws PessoaInvalidaException {
-        Aluno aluno = new Aluno("Anna", "00111222333", "anna@email", "SI");
-        assertNotNull(aluno.getDataCriacao());
-    }
 }

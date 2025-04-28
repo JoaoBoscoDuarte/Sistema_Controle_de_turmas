@@ -171,4 +171,22 @@ public class Faculdade implements Serializable {
     public void gerarRelatorioNotaFinalTurma(String codigo) throws TurmaInvalidaException, AlunoNaoEncontradoException, IOException {
         gerenciamentoDeArquivos.gerarRelatorioNotaFinalTurma(codigo);
     }
+
+    public void salvaContador() throws IOException {
+        gerenciamentoDeArquivos.salvarContador();
+    }
+
+    public void carregaContador() throws IOException {
+        gerenciamentoDeArquivos.carregarContador();
+    }
+
+    public void salvaContadorTurma() throws IOException {
+        gerenciamentoDeArquivos.salvaContadorTurma();
+    }
+
+    public void carregaContadorTurma() throws IOException {
+        gerenciamentoDeArquivos.carregaContadorTurma();
+    }
+
+
 }

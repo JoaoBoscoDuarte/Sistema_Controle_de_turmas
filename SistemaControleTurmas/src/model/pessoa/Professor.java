@@ -52,6 +52,6 @@ public class Professor extends Pessoa{
                 "| Telefone: " + getTelefone() + " | \n" +
                 "| Email: " + getEmail() + " | \n" +
                 "| Matricula: " + getMatricula() + " | \n" +
-                "| Disciplinas ministradas: " + disciplinasMinistradas.toString() + " | \n";
+                "| Disciplinas ministradas: " + disciplinasMinistradas + "\n";
     }
 }

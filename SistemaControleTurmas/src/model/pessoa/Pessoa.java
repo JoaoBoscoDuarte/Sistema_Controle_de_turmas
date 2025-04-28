@@ -16,15 +16,13 @@ public abstract class Pessoa implements Serializable {
     private String email;
     private boolean ativo = true;
     private final String matricula;
-    private LocalDate dataCriacao;
-    private static int contaMatricula = 1;
+    private static transient int contaMatricula = 1;
 
     public Pessoa(String nome, String telefone, String email) throws PessoaInvalidaException {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.matricula = geradorDeMatricula();
-        this.dataCriacao = LocalDate.now();
         validaNome(nome);
         validaTelefone(telefone);
         validaEmail(email);
@@ -48,16 +46,24 @@ public abstract class Pessoa implements Serializable {
         }
     }
 
+    private String geradorDeMatricula() {
+        return LocalDate.now().getYear() + String.format("%04d", contaMatricula++);
+    }
+
+    public static int getContaMatricula() {
+        return contaMatricula;
+    }
+
+    public static void setContaMatricula(int contaMatricula) {
+        Pessoa.contaMatricula = contaMatricula;
+    }
+
     public boolean isAtivo() {
         return ativo;
     }
 
     public void invalidar() {
         this.ativo = false;
-    }
-
-    private String geradorDeMatricula() {
-        return LocalDate.now().getYear() + String.format("%04d" , contaMatricula++);
     }
 
     // Getters e setters --------------------------------------------> OK
@@ -96,21 +102,17 @@ public abstract class Pessoa implements Serializable {
         return matricula;
     }
 
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
-
     // Métodos básicos ----------------------------------------------> OK
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Pessoa pessoa = (Pessoa) o;
-        return ativo == pessoa.ativo && Objects.equals(nome, pessoa.nome) && Objects.equals(telefone, pessoa.telefone) && Objects.equals(email, pessoa.email) && Objects.equals(matricula, pessoa.matricula) && Objects.equals(dataCriacao, pessoa.dataCriacao);
+        return ativo == pessoa.ativo && Objects.equals(nome, pessoa.nome) && Objects.equals(telefone, pessoa.telefone) && Objects.equals(email, pessoa.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, telefone, email, ativo, matricula, dataCriacao);
+        return Objects.hash(nome, telefone, email, ativo);
     }
 
     @Override
@@ -120,8 +122,6 @@ public abstract class Pessoa implements Serializable {
                 ", telefone='" + telefone + '\'' +
                 ", email='" + email + '\'' +
                 ", ativo=" + ativo +
-                ", matricula='" + matricula + '\'' +
-                ", dataCriacao=" + dataCriacao +
                 '}';
     }
 }

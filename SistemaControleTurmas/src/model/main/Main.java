@@ -33,6 +33,8 @@ public class Main {
 
     public void executar() throws Exception {
         faculdade = faculdade.carregaControleDeTurmas();
+        faculdade.carregaContador();
+        faculdade.carregaContadorTurma();
 
         boolean repetir = true;
         while (repetir) {
@@ -54,7 +56,7 @@ public class Main {
                             "[14] Encerrar Turmas\n" +
                             "[15] Gerar relatório de turma\n" +          //OK
                             "[16] Gerar relatório da faculdade\n" +      //OK
-                            "[17] Calcular nota final do aluno\n" +
+                            "[17] Calcular nota final dos alunos\n" +
                             "[18] Remover aluno de uma turma\n" +
                             "[0] Sair\n";                                //OK
 
@@ -426,7 +428,7 @@ public class Main {
         }
     }
 
-    // Cadastra um aluno (cria aluno) -------------------------------------------------------> OK
+    // Cadastra um aluno (cria aluno) -------------------------------------------------000----------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarAluno() throws Exception {
         //Recebendo dados do aluno e cadastrando no sistema
@@ -444,9 +446,10 @@ public class Main {
 
         faculdade.adicionarAluno(nome, telefone, email, curso);
         faculdade.salvaControleDeTurmas();
+        faculdade.salvaContador();
     }
 
-    // Cadastra disciplina (cria disciplina) ------------------------------------------------> OK
+    // Cadastra disciplina (cria disciplina) -------------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarDisciplina() throws DisciplinaJaCadastradaException, IOException, NomeDaDisciplinaInvalidoException, CargaHorariaInvalidaException, DisciplinaInvalidaException {
         // Recebendo os dados da disciplina e cadastrando
@@ -462,9 +465,10 @@ public class Main {
 
         faculdade.cadastrarDisciplina(disciplina, codigo ,cargaHoraria);
         faculdade.salvaControleDeTurmas();
+        faculdade.salvaContador();
     }
 
-    // Cadastra Professor (cria professor) -------------------------------------------------------> OK
+    // Cadastra Professor (cria professor) ---------------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarProfessor() throws Exception {
         List<Disciplina> disciplinasDoProfessor = new ArrayList<>();
@@ -518,7 +522,7 @@ public class Main {
         }
 
         faculdade.salvaControleDeTurmas();
-
+        faculdade.salvaContador();
     }
 
     // Cadastra turma (cria turma), se o prefessor não for associado a disciplina ele é associado --> OK
@@ -553,6 +557,8 @@ public class Main {
 
         System.out.println("Turma criada com sucesso.");
         faculdade.salvaControleDeTurmas();
+        faculdade.salvaContador();
+        faculdade.salvaContadorTurma();
     }
 
     // Cadastra aluno em uma turma -----------------------------------------------------------------> OK
@@ -576,6 +582,7 @@ public class Main {
         System.out.println("Aluno matriculado a turma.");
 
         faculdade.salvaControleDeTurmas();
+        faculdade.salvaContador();
     }
 
     // Lista alunos de uma turma específica  -------------------------------------------------------> OK
@@ -591,31 +598,31 @@ public class Main {
         System.out.println("Alunos da turma: \n" + faculdade.listarAlunosDeTurma(codigo));
     }
 
-    // Lista todos os alunos da faculdade -------------------------------------------> OK
+    // Lista todos os alunos da faculdade ----------------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarAlunosDaFaculdade() throws AlunoNaoEncontradoException {
         System.out.println("Alunos da faculdade: \n" + faculdade.listarAlunosDaFaculdade());
     }
 
-    // Lista os professores ---------------------------------------------------------------------> OK
+    // Lista os professores ------------------------------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarProfessores() throws ProfessorNaoEncontradoException{
         System.out.println("Professores da faculdade: \n" + faculdade.listarProfessores());
     }
 
-    // Lista todas as disciplinas da faculdade  -------------------------------------------------> OK
+    // Lista todas as disciplinas da faculdade  ---------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarDisciplinas() throws DisciplinaNaoEncontradaException {
         System.out.println("Disciplinas da faculdade: \n" + faculdade.listarDisciplinas());
     }
 
-    // Listar todas as turmas da faculdade ------------------------------------------------------> OK
+    // Listar todas as turmas da faculdade --------------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void listarTurmas() throws TurmaInvalidaException {
         System.out.println("Turmas da faculdade: \n" + faculdade.listarTurmas());
     }
 
-    // configura a turma (adiciona quantidade de unidades e muda o tipo de média) ----------------> OK
+    // configura a turma (adiciona quantidade de unidades e muda o tipo de média) -----------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void configurarTurma() throws IntervaloDeUnidadeException, TurmaInvalidaException, IOException {
         System.out.println("Insira o código da turma: ");
@@ -666,7 +673,7 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
-    // Cadastra a nota dos alunos de uma turma ---------------------------------------------------> OK
+    // Cadastra a nota dos alunos de uma turma ----------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarNotas() throws AlunoNaoEncontradoException, TurmaInvalidaException, IntervaloDeUnidadeException, IntervaloDeNotaException {
         // Recebe código da turma e verifica se válida
@@ -703,7 +710,7 @@ public class Main {
         }
     }
 
-    // Método para inativar aluno da faculdade ---------------------------------------------> OK
+    // Método para inativar aluno da faculdade ----------------------------------------------------> OK
     public void inativarAluno() throws AlunoNaoEncontradoException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
@@ -758,14 +765,14 @@ public class Main {
         }
 
         faculdade.gerarRelatorioDaTurma(codigo);
-        System.out.println("Relatorio gerado com sucesso!\n");
+        System.out.println("Relatorio fa turma" + codigo + "gerado com sucesso!\n");
     }
 
     // Gera o relatório de toda a faculdade ------------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void gerarRelatorioDaFaculdade() throws IOException {
         faculdade.gerarRelatorioDaFaculdade();
-        System.out.println("Relatório da turma gerado com sucesso!\n");
+        System.out.println("Relatório da faculdade gerado com sucesso!\n");
     }
 
     public void encerrarTurmas() throws ProfessorNaoEncontradoException, TurmaInvalidaException, IntervaloDeNotaException {

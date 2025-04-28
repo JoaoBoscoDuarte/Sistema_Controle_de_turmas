@@ -6,6 +6,7 @@ import model.exceptions.TurmaInvalidaException;
 import model.faculdade.Faculdade;
 import model.pessoa.Aluno;
 import model.pessoa.Professor;
+import model.pessoa.Pessoa;
 import model.turma.Nota;
 import model.turma.Turma;
 
@@ -24,7 +25,7 @@ public class GerenciamentoDeArquivos implements Serializable {
     private static final String ARQUIVO_CONTROLE = "controleTurmas.ser";
     private static final String DIRETORIO_ARQUIVOS = "SistemaControleTurmas//src//data";
     private static final String DIRETORIO_RELATORIOS = DIRETORIO_ARQUIVOS + File.separator + "relatorios";
-    private static final String NOME_RELATORIO = "relatorio_controle_turmas.txt";
+    private static final String NOME_RELATORIO = "relatorio_controle_turmas_faculdade.txt";
     private GerenciamentoDeTurmas gerenciamentoDeTurmas;
     private GerenciamentoDeAlunos gerenciamentoDeAlunos;
 
@@ -67,6 +68,46 @@ public class GerenciamentoDeArquivos implements Serializable {
         }
     }
 
+    // Carrega me salva estado do contador pessoa
+    public void salvarContador() throws IOException {
+        Path caminhoContador = Paths.get(DIRETORIO_ARQUIVOS, "contador_matricula.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoContador.toFile()))) {
+            writer.write(String.valueOf(Pessoa.getContaMatricula()));
+        }
+    }
+
+    public void carregarContador() throws IOException {
+        Path caminhoContador = Paths.get(DIRETORIO_ARQUIVOS, "contador_matricula.txt");
+        File arquivoContador = caminhoContador.toFile();
+
+        if (arquivoContador.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(arquivoContador))) {
+                int contador = Integer.parseInt(reader.readLine());
+                Pessoa.setContaMatricula(contador);
+            }
+        }
+    }
+
+    // Eu seu que esses métodos podem ser condensados em apenas 2 e posteriomente reusados (estou com preguiça de fazer isso)
+    // Carrega e salva estado do contador da turma
+    public void salvaContadorTurma() throws IOException {
+        Path caminhoContador = Paths.get(DIRETORIO_ARQUIVOS, "contador_turma.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoContador.toFile()))) {
+            writer.write(String.valueOf(Turma.getContador()));
+        }
+    }
+
+    public void carregaContadorTurma() throws IOException {
+        Path caminhoContador = Paths.get(DIRETORIO_ARQUIVOS, "contador_turma.txt");
+        File arquivoContador = caminhoContador.toFile();
+
+        if (arquivoContador.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(arquivoContador))) {
+                int contador = Integer.parseInt(reader.readLine());
+                Pessoa.setContaMatricula(contador);
+            }
+        }
+    }
 
     // Gera o relatório de toda a faculdade -----------------------------------------------------> Ok
     public void gerarRelatorioFaculdadeTxt(GerenciamentoDeAlunos aluno, GerenciamentoDeProfessores professor, GerenciamentoDeDisciplinas disciplina, GerenciamentoDeTurmas turmas) throws IOException {
@@ -117,11 +158,13 @@ public class GerenciamentoDeArquivos implements Serializable {
             }
             writer.write("|=================================================================================|\n\n");
         }
+
+        System.out.println("Relatorio criado em: " + caminhoRelatorio);
     }
 
     // Gera o relatório de uma turma -----------------------------------------------> OK
     public void gerarRelatorioTurmaTxt(String codigo) throws TurmaInvalidaException, IOException {
-        Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, "relatorio_" + codigo + ".txt");
+        Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, "relatorio_turma_" + codigo + ".txt");
 
         Turma turma = gerenciamentoDeTurmas.buscarTurma(codigo);
 
@@ -135,11 +178,13 @@ public class GerenciamentoDeArquivos implements Serializable {
             writer.write("|=================================================================================|\n\n");
             writer.write(turma.toString());
         }
+
+        System.out.println("Relatorio criado em: " + caminhoRelatorio);
     }
 
     // Gerar Relatorio com nota final de turma
     public void gerarRelatorioNotaFinalTurma(String codigo) throws TurmaInvalidaException, IOException, AlunoNaoEncontradoException {
-        Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, "NotasFinaisAluno" + codigo + ".txt");
+        Path caminhoRelatorio = Paths.get(DIRETORIO_RELATORIOS, "NotasFinaisAluno_" + codigo + ".txt");
 
         Turma turma = gerenciamentoDeTurmas.buscarTurma(codigo);
 
@@ -153,10 +198,10 @@ public class GerenciamentoDeArquivos implements Serializable {
             writer.write("|=================================================================================|\n\n");
 
             for (Nota n : turma.getNotasAluno()) {
-                writer.write("|Nome: " + gerenciamentoDeAlunos.retornaNomeAluno(n.getMatricula()));
+                writer.write("|Nome: " + gerenciamentoDeAlunos.retornaNomeAluno(n.getMatricula()) + "\n");
                 writer.write("|Notas: " + n.getNotas());
-                writer.write("|Media: " + gerenciamentoDeTurmas.calculaMedia(n.getNotas(), codigo));
-                writer.write("|Situação: " + gerenciamentoDeTurmas.verificarAprovacao(gerenciamentoDeTurmas.calculaMedia(n.getNotas(), codigo)));
+                writer.write("|Media: " + gerenciamentoDeTurmas.calculaMedia(n.getNotas(), codigo) + "\n");
+                writer.write("|Situação: " + gerenciamentoDeTurmas.verificarAprovacao(gerenciamentoDeTurmas.calculaMedia(n.getNotas(), codigo)) + "\n");
             }
         }
 
