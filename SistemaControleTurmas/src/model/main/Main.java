@@ -52,7 +52,7 @@ public class Main {
                             "[12] Cadastrar notas\n" +
                             "[13] Inativar um aluno\n" +
                             "[14] Encerrar Turmas\n" +
-                            "[15] Gerar relatório de turma\n" +
+                            "[15] Gerar relatório de turma\n" +          //OK
                             "[16] Gerar relatório da faculdade\n" +      //OK
                             "[17] Calcular nota final do aluno\n" +
                             "[0] Sair\n";                                //OK
@@ -439,6 +439,8 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
+    // Cadastra Professor (cria professor) -------------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void cadastrarProfessor() throws Exception {
         List<Disciplina> disciplinasDoProfessor = new ArrayList<>();
         // Recebendo dados do professor e cadastrando no sistema
@@ -707,7 +709,8 @@ public class Main {
         faculdade.gerarRelatorioNotaFinalTurma(codigo);
     }
 
-    // Método que gera os relatŕoios da turma -------------------------------------------> OK
+    // gerar relatorio de uma turma específica (cria aluno) ----------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void gerarRelatorioDeTurma() throws TurmaInvalidaException, IOException {
         System.out.println("Insira o código da turma que deseja gerar o relatório: ");
         String codigo = sc.nextLine();
