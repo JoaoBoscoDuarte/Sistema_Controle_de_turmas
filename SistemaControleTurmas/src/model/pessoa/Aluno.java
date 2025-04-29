@@ -3,7 +3,6 @@ package model.pessoa;
 import model.exceptions.PessoaInvalidaException;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 
 /*  ================| Só altere em caso de urgência! |====================

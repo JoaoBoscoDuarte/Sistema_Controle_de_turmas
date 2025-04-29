@@ -50,6 +50,11 @@ public abstract class Pessoa implements Serializable {
         return LocalDate.now().getYear() + String.format("%04d", contaMatricula++);
     }
 
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    // Getters e setters --------------------------------------------> OK
     public static int getContaMatricula() {
         return contaMatricula;
     }
@@ -58,11 +63,6 @@ public abstract class Pessoa implements Serializable {
         Pessoa.contaMatricula = contaMatricula;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    // Getters e setters --------------------------------------------> OK
     public String getNome() {
         return nome;
     }

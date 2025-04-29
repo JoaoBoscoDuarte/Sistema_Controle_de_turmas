@@ -28,10 +28,6 @@ public class Professor extends Pessoa{
         return disciplinasMinistradas;
     }
 
-    public void setDisciplinasMinistradas(List<Disciplina> disciplinasMinistradas) {
-        this.disciplinasMinistradas = disciplinasMinistradas;
-    }
-
     // Métodos básicos ----------------------------------------------> OK
     @Override
     public boolean equals(Object o) {
