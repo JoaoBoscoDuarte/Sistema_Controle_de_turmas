@@ -94,7 +94,6 @@ public class Faculdade implements Serializable {
     }
 
     public boolean desativaAluno(String matricula) throws AlunoNaoEncontradoException {
-        gerenciamentoDeTurmas.removerAluno(matricula);
         return gerenciamentoDeAlunos.desativaAluno(matricula);
     }
 

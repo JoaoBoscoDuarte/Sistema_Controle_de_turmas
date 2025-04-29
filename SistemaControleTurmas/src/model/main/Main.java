@@ -723,7 +723,8 @@ public class Main {
         faculdade.salvaControleDeTurmas();
     }
 
-    // Método para inativar aluno da faculdade ----------------------------------------------------> Precisa confirmação
+    // Cadastra a nota dos alunos de uma turma ----------------------------------------------------> OK
+    // 100% concluido sem erros | NÃO MEXER NESSE METODO |
     public void inativarAluno() throws AlunoNaoEncontradoException, IOException {
         System.out.println("Informe a matrícula do aluno: ");
         String matricula = sc.nextLine();
