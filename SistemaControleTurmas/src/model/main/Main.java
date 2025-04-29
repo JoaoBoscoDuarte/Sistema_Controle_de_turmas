@@ -56,7 +56,7 @@ public class Main {
                             "[14] Encerrar Turmas\n" +
                             "[15] Gerar relatório de turma\n" +          //OK
                             "[16] Gerar relatório da faculdade\n" +      //OK
-                            "[17] Calcular nota final dos alunos\n" +
+                            "[17] Calcular nota final dos alunos e gera relatorio\n" +
                             "[18] Remover aluno de uma turma\n" +        //OK
                             "[0] Sair\n";                                //OK
 

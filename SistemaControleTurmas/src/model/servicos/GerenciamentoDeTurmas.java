@@ -104,7 +104,12 @@ public class GerenciamentoDeTurmas implements Serializable {
             throw new AlunoNaoEncontradoException("Aluno com matrícula " + matricula + " não encontrado.");
         }
 
+        while (notaAluno.getNotas().size() < unidade) {
+            notaAluno.getNotas().add(0.0);
+        }
+
         notaAluno.getNotas().set(unidade - 1, nota);
+
     }
 
     // Método para remover aluno pela matrícula
