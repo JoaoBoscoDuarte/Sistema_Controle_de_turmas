@@ -115,7 +115,7 @@ public class Faculdade implements Serializable {
         return gerenciamentoDeDisciplinas.listarDisciplinas();
     }
 
-    public void associarProfessorADisciplina(List<Disciplina> disciplinas, String matricula) throws AssociacaoInvalidaException, ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
+    public void associarProfessorADisciplina(List<Disciplina> disciplinas, String matricula) throws ProfessorNaoEncontradoException {
         gerenciamentoDeDisciplinas.associarProfessorADisciplina(disciplinas, matricula);
     }
 

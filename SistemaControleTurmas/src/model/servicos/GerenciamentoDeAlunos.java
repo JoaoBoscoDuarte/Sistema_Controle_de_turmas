@@ -65,7 +65,7 @@ public class GerenciamentoDeAlunos implements Serializable {
         return exibir;
     }
 
-    // Retorna o nome do aluno a partir da matrícula
+    // Retorna o nome do aluno a partir da matrícula ---------------------------------------------------------------> OK
     public String retornaNomeAluno(String matricula) throws AlunoNaoEncontradoException {
         return buscaAluno(matricula).toString();
     }

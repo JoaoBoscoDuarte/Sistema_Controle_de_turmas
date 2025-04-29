@@ -11,8 +11,6 @@ import java.util.*;
  */
 
 public class GerenciamentoDeDisciplinas implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     private final List<Disciplina> disciplinas;
     private GerenciamentoDeProfessores gerenciadorProfessores;
 
@@ -21,11 +19,11 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         this.gerenciadorProfessores = gerenciamentoDeProfessores;
     }
 
-    // Método que cadastra uma nova disciplina ---------------------------------------------> OK
+    // Cadastra disciplina (Cria disciplina) -----------------------------------------------------------------------> OK
     public void cadastraDisciplina(String nome,String codigo,int cargaHoraria) throws DisciplinaJaCadastradaException, CargaHorariaInvalidaException, NomeDaDisciplinaInvalidoException, DisciplinaInvalidaException {
         validaNomeDisciplina(nome);
 
-        if(existeDisciplinaComMesmoCodigo(codigo)){
+        if(existeDisciplina(codigo)){
             throw new DisciplinaJaCadastradaException("Já existe uma disciplina com esse codigo.");
         }
 
@@ -44,17 +42,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         this.disciplinas.add(new Disciplina(nome, codigo, cargaHoraria));
     }
 
-    // Método que verifica se existe disciplina com o mesmo codigo ---------------------------> OK
-    private boolean existeDisciplinaComMesmoCodigo(String codigo) {
-        for (Disciplina d : disciplinas) {
-            if (d.getCodigo().equalsIgnoreCase(codigo)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Método que lista todas as disciplinas  ----------------------------------------------> OK
+    // Lista todas as disciplinas da faculdade em tela -------------------------------------------------------------> OK
     public String listarDisciplinas() throws DisciplinaNaoEncontradaException{
         if (disciplinas.isEmpty()) {
             throw new DisciplinaNaoEncontradaException("Lista de disciplinas vazia");
@@ -68,8 +56,8 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         return exibir;
     }
 
-    // Método que associa professor a disciplina -------------------------------------------> OK
-    public void associarProfessorADisciplina(List<Disciplina> disciplinas, String matricula) throws ProfessorNaoEncontradoException, DisciplinaNaoEncontradaException, DisciplinaInvalidaException {
+    // Associa o professor a disciplina (adiciona o professor a lista da disciplina e vice e versa) ----------------> OK
+    public void associarProfessorADisciplina(List<Disciplina> disciplinas, String matricula) throws ProfessorNaoEncontradoException {
         if (!gerenciadorProfessores.existeProfessor(matricula)) {
             throw new ProfessorNaoEncontradoException("Professor não existe");
         }
@@ -80,7 +68,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         }
     }
 
-    // Método que busca e retorna a disciplina caso exista ---------------------------------> OK
+    // Busca a disciplina pelo nome (Retorna o objeto disciplina pelo nome dela) -----------------------------------> OK
     public Disciplina buscaDisciplina(String nome) throws DisciplinaInvalidaException, DisciplinaNaoEncontradaException {
         validaNomeDisciplina(nome);
         for (Disciplina d : disciplinas) {
@@ -91,7 +79,7 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         throw new DisciplinaNaoEncontradaException("Disciplina com nome '" + nome + "' não encontrada.");
     }
 
-    // Método que verifica se a disciplina existe ------------------------------------------> OK
+    // Verifica se a disciplina existe -----------------------------------------------------------------------------> Ok
     public boolean existeDisciplina(String nomeDisciplina) {
         for (Disciplina d : disciplinas) {
             if (d.getNomeDisciplina().toLowerCase().replaceAll("\\s+", "").equals(nomeDisciplina.toLowerCase().replaceAll("\\s+", ""))) {
@@ -101,14 +89,14 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         return false;
     }
 
-    // Método que valida e verifica com exceções nome da disciplina ------------------------> OK
+    // Condensa algumas verificaçãoes do nome da disciplina --------------------------------------------------------> OK
     private void validaNomeDisciplina(String nome) throws DisciplinaInvalidaException {
         if (nome == null || nome.trim().isEmpty()) {
             throw new DisciplinaInvalidaException("Nome da disciplina inválido.");
         }
     }
 
-    // Métodos getters e setters necessários -----------------------------------------------> OK
+    // Métodos getters e setters necessários -----------------------------------------------------------------------> OK
     public List<Disciplina> getDisciplinas() {
         return disciplinas;
     }
