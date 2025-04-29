@@ -101,19 +101,19 @@ public class GerenciamentoDeTurmas implements Serializable {
 
     }
 
-    // Método para remover aluno pela matrícula
+    //  remove aluno da turma pela matrícula -----------------------------------------------------------------------> OK
     public void removerAluno(String matricula) throws AlunoNaoEncontradoException {
         for (Turma turma : turmas) {
-            boolean removido = turma.getNotasAluno().removeIf(n -> n.getMatricula().equals(matricula));
-
-            if (removido) {
-                return;
+            for (Nota n : turma.getNotasAluno()) {
+                if (n.getMatricula().equals(matricula) && aluno.buscaAluno(n.getMatricula()).isAtivo()) {
+                    turma.getNotasAluno().remove(n);
+                }
             }
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado em nenhuma turma.");
     }
 
-    // Método para listar todas as turmas -----------------------------------> OK
+    // listar todas as turmas --------------------------------------------------------------------------------------> OK
     public String listarTurmas() throws TurmaInvalidaException {
         if (turmas.isEmpty()) {
             throw new TurmaInvalidaException("Nenhuma turma cadastrada.");
