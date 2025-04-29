@@ -742,7 +742,7 @@ public class Main {
 
     // Cadastra a nota dos alunos de uma turma ----------------------------------------------------> OK
     // 100% concluido sem erros | NÃO MEXER NESSE METODO |
-    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException, IOException {
+    public void removerAlunoDeTurma() throws AlunoNaoEncontradoException, IOException, TurmaInvalidaException {
         System.out.println("Informe o código da turma: ");
         String codigo = sc.nextLine();
 
