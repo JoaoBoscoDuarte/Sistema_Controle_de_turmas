@@ -39,13 +39,6 @@ class GerenciamentoDeAlunosTest {
     }
 
     @Test
-    void existeAluno() throws Exception {
-        gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
-        Aluno aluno = gerenciamento.getListaAlunos().get(0);
-        assertTrue(gerenciamento.existeAluno(aluno.getMatricula()));
-    }
-
-    @Test
     void desativaAluno() throws Exception {
         gerenciamento.adicionaAluno("Anna", "00111222333", "anna@email", "SI");
         Aluno aluno = gerenciamento.getListaAlunos().get(0);

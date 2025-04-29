@@ -93,10 +93,6 @@ public class Faculdade implements Serializable {
         gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email, curso);
     }
 
-    public String consultarDadosAluno(String matricula) throws AlunoNaoEncontradoException {
-        return gerenciamentoDeAlunos.consultaDadosAluno(matricula);
-    }
-
     public void desativaAluno(String matricula) throws AlunoNaoEncontradoException {
         gerenciamentoDeAlunos.desativaAluno(matricula);
         gerenciamentoDeTurmas.removerAluno(matricula);
@@ -104,10 +100,6 @@ public class Faculdade implements Serializable {
 
     public String listarAlunosDaFaculdade() throws AlunoNaoEncontradoException {
         return gerenciamentoDeAlunos.listarAlunosDaFaculdade();
-    }
-
-    public boolean existeAluno(String matricula) {
-        return gerenciamentoDeAlunos.existeAluno(matricula);
     }
 
     public Aluno buscarAluno(String matricula) throws AlunoNaoEncontradoException {
