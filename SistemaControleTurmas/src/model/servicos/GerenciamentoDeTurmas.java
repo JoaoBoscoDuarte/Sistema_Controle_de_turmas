@@ -154,7 +154,7 @@ public class GerenciamentoDeTurmas implements Serializable {
         throw new TurmaInvalidaException("A turma não existe.");
     }
 
-    // Método para listar os alunos de uma turma -----------------------------> OK
+    // Lista todos os alunos ativos de uma turma -------------------------------------------------------------------> Ok
     public String listaAlunoDeTurma(String codigo) throws TurmaInvalidaException {
         String listar = "";
         for (Nota n: buscarTurma(codigo).getNotasAluno()) {
@@ -168,7 +168,7 @@ public class GerenciamentoDeTurmas implements Serializable {
         return listar;
     }
 
-    // Método para verificar aprovação --------------------------------------> OK
+    // Verifica a aprovação do aluno de acordo com a media ---------------------------------------------------------> Ok
     public String verificarAprovacao(double media) {
         return media >= 7 ? "APROVADO" : "REPROVADO";
     }
@@ -179,7 +179,7 @@ public class GerenciamentoDeTurmas implements Serializable {
         return turma.getTipoDeMedia().calcularMedia(notas);
     }
 
-    //Método para configurar turma (definir tipo de media e quantidade de unidades avaliativas)
+    // Configura a turma (define o tipo de média e aquantidade de uinidaeds avalaitivas) ---------------------------> Ok
     public void configurarTurma(String codigo, int qtdUnidadesAvaliativas, TiposDeMediaIF tiposDeMediaIF) throws TurmaInvalidaException, IntervaloDeUnidadeException {
         Turma turma = buscarTurma(codigo);
 

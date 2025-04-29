@@ -48,7 +48,7 @@ public class Faculdade implements Serializable {
         gerenciamentoDeTurmas.cadastrarNotasUnidade(codigo, unidade, matricula, nota);
     }
 
-    public void removerAluno(String matricula, String codigo) throws AlunoNaoEncontradoException {
+    public void removerAluno(String matricula, String codigo) throws AlunoNaoEncontradoException, TurmaInvalidaException {
         gerenciamentoDeTurmas.removerAluno(matricula, codigo);
     }
 
