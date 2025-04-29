@@ -169,17 +169,19 @@ public class Turma implements Serializable {
 
     @Override
     public String toString() {
+        String alunosAssociados;
         try {
-            return "| Disciplina associada: " + disciplina.getNomeDisciplina() + " | \n" +
-                    "| Professor: " + professor.getNome() + " | \n" +
-                    "| Nº Unidades Avaliativas: " + getNumeroUnidades() + " | \n" +
-                    "| Tipo de Média: " + exibirTipoDeMedia() + " | \n" +
-                    "| Alunos associados: " + exibirAlunosAssociados() + " | \n" +
-                    "| Codigo da turma: " + getCodigoTurma() + " | \n";
-
+            alunosAssociados = exibirAlunosAssociados();
         } catch (AlunoNaoEncontradoException e) {
-            throw new RuntimeException(e);
+            alunosAssociados = "Nenhum aluno encontrado.";
         }
+
+        return "| Disciplina associada: " + disciplina.getNomeDisciplina() + " | \n" +
+                "| Professor: " + professor.getNome() + " | \n" +
+                "| Nº Unidades Avaliativas: " + getNumeroUnidades() + " | \n" +
+                "| Tipo de Média: " + exibirTipoDeMedia() + " | \n" +
+                "| Alunos associados: " + alunosAssociados + " | \n" +
+                "| Codigo da turma: " + getCodigoTurma() + " | \n";
     }
 
 }
