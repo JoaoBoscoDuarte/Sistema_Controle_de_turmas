@@ -60,7 +60,9 @@ public class GerenciamentoDeAlunos implements Serializable {
 
         String exibir = "";
         for (Aluno a : listaAlunos) {
-            exibir += a.toString() + "\n";
+            if (a.isAtivo()) {
+                exibir += a.toString() + "\n";
+            }
         }
 
         return exibir;

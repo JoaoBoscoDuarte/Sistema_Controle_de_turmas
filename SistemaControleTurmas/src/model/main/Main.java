@@ -758,7 +758,7 @@ public class Main {
             return;
         }
 
-        faculdade.removerAluno(matricula);
+        faculdade.removerAluno(matricula, codigo);
         faculdade.salvaControleDeTurmas();
     }
 
