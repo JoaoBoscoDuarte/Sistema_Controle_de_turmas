@@ -37,21 +37,11 @@ public class GerenciamentoDeDisciplinas implements Serializable {
             throw new NomeDaDisciplinaInvalidoException("O nome da disciplina não pode ser vazil");
         }
 
-        if (existeDisciplinaComMesmoNome(nome)) {
+        if (existeDisciplina(nome)) {
             throw new DisciplinaJaCadastradaException("Já existe uma disciplina cadastrada com o nome '" + nome + "'.");
         }
 
         this.disciplinas.add(new Disciplina(nome, codigo, cargaHoraria));
-    }
-
-    // Método que verifica se existe disciplina com o mesmo nome ---------------------------> OK
-    private boolean existeDisciplinaComMesmoNome(String nome) {
-        for (Disciplina d : disciplinas) {
-            if (d.getNomeDisciplina().toUpperCase().replaceAll("\\s+", "").equals(nome.toLowerCase().replaceAll("\\s+", ""))) {
-                return true;
-            }
-        }
-        return false;
     }
 
     // Método que verifica se existe disciplina com o mesmo codigo ---------------------------> OK
@@ -63,8 +53,6 @@ public class GerenciamentoDeDisciplinas implements Serializable {
         }
         return false;
     }
-
-
 
     // Método que lista todas as disciplinas  ----------------------------------------------> OK
     public String listarDisciplinas() throws DisciplinaNaoEncontradaException{

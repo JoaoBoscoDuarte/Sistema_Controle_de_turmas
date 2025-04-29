@@ -1,8 +1,10 @@
 package model.servicos;
 
+import model.disciplina.Disciplina;
 import model.exceptions.PessoaInvalidaException;
 import model.pessoa.Aluno;
 import model.exceptions.AlunoNaoEncontradoException;
+import model.turma.Turma;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,7 +53,6 @@ public class GerenciamentoDeAlunos implements Serializable {
         for (Aluno aluno : listaAlunos) {
             if (aluno.getMatricula().equalsIgnoreCase(matricula) && aluno.isAtivo()) {
                 aluno.setAtivo(false);
-                return;
             }
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");

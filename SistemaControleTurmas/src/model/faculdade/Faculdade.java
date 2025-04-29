@@ -99,6 +99,7 @@ public class Faculdade implements Serializable {
 
     public void desativaAluno(String matricula) throws AlunoNaoEncontradoException {
         gerenciamentoDeAlunos.desativaAluno(matricula);
+        gerenciamentoDeTurmas.removerAluno(matricula);
     }
 
     public String listarAlunosDaFaculdade() throws AlunoNaoEncontradoException {

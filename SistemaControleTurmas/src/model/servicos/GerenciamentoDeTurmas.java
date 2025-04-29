@@ -7,9 +7,6 @@ import model.turma.Nota;
 import model.turma.Turma;
 import model.turma.media.TiposDeMediaIF;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +28,6 @@ public class GerenciamentoDeTurmas implements Serializable {
         this.disciplina = disciplina;
         this.arquivos = arquivos;
         this.ativo = true;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
     }
 
     // Método par cria turma ------------------------------------------------------------> OK
