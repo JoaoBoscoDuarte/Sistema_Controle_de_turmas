@@ -732,7 +732,10 @@ public class Main {
             throw new AlunoNaoEncontradoException("O número da matrícula do aluno não pode estar vazio.");
         }
 
-        faculdade.desativaAluno(matricula);
+        if (faculdade.desativaAluno(matricula)) {
+            System.out.println("Aluno inativado");
+        }
+
         faculdade.salvaControleDeTurmas();
     }
 

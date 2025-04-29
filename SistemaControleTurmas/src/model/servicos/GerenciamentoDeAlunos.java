@@ -31,10 +31,11 @@ public class GerenciamentoDeAlunos implements Serializable {
     }
 
     // Desativa o aluno (remoção lógica da lista de alunos) --------------------------------------------------------> OK
-    public void desativaAluno(String matricula) throws AlunoNaoEncontradoException {
+    public boolean desativaAluno(String matricula) throws AlunoNaoEncontradoException {
         for (Aluno aluno : listaAlunos) {
             if (aluno.getMatricula().equalsIgnoreCase(matricula) && aluno.isAtivo()) {
                 aluno.setAtivo(false);
+                return true;
             }
         }
         throw new AlunoNaoEncontradoException("Aluno não encontrado ou não ativo.");

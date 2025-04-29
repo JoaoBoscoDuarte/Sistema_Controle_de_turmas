@@ -93,9 +93,9 @@ public class Faculdade implements Serializable {
         gerenciamentoDeAlunos.adicionaAluno(nome, telefone, email, curso);
     }
 
-    public void desativaAluno(String matricula) throws AlunoNaoEncontradoException {
-        gerenciamentoDeAlunos.desativaAluno(matricula);
+    public boolean desativaAluno(String matricula) throws AlunoNaoEncontradoException {
         gerenciamentoDeTurmas.removerAluno(matricula);
+        return gerenciamentoDeAlunos.desativaAluno(matricula);
     }
 
     public String listarAlunosDaFaculdade() throws AlunoNaoEncontradoException {
