@@ -1,6 +1,9 @@
 # Sistema de constrole de turmas
 Sistema acadêmico para gerenciamento de turmas, desenvolvido como projeto final da disciplina de Linguagem de Programação utilizando Java.
 
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![JUnit5](https://img.shields.io/badge/JUnit5-25A162?style=for-the-badge&logo=junit5&logoColor=white)
+
 ## Sobre
 ### Principais funcionalidades
 - Cadastro e gerenciamento de alunos
