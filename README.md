@@ -29,6 +29,6 @@ src/
 ```
 
 ## Contribuidores
-| ![Foto](https://github.com/JoaoBoscoDuarte.png?size=100) | ![Foto](https://github.com/Randerson7-png.png?size=100) | ![Foto](https://github.com/Annabdv.png?size=100) |
+| ![Foto](https://github.com/JoaoBoscoDuarte.png?size=100) | ![Foto](https://github.com/randersonranniery7.png?size=100) | ![Foto](https://github.com/Annabdv.png?size=100) |
 |----------------------------------------------------|-------------------------------------------------------|-----------------------------------------------------|
-| **João Bosco** [@JoaoBoscoDuarte](https://github.com/JoaoBoscoDuarte) | **Randerson** [@Randerson7-png](https://github.com/Randerson7-png) | **Anna Beatriz** [@Annabdv](https://github.com/Annabdv) |
+| **João Bosco** [@JoaoBoscoDuarte](https://github.com/JoaoBoscoDuarte) | **Randerson** [@randersonranniery7](https://github.com/randersonranniery7) | **Anna Beatriz** [@Annabdv](https://github.com/Annabdv) |
